@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="75a5b51389e342d3907b2beb7a35d4db" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Exam" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.ExamDetail" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Question" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Test" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.User" Width="1.5" PointX="11.125" PointY="2.25" IsExpanded="true" />
+        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_detail_Exam" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_Test" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_User" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_detail_Question" ManuallyRouted="false" />
+        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Question_Test" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
