@@ -10,4 +10,5 @@ namespace OnlineAptitudeExam
             filters.Add(new HandleErrorAttribute());
         }
     }
+ 
 }

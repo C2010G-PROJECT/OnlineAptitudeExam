@@ -9,14 +9,21 @@ namespace OnlineAptitudeExam
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // ---------------- general ---------------
+
 
             // ---------------- client ---------------- 
 
 
 
             // ----------------  admin  --------------- 
-          
 
+
+            routes.MapRoute(
+                 name: "admin_tests",
+                 url: "admin/tests/{action}/{id}",
+                 defaults: new { controller = "tests", action = "Index", id = UrlParameter.Optional }
+            );
 
             // ---------------- default ---------------
 
