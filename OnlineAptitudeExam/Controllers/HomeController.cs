@@ -10,6 +10,7 @@ namespace OnlineAptitudeExam.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -26,5 +27,7 @@ namespace OnlineAptitudeExam.Controllers
 
             return View();
         }
+
+     
     }
 }
