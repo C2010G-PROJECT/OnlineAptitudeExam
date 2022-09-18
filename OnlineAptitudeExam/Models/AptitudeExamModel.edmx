@@ -55,6 +55,10 @@
           <Property Name="fullname" Type="nvarchar" MaxLength="100" />
           <Property Name="type" Type="tinyint" />
           <Property Name="status" Type="tinyint" />
+          <Property Name="descriptions" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="100" />
+          <Property Name="avatar" Type="varchar" MaxLength="150" />
+          <Property Name="age" Type="int" />
         </EntityType>
         <Association Name="FK_Exam_detail_Exam">
           <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
@@ -207,6 +211,10 @@
           <Property Name="type" Type="Byte" />
           <Property Name="status" Type="Byte" />
           <NavigationProperty Name="Exams" Relationship="Self.FK_Exam_User" FromRole="User" ToRole="Exam" />
+          <Property Name="descriptions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="avatar" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="age" Type="Int32" />
         </EntityType>
         <Association Name="FK_Exam_detail_Exam">
           <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
@@ -348,6 +356,10 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="OnlineAptitudeExamModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="age" ColumnName="age" />
+                <ScalarProperty Name="avatar" ColumnName="avatar" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="descriptions" ColumnName="descriptions" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />

@@ -28,7 +28,7 @@ namespace OnlineAptitudeExam.Models
             }
             filterContext.Result = new RedirectToRouteResult(
                    new RouteValueDictionary {
-                                { "Controller", "Home" },
+                                { "Controller", "Auth" },
                                 { "Action", "Index" }
                    });
         }
