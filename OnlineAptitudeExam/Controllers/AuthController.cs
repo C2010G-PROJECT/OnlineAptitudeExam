@@ -31,12 +31,12 @@ namespace OnlineAptitudeExam.Controllers
         //
         // GET: /Auth/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
-            if (Session["UserInfo"] is User)
+            if (Session["UserInfo"] is Account)
             {
-                User user = Session["UserInfo"] as User;
-                if (user.type.Equals(Models.User.USER))
+                Account user = Session["UserInfo"] as Account;
+                if (user.type.Equals((int)Enums.Type.USER))
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -45,7 +45,6 @@ namespace OnlineAptitudeExam.Controllers
                     return RedirectToAction("Index", "Admin");
                 }
             }
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
@@ -54,19 +53,19 @@ namespace OnlineAptitudeExam.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
                 string password = GetMD5(model.Password);
-                var user = dbEntities.Users.Where(x => 
+                var user = dbEntities.Accounts.Where(x => 
                 x.username.Equals(model.UserName) &&
                 x.password.Equals(password)).First();
  
                 if (user != null)
                 {
                     Session["UserInfo"] = user;
-                    bool isAdmin = user.type == Models.User.ADMIN;
+                    bool isAdmin = user.type == ((int)Enums.Type.ADMIN);
                     if (isAdmin)
                     {
                         return RedirectToAction("Index", "Admin");
@@ -90,10 +89,10 @@ namespace OnlineAptitudeExam.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            if (Session["UserInfo"] is User)
+            if (Session["UserInfo"] is Account)
             {
-                User user = Session["UserInfo"] as User;
-                if (user.type.Equals(Models.User.USER))
+                Account user = Session["UserInfo"] as Account;
+                if (user.type.Equals((int)Enums.Type.USER))
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -115,18 +114,18 @@ namespace OnlineAptitudeExam.Controllers
             if (ModelState.IsValid)
             {
 
-                var user = new User();
+                var user = new Account();
                 user.username = model.UserName;
                 user.fullname = model.FullName;
                 user.password = GetMD5(model.ConfirmPassword);
                 user.status = 0;
                 user.type = 1;
 
-                var checkAuthExist = dbEntities.Users.FirstOrDefault(x => x.username == user.username);
+                var checkAuthExist = dbEntities.Accounts.FirstOrDefault(x => x.username == user.username);
 
                 if (checkAuthExist == null)
                 {
-                    dbEntities.Users.Add(user);
+                    dbEntities.Accounts.Add(user);
                     dbEntities.SaveChanges();
                     return RedirectToAction("Login", "Auth");
                 }
@@ -156,7 +155,7 @@ namespace OnlineAptitudeExam.Controllers
         public ActionResult LogOut()
         {
             Session.Clear();
-            return RedirectToAction("Index", "Auth");
+            return RedirectToAction("Login", "Auth");
         }
 
         //

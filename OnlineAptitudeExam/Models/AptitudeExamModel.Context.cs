@@ -25,10 +25,10 @@ namespace OnlineAptitudeExam.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Exam> Exams { get; set; }
         public virtual DbSet<ExamDetail> ExamDetails { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Test> Tests { get; set; }
-        public virtual DbSet<User> Users { get; set; }
     }
 }

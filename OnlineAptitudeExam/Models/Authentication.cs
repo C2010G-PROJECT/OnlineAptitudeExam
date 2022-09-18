@@ -19,9 +19,9 @@ namespace OnlineAptitudeExam.Models
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpSessionStateBase session = filterContext.HttpContext.Session;
-            if (session != null && session["UserInfo"] is User)
+            if (session != null && session["UserInfo"] is Account)
             {
-                if (!requireAdmin || (session["UserInfo"] as User).type == User.ADMIN)
+                if (!requireAdmin || (session["UserInfo"] as Account).type == ((int)Enums.Type.ADMIN))
                 {
                     return;
                 }
@@ -29,7 +29,7 @@ namespace OnlineAptitudeExam.Models
             filterContext.Result = new RedirectToRouteResult(
                    new RouteValueDictionary {
                                 { "Controller", "Auth" },
-                                { "Action", "Index" }
+                                { "Action", "Login" }
                    });
         }
     }
