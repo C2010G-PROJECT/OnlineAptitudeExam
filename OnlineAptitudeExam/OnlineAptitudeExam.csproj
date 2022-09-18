@@ -224,6 +224,7 @@
     <Content Include="Content\css\admin\font-awesome.min.css" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\admin\vendor.bundle.base.css" />
+    <Content Include="Content\css\profile.css" />
     <Content Include="Content\images\logo-mini.svg" />
     <Content Include="Content\images\logo.svg" />
     <Content Include="Content\images\user_placeholder.png" />
@@ -305,6 +306,7 @@
     <Content Include="Views\Tests\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Admin\tmp_Chart.cshtml" />
+    <Content Include="Views\Home\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

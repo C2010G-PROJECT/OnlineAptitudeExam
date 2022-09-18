@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="75a5b51389e342d3907b2beb7a35d4db" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Exam" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.ExamDetail" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Question" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Test" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.User" Width="1.5" PointX="11.125" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Exam" Width="1.5" PointX="6.375" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.ExamDetail" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Question" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Test" Width="1.5" PointX="6.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.User" Width="1.5" PointX="9.875" PointY="1.75" IsExpanded="true" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_detail_Exam" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_Test" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_User" ManuallyRouted="false" />

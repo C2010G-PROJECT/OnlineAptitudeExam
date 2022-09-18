@@ -14,12 +14,6 @@ namespace OnlineAptitudeExam.Models
     
     public partial class User
     {
-        public const int ADMIN = 0;
-        public const int USER = 1;
-
-        public const int LOCK = 1;
-        public const int UNLOCK = 0;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
