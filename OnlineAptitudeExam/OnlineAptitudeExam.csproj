@@ -224,6 +224,10 @@
     <Content Include="Content\css\admin\font-awesome.min.css" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\admin\vendor.bundle.base.css" />
+    <Content Include="Content\images\question.png" />
+    <Content Include="Content\images\body_intro_timestamp.png" />
+    <Content Include="Content\images\body_intro.png" />
+    <Content Include="Content\images\check_test.png" />
     <Content Include="Content\images\logo-mini.svg" />
     <Content Include="Content\images\logo.svg" />
     <Content Include="Content\images\user_placeholder.png" />

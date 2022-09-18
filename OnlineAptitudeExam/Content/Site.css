@@ -1,12 +1,30 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+  
+  
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #4397f7;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: blue;
+    }
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -28,3 +46,188 @@ textarea {
     background-color: #777;
     border-color: #fff
 }
+
+/*_Layout.cshtml*/
+#nav_home_header ,#nav_about_header,#nav_contact_header,
+#nav_register_header,#nav_login_header{
+    color:white;
+    text-decoration:none;
+}
+
+    #nav_home_header:hover {
+        color: orange;
+    }
+    #nav_about_header:hover{
+        color:orange;
+    }
+   #nav_contact_header:hover{
+       color:orange;
+   }
+   #nav_login_header:hover{
+       color:orange;
+   }
+   #nav_register_header:hover{
+       color:orange;
+   }
+
+footer {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #5579fa;
+    height: auto;
+    width: 100%;
+    padding-top: 40px;
+    color: #fff;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+    .footer-content h3 {
+        font-size: 2.1rem;
+        font-weight: 500;
+        text-transform: capitalize;
+        line-height: 3rem;
+    }
+
+    .footer-content p {
+        max-width: 500px;
+        margin: 10px auto;
+        line-height: 28px;
+        font-size: 14px;
+        color: #cacdd2;
+    }
+
+.socials {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0 3rem 0;
+}
+
+    .socials li {
+        margin: 0 10px;
+    }
+
+    .socials a {
+        text-decoration: none;
+        color: #fff;
+        border: 1.1px solid white;
+        padding: 5px;
+        border-radius: 50%;
+    }
+
+        .socials a i {
+            font-size: 1.1rem;
+            width: 20px;
+            transition: color .4s ease;
+        }
+
+        .socials a:hover i {
+            color: aqua;
+        }
+
+.footer-menu {
+    margin-bottom: 20px;
+}
+
+    .footer-menu ul {
+        display: flex;
+    }
+
+        .footer-menu ul li {
+            padding-right: 10px;
+            display: block;
+        }
+            .footer-menu ul li a {
+                color: #cfd2d6;
+                border: 1.3px solid white;
+                padding: 6px 15px;
+                border-radius: 50px;
+                text-decoration: none;
+            }
+
+                .footer-menu ul li a:hover {
+                    color: #27bcda;
+                }
+
+.footer-bottom {
+    background: #0226d9;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+}
+
+    .footer-bottom p {
+        text-align: center;
+        font-size: 14px;
+        word-spacing: 2px;
+        text-transform: capitalize;
+    }
+
+        .footer-bottom p a {
+            color: #44bae8;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+    .footer-bottom span {
+        text-transform: uppercase;
+        opacity: .4;
+        font-weight: 200;
+    }
+
+@media (max-width:500px) {
+    .footer-menu ul {
+        display: inline;
+    }
+
+        .footer-menu ul li {
+            margin-bottom: 20px;
+        }
+}
+    /* Home/Index */
+    .jumbotron {
+        height: 720px;
+        padding-top: 250px;
+    }
+
+        .jumbotron h1 {
+            margin-bottom: 20px;
+            color: blue;
+            font-weight: bold;
+        }
+
+        .jumbotron p {
+            width: 500px;
+        }
+
+    .body_intro_flex {
+        display: inline-flex;
+    }
+
+        .body_intro_flex .img-fluid {
+            padding-top:150px;
+            width: 200px;
+            height: 200px;
+        }
+
+
+    .col-md-4 img {
+        width: 320px;
+        margin-left: 10px;
+        height: 250px;
+        padding-left: 30px;
+    }
+
+    .col-md-4 h2 {
+        color: blue;
+    }
+

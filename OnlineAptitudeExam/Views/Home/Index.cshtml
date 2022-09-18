@@ -1,31 +1,43 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<div class="body_intro_flex">
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <div class="jumbotron">
+        <h1>Online Atitude Test</h1>
+        <p class="lead">
+            Online Atitude Test is an online recruitment solution and helps job seekers prove their abilities to employers through online tests.
+        </p>
+        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Start Testing &raquo;</a></p>
+    </div>
+
+    <img src="~/Content/images/body_intro.png" class="img-fluid" style="width:1000px;height:600px;">
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>
+            What does a test include?
+        </h2>
+        <img src="~/Content/images/question.png" class="img-fluid">
+        <p>There are 3 types of questions including General knowledge, Mathematics, Computer Technology.</p>
+
+    </div>
+    <div class="col-md-4">
+        <h2>Countdown time</h2>
+        <img src="~/Content/images/body_intro_timestamp.png" class="img-fluid">
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Each test will have a time limit and you must express yourself through the answers within that time.
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
     </div>
+
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>
+            After the end
+        </h2>
+        <img src="~/Content/images/check_test.png" class="img-fluid" >
+        <p>
+            Employers will use this test to assess whether you qualify to be the chosen one.
+        </p>
     </div>
 </div>
