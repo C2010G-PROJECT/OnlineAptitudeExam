@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="75a5b51389e342d3907b2beb7a35d4db" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Exam" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.ExamDetail" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Question" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Test" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OnlineAptitudeExamModel.User" Width="1.5" PointX="11.125" PointY="2.25" IsExpanded="true" />
+      <Diagram DiagramId="f290e1ab83a449eaae87b537567fa366" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Account" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Exam" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.ExamDetail" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Question" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OnlineAptitudeExamModel.Test" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_User" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_detail_Exam" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_Test" ManuallyRouted="false" />
-        <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_User" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Exam_detail_Question" ManuallyRouted="false" />
         <AssociationConnector Association="OnlineAptitudeExamModel.FK_Question_Test" ManuallyRouted="false" />
       </Diagram>

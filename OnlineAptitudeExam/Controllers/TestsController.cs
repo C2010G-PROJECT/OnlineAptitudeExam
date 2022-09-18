@@ -1,127 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using OnlineAptitudeExam.Models;
+using PagedList;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using OnlineAptitudeExam.Models;
 
 namespace OnlineAptitudeExam.Controllers
 {
     public class TestsController : Controller
     {
+
         private OnlineAptitudeExamEntities db = new OnlineAptitudeExamEntities();
 
-        // GET: Tests
-        public ActionResult Index()
+        // GET: admin/Tests
+       // [Authentication(true)]
+        [AdminLayout]
+        public ActionResult Index(string sortType, string sortOrder, string currentFilter, string searchString, int? page)
         {
-            return View(db.Tests.ToList());
-        }
-
-        // GET: Tests/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            ViewBag.CurrentType = sortType;
+            ViewBag.CurrentOrder = sortOrder;
+            if (string.IsNullOrEmpty(sortOrder))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                ViewBag.SortType = sortOrder = "desc";
             }
-            Test test = db.Tests.Find(id);
-            if (test == null)
+            else 
             {
-                return HttpNotFound();
+                ViewBag.SortType = sortOrder = sortOrder.Equals("desc") ? "asc" : "desc";
             }
-            return View(test);
-        }
-
-        // GET: Tests/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Tests/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,name,created_date,status")] Test test)
-        {
-            if (ModelState.IsValid)
+            if (searchString != null)
             {
-                db.Tests.Add(test);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+           
+            ViewBag.CurrentFilter = searchString;
+
+            var tests = from s in db.Tests select s;
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                tests = tests.Where(s => s.name.Contains(searchString));
             }
 
-            return View(test);
-        }
-
-        // GET: Tests/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
+            switch (sortType)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                case "name":
+                    tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.name) : tests.OrderByDescending(s => s.name);
+                    break;
+                case "date":
+                    tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.created_date) : tests.OrderByDescending(s => s.created_date);
+                    break;
+                default:  // id ascending 
+                    tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.id) : tests.OrderByDescending(s => s.id);
+                    break;
             }
-            Test test = db.Tests.Find(id);
-            if (test == null)
-            {
-                return HttpNotFound();
-            }
-            return View(test);
-        }
-
-        // POST: Tests/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,name,created_date,status")] Test test)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(test).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(test);
-        }
-
-        // GET: Tests/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Test test = db.Tests.Find(id);
-            if (test == null)
-            {
-                return HttpNotFound();
-            }
-            return View(test);
-        }
-
-        // POST: Tests/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Test test = db.Tests.Find(id);
-            db.Tests.Remove(test);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(tests.ToPagedList(pageNumber, pageSize));
         }
     }
 }

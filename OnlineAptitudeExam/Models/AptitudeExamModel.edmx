@@ -5,6 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="OnlineAptitudeExamModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="nvarchar" MaxLength="32" />
+          <Property Name="password" Type="varchar" MaxLength="32" />
+          <Property Name="fullname" Type="nvarchar" MaxLength="100" />
+          <Property Name="type" Type="tinyint" />
+          <Property Name="status" Type="tinyint" />
+          <Property Name="descriptions" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="100" />
+          <Property Name="avatar" Type="nvarchar" MaxLength="150" />
+          <Property Name="age" Type="int" />
+        </EntityType>
         <EntityType Name="Exam">
           <Key>
             <PropertyRef Name="id" />
@@ -45,17 +60,6 @@
           <Property Name="created_date" Type="bigint" />
           <Property Name="status" Type="tinyint" />
         </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="nvarchar" MaxLength="32" />
-          <Property Name="password" Type="varchar" MaxLength="32" />
-          <Property Name="fullname" Type="nvarchar" MaxLength="100" />
-          <Property Name="type" Type="tinyint" />
-          <Property Name="status" Type="tinyint" />
-        </EntityType>
         <Association Name="FK_Exam_detail_Exam">
           <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
           <End Role="ExamDetail" Type="Self.ExamDetail" Multiplicity="*" />
@@ -93,10 +97,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Exam_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
+            <Principal Role="Account">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Exam">
@@ -117,11 +121,11 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="OnlineAptitudeExamModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Exam" EntityType="Self.Exam" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExamDetail" EntityType="Self.ExamDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Test" EntityType="Self.Test" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Exam_detail_Exam" Association="Self.FK_Exam_detail_Exam">
             <End Role="Exam" EntitySet="Exam" />
             <End Role="ExamDetail" EntitySet="ExamDetail" />
@@ -135,7 +139,7 @@
             <End Role="Exam" EntitySet="Exam" />
           </AssociationSet>
           <AssociationSet Name="FK_Exam_User" Association="Self.FK_Exam_User">
-            <End Role="User" EntitySet="User" />
+            <End Role="Account" EntitySet="Account" />
             <End Role="Exam" EntitySet="Exam" />
           </AssociationSet>
           <AssociationSet Name="FK_Question_Test" Association="Self.FK_Question_Test">
@@ -148,6 +152,22 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OnlineAptitudeExamModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="fullname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="Byte" />
+          <Property Name="status" Type="Byte" />
+          <Property Name="descriptions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="avatar" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="age" Type="Int32" />
+          <NavigationProperty Name="Exams" Relationship="Self.FK_Exam_User" FromRole="Account" ToRole="Exam" />
+        </EntityType>
         <EntityType Name="Exam">
           <Key>
             <PropertyRef Name="id" />
@@ -157,9 +177,9 @@
           <Property Name="test_id" Type="Int32" />
           <Property Name="time_start" Type="Int64" />
           <Property Name="time_end" Type="Int64" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Exam_User" FromRole="Exam" ToRole="Account" />
           <NavigationProperty Name="ExamDetails" Relationship="Self.FK_Exam_detail_Exam" FromRole="Exam" ToRole="ExamDetail" />
           <NavigationProperty Name="Test" Relationship="Self.FK_Exam_Test" FromRole="Exam" ToRole="Test" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Exam_User" FromRole="Exam" ToRole="User" />
         </EntityType>
         <EntityType Name="ExamDetail">
           <Key>
@@ -197,18 +217,18 @@
           <NavigationProperty Name="Exams" Relationship="Self.FK_Exam_Test" FromRole="Test" ToRole="Exam" />
           <NavigationProperty Name="Questions" Relationship="Self.FK_Question_Test" FromRole="Test" ToRole="Question" />
         </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
-          <Property Name="password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
-          <Property Name="fullname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="type" Type="Byte" />
-          <Property Name="status" Type="Byte" />
-          <NavigationProperty Name="Exams" Relationship="Self.FK_Exam_User" FromRole="User" ToRole="Exam" />
-        </EntityType>
+        <Association Name="FK_Exam_User">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Exam">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Exam_detail_Exam">
           <End Role="Exam" Type="Self.Exam" Multiplicity="1" />
           <End Role="ExamDetail" Type="Self.ExamDetail" Multiplicity="*" />
@@ -230,18 +250,6 @@
             </Principal>
             <Dependent Role="Exam">
               <PropertyRef Name="test_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Exam_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Exam" Type="Self.Exam" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Exam">
-              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -269,22 +277,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="OnlineAptitudeExamEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="OnlineAptitudeExamEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="Exams" EntityType="Self.Exam" />
           <EntitySet Name="ExamDetails" EntityType="Self.ExamDetail" />
           <EntitySet Name="Questions" EntityType="Self.Question" />
           <EntitySet Name="Tests" EntityType="Self.Test" />
-          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Exam_User" Association="Self.FK_Exam_User">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Exam" EntitySet="Exams" />
+          </AssociationSet>
           <AssociationSet Name="FK_Exam_detail_Exam" Association="Self.FK_Exam_detail_Exam">
             <End Role="Exam" EntitySet="Exams" />
             <End Role="ExamDetail" EntitySet="ExamDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_Exam_Test" Association="Self.FK_Exam_Test">
             <End Role="Test" EntitySet="Tests" />
-            <End Role="Exam" EntitySet="Exams" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Exam_User" Association="Self.FK_Exam_User">
-            <End Role="User" EntitySet="Users" />
             <End Role="Exam" EntitySet="Exams" />
           </AssociationSet>
           <AssociationSet Name="FK_Exam_detail_Question" Association="Self.FK_Exam_detail_Question">
@@ -301,7 +309,23 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="OnlineAptitudeExamModelStoreContainer" CdmEntityContainer="OnlineAptitudeExamEntities">
+        <EntityContainerMapping StorageEntityContainer="OnlineAptitudeExamModelStoreContainer" CdmEntityContainer="OnlineAptitudeExamEntities1">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="OnlineAptitudeExamModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="fullname" ColumnName="fullname" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="descriptions" ColumnName="descriptions" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="avatar" ColumnName="avatar" />
+                <ScalarProperty Name="age" ColumnName="age" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Exams">
             <EntityTypeMapping TypeName="OnlineAptitudeExamModel.Exam">
               <MappingFragment StoreEntitySet="Exam">
@@ -342,18 +366,6 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="created_date" ColumnName="created_date" />
-                <ScalarProperty Name="status" ColumnName="status" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="OnlineAptitudeExamModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="fullname" ColumnName="fullname" />
-                <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="status" ColumnName="status" />
               </MappingFragment>
             </EntityTypeMapping>

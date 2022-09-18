@@ -26,9 +26,9 @@ namespace OnlineAptitudeExam.Models
         public Nullable<long> time_start { get; set; }
         public Nullable<long> time_end { get; set; }
     
+        public virtual Account Account { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExamDetail> ExamDetails { get; set; }
         public virtual Test Test { get; set; }
-        public virtual User User { get; set; }
     }
 }
