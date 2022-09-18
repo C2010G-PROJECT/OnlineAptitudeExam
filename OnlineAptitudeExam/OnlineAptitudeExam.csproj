@@ -202,9 +202,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AptitudeExamModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Authentication.cs" />
-    <Compile Include="Models\AdminLayout.cs" />
-    <Compile Include="Models\Enums.cs" />
+    <Compile Include="Utils\Authentication.cs" />
+    <Compile Include="Utils\AdminLayout.cs" />
+    <Compile Include="Utils\DateUtils.cs" />
+    <Compile Include="Utils\Enums.cs" />
     <Compile Include="Models\Exam.cs">
       <DependentUpon>AptitudeExamModel.tt</DependentUpon>
     </Compile>
@@ -236,6 +237,7 @@
     <Content Include="Content\images\logo.svg" />
     <Content Include="Content\images\user_placeholder.png" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\toast.custom.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -286,6 +288,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\off-canvas.js" />
     <Content Include="Scripts\settings.js" />
+    <Content Include="Scripts\toast.custom.js" />
     <Content Include="Scripts\todolist.js" />
     <Content Include="Scripts\vendor.bundle.base.js" />
     <Content Include="Web.config" />

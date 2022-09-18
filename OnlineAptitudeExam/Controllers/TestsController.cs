@@ -1,4 +1,5 @@
 ﻿using OnlineAptitudeExam.Models;
+using OnlineAptitudeExam.Utils;
 using PagedList;
 using System.Linq;
 using System.Web.Mvc;
@@ -25,15 +26,11 @@ namespace OnlineAptitudeExam.Controllers
             {
                 ViewBag.SortType = sortOrder = sortOrder.Equals("desc") ? "asc" : "desc";
             }
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
+            if (searchString == null)
             {
                 searchString = currentFilter;
             }
-           
+
             ViewBag.CurrentFilter = searchString;
 
             var tests = from s in db.Tests select s;
@@ -50,7 +47,7 @@ namespace OnlineAptitudeExam.Controllers
                 case "date":
                     tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.created_date) : tests.OrderByDescending(s => s.created_date);
                     break;
-                default:  // id ascending 
+                default:
                     tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.id) : tests.OrderByDescending(s => s.id);
                     break;
             }

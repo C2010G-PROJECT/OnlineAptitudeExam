@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
-using OnlineAptitudeExam.Models;
-
+using OnlineAptitudeExam.Utils;
 
 namespace OnlineAptitudeExam.Controllers
 {

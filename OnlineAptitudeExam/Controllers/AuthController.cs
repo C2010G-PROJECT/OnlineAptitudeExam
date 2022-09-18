@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using OnlineAptitudeExam.Models;
+using OnlineAptitudeExam.Utils;
 using System;
 using System.Diagnostics;
 using System.Linq;
