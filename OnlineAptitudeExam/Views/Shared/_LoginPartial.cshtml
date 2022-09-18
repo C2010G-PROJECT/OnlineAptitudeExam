@@ -2,7 +2,7 @@
 @using OnlineAptitudeExam.Models;
 
 @{
-    User user= HttpContext.Current.Session["UserInfo"] as User;
+    Account user= HttpContext.Current.Session["UserInfo"] as Account;
 }
 @if (Session["UserInfo"] != null)
 
