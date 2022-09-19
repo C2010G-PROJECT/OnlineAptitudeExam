@@ -1,26 +1,17 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OnlineAptitudeExam.Models
 {
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
-    }
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "UserName")]
+        [Required(ErrorMessage = "Enter your username")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        [StringLength(20, ErrorMessage = "Username must have a numeric character less than 20 .", MinimumLength = 6)]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$")]
+        [Required(ErrorMessage = "Enter your password")]
         [Display(Name = "Password")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,32}$", ErrorMessage = "Password must contain at least a number, a lowercase character, a uppercase character and between [8, 32] characters")]
         public string Password { get; set; }
 
         [Display(Name = "Remember me?")]

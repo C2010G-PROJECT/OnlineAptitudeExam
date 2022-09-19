@@ -26,7 +26,7 @@ namespace OnlineAptitudeExam.Controllers
 
         public ActionResult Index()
         {
-            return RedirectToAction("Login", "Home");
+            return RedirectToAction("Login");
         }
 
         //
@@ -58,10 +58,10 @@ namespace OnlineAptitudeExam.Controllers
         {
             if (ModelState.IsValid)
             {
-                string password = GetMD5(model.Password);
+                string password = Helper.GetMD5(model.Password);
                 var user = dbEntities.Accounts.Where(x => 
                 x.username.Equals(model.UserName) &&
-                x.password.Equals(password)).First();
+                x.password.Equals(password)).FirstOrDefault();
  
                 if (user != null)
                 {
@@ -78,8 +78,8 @@ namespace OnlineAptitudeExam.Controllers
                 }
                 else
                 {
-                    ViewBag.Error = "Login Fail .Please try again!";
-                    return RedirectToAction("Login", "Auth");
+                    ViewBag.Error = "Username or password is incorrect!";
+                    return View("Login", "Auth");
                 }
             }
             return View();
@@ -118,7 +118,7 @@ namespace OnlineAptitudeExam.Controllers
                 var user = new Account();
                 user.username = model.UserName;
                 user.fullname = model.FullName;
-                user.password = GetMD5(model.ConfirmPassword);
+                user.password = Helper.GetMD5(model.ConfirmPassword);
                 user.status = 0;
                 user.type = 1;
 
@@ -166,22 +166,7 @@ namespace OnlineAptitudeExam.Controllers
         {
             return View();
         }
-
-
-        public static string GetMD5(string str)
-        {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = Encoding.UTF8.GetBytes(str);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
-
-            for (int i = 0; i < targetData.Length; i++)
-            {
-                byte2String += targetData[i].ToString("x2");
-
-            }
-            return byte2String;
-        }
+         
 
         #region Helpers
         // Used for XSRF protection when adding external logins
