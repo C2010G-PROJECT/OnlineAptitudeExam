@@ -224,19 +224,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Helper.cs" />
+    <Compile Include="Utils\SortConstant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\OnlineAptitudeExam.mdf" />
     <Content Include="App_Data\OnlineAptitudeExam_log.ldf">
       <DependentUpon>OnlineAptitudeExam.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\css\admin\custom.css" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\profile.css" />
     <Content Include="Content\images\contact_img.jpg" />
     <Content Include="Content\images\body_intro.jpg" />
     <Content Include="Content\images\logo-mini.svg" />
     <Content Include="Content\images\logo.svg" />
-    <Content Include="Content\images\login_img.jpg" />
+    <Content Include="Content\images\sort_asc.png" />
+    <Content Include="Content\images\sort_both.png" />
+    <Content Include="Content\images\sort_desc.png" />
     <Content Include="Content\images\user_placeholder.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\toast.custom.css" />
@@ -254,7 +258,6 @@
       <DependentUpon>AptitudeExamModel.edmx</DependentUpon>
       <LastGenOutput>AptitudeExamModel.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.min.js.map" />
     <EntityDeploy Include="Models\AptitudeExamModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>AptitudeExamModel.Designer.cs</LastGenOutput>
@@ -266,37 +269,34 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
+    <Content Include="Areas\Admin\Views\Tests\GetData.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
-    <Content Include="Scripts\Chart.min.js" />
-    <Content Include="Scripts\dashboard.js" />
-    <Content Include="Scripts\flot\jquery.flot.categories.js" />
-    <Content Include="Scripts\flot\jquery.flot.fillbetween.js" />
-    <Content Include="Scripts\flot\jquery.flot.js" />
-    <Content Include="Scripts\flot\jquery.flot.pie.js" />
-    <Content Include="Scripts\flot\jquery.flot.resize.js" />
-    <Content Include="Scripts\flot\jquery.flot.stack.js" />
-    <Content Include="Scripts\hoverable-collapse.js" />
+    <Content Include="Scripts\admin\Chart.min.js" />
+    <Content Include="Scripts\admin\dashboard.js" />
+    <Content Include="Scripts\admin\flot\jquery.flot.categories.js" />
+    <Content Include="Scripts\admin\flot\jquery.flot.fillbetween.js" />
+    <Content Include="Scripts\admin\flot\jquery.flot.js" />
+    <Content Include="Scripts\admin\flot\jquery.flot.pie.js" />
+    <Content Include="Scripts\admin\flot\jquery.flot.resize.js" />
+    <Content Include="Scripts\admin\flot\jquery.flot.stack.js" />
+    <Content Include="Scripts\admin\ajax.helper.js" />
+    <Content Include="Scripts\admin\flot\TestsController.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
     <Content Include="Scripts\jquery-3.6.0.slim.js" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
-    <Content Include="Scripts\jquery.barrating.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.barrating.min.js" />
-    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\misc.js" />
+    <Content Include="Scripts\admin\misc.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\off-canvas.js" />
-    <Content Include="Scripts\settings.js" />
+    <Content Include="Scripts\admin\settings.js" />
     <Content Include="Scripts\toast.custom.js" />
-    <Content Include="Scripts\todolist.js" />
-    <Content Include="Scripts\vendor.bundle.base.js" />
+    <Content Include="Scripts\admin\vendor.bundle.base.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,19 +1,14 @@
-﻿@model PagedList.IPagedList<OnlineAptitudeExam.Models.Test>
-@using PagedList.Mvc;
-
+﻿
 <div class="row flex-md-row flex-sm-column-reverse justify-content-between">
     <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
-        @using (Html.BeginForm("Index", "Tests", FormMethod.Get))
-        {
-            <div class="input-group">
-                <input id="SearchString" class="form-control form-control-sm " name="SearchString" type="text" placeholder="Search" value="@ViewBag.CurrentFilter">
-                <div class="input-group-append">
-                    <button class="btn btn-danger" type="submit">
-                        <i class="mdi mdi-magnify"></i>
-                    </button>
-                </div>
+        <div class="input-group">
+            <input id="searchTests" class="form-control form-control-sm " type="text" placeholder="Search" data-url="@Url.Action("GetData", "Tests")" data-param-key="search">
+            <div class="input-group-append">
+                <button class="btn btn-info" type="button">
+                    <i class="mdi mdi-magnify"></i>
+                </button>
             </div>
-        }
+        </div>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-end">
         <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -22,93 +17,42 @@
     </div>
 </div>
 
-<div class="card card-body">
-    <div class="table-responsive">
-        <table class="table table-hover ">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.ActionLink("#", "Index", new { sortType = "stt", sortOrder = ViewBag.SortType, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th>
-                        @Html.ActionLink("Name", "Index", new { sortType = "name", sortOrder = ViewBag.SortType, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th>
-                        @Html.ActionLink("Date Create", "Index", new { sortType = "date", sortOrder = ViewBag.SortType, currentFilter = ViewBag.CurrentFilter })
-                    </th>
-                    <th>
-                        Total questions
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th class="text-end">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @for (int i = 0; i < Model.Count(); i++)
-                {
-                    var item = Model[i];
-                    string status = item.status == (int)OnlineAptitudeExam.Utils.Enums.Status.PUBLIC ? "Published" : "Private";
-                    
-                    <tr>
-                        <td>
-                            @((Model.PageNumber - 1) * Model.PageSize + i + 1)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.name)
-                        </td>
-                        <td>
-                            @OnlineAptitudeExam.Utils.DateUtils.toDateString(item.created_date)
-                        </td>
-                        <td>
-                            @item.Questions.Count
-                        </td>
-                        <td>
-                            @status
-                        </td>
-                        <td class="d-flex justify-content-end">
-                            <a class="btn btn-warning btn-sm" href="@Url.Action("Edit","Tests")">
-                                <i class="mdi mdi-pencil"></i>
-                            </a>
-                            <a class="btn btn-primary btn-sm ms-1 me-1" href="@Url.Action("Detail","Tests")">
-                                <i class="mdi mdi-chart-timeline"></i>
-                            </a> 
-                            <a class="btn btn-danger btn-sm" href="@Url.Action("Delete","Tests")">
-                                <i class="mdi mdi-delete-outline"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-    </div>
-
-    <br />
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { sortType = ViewBag.CurrentType, sortOrder = ViewBag.CurrentOrder, currentFilter = ViewBag.CurrentFilter, page = page }))
-
+<div id="contentTable">
+    @Html.Action("GetData")
 </div>
- 
+
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Create test</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        @using (Html.BeginForm("Index", "Tests", FormMethod.Post))
+        {
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Sign out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to sign out?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
             </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
-            </div>
-        </div>
+        }
     </div>
 </div>
+
+@section scripts {
+    <script>
+        prepare();
+        prepareKeyboardAction("#searchTests", "#contentTable", '@Url.Action("Index", "Tests")', function () {
+            refreshTableItemSort("#tableTests");
+            prepare();
+        });
+        function prepare() {
+            prepareMouseAction("#contentPager a[href], #contentTable table th .sortable", "#contentTable", '@Url.Action("Index", "Tests")', function () {
+                refreshTableItemSort("#tableTests");
+            });
+        }
+    </script>
+}

@@ -12,45 +12,43 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
 
         // GET: Admin/Tests
         // [Authentication(true)]
-        public ActionResult Index(string sortType, string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index()
         {
-            ViewBag.CurrentType = sortType;
-            ViewBag.CurrentOrder = sortOrder;
-            if (string.IsNullOrEmpty(sortOrder))
-            {
-                ViewBag.SortType = sortOrder = "desc";
-            }
-            else
-            {
-                ViewBag.SortType = sortOrder = sortOrder.Equals("desc") ? "asc" : "desc";
-            }
-            if (searchString == null)
-            {
-                searchString = currentFilter;
-            }
+            return View();
+        }
 
-            ViewBag.CurrentFilter = searchString;
+        // GET: Admin/Tests/GetData
+        public ActionResult GetData(string sort, string order, string filter, string search, int? page)
+        {
+            ViewBag.CurrentSort = sort;
+            ViewBag.CurrentOrder = order;
+            ViewBag.CurrentFilter = search = search ?? filter;
 
             var tests = from s in db.Tests select s;
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(search))
             {
-                tests = tests.Where(s => s.name.Contains(searchString));
+                tests = tests.Where(s => s.name.Contains(search));
             }
 
-            switch (sortType)
+            if (!string.IsNullOrEmpty(order))
             {
-                case "name":
-                    tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.name) : tests.OrderByDescending(s => s.name);
-                    break;
-                case "date":
-                    tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.created_date) : tests.OrderByDescending(s => s.created_date);
-                    break;
-                default:
-                    tests = sortOrder.Equals("asc") ? tests.OrderBy(s => s.id) : tests.OrderByDescending(s => s.id);
-                    break;
+                switch (sort)
+                {
+                    case SortHelper.NAME:
+                        tests = SortHelper.isAsc(order) ? tests.OrderBy(s => s.name) : tests.OrderByDescending(s => s.name);
+                        break;
+                    case SortHelper.DATE:
+                        tests = SortHelper.isAsc(order) ? tests.OrderBy(s => s.created_date) : tests.OrderByDescending(s => s.created_date);
+                        break;
+                    default:
+                        tests = SortHelper.isAsc(order) ? tests.OrderBy(s => s.id) : tests.OrderByDescending(s => s.id);
+                        break;
+                }
             }
+            else tests = tests.OrderByDescending(s => s.id);
+
             int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            int pageNumber = ((page == null || page < 1) ? 1 : (int)page);
             return View(tests.ToPagedList(pageNumber, pageSize));
         }
     }
