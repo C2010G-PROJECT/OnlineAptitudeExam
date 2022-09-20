@@ -43,7 +43,7 @@ function prepareKeyboardAction(selector, into = "#contentTable", rootPath = null
     });
 }
 
-function prepareAction(url,into, rootPath, callback) {
+function prepareAction(url, into, rootPath, callback) {
     if (rootPath != null) {
         window.history.pushState(null, null, rootPath + getTailUrl(url));
     }
@@ -95,9 +95,9 @@ function adapter_ajax_with_file($param) {
     });
 }
 
-function loadUrl(url, success = null) {
+function loadUrl(url, success = null, type = "GET", data = null) {
     var $param = {
-        type: "GET",
+        type: type,
         url: url,
         data: null,
         callback: success,
