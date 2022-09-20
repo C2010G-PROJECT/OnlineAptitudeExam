@@ -5,8 +5,8 @@
 }
 
 
-<div class="login" >
-    <div class="col-md-8">
+<div class="login row" >
+    <div class="col-md-6">
         <section id="loginForm">
             <h2>@ViewBag.Title.</h2>
             @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -39,7 +39,10 @@
             }
         </section>
     </div>
-    <img src="~/Content/images/login_img.jpg" />
+    <div class="col-6">
+        <img src="~/Content/images/login_img.jpg" />
+
+    </div>
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

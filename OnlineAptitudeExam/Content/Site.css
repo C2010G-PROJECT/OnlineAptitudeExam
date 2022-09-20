@@ -5,7 +5,7 @@
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 /* Track */
@@ -16,6 +16,7 @@
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #4397f7;
+    border-radius: 10px;
 }
 
     /* Handle on hover */
@@ -131,6 +132,13 @@ textarea {
         font-size: 13px;
         color: #aaa;
     }
+
+
+#fullname_display {
+   text-decoration:none;
+   color:white;
+   margin-right:20px;
+}
     /* Home/Index */
        .jumbotron {
          padding-top:250px;
@@ -185,17 +193,25 @@ textarea {
     padding-top:100px;
     padding-left:100px;
 }
-
+#loginForm h5{
+    color:red;
+    margin-top:10px;
+    margin-bottom:10px;
+}
 #btn_login{
     background-color:blue;
     margin-top:30px;
     width:100px;
     color:white;
 }
-#btn_login:hover{
-    background-color:deepskyblue;
-}
+    #btn_login:hover {
+        background-color: deepskyblue
+    }
+    #loginForm{
+        max-width:600px;
+    }
 .login{
+   
     display:inline-flex;
     
 }
@@ -205,6 +221,7 @@ textarea {
 .login img{
     width:650px;
 }
+
 
 /*Home/Contact*/
 
