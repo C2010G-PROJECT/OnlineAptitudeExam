@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static System.Collections.Specialized.BitVector32;
 
 namespace OnlineAptitudeExam.Areas.Admin.Controllers
 {
@@ -23,6 +24,13 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         // GET: Admin/Auth/Login
         public ActionResult Login()
         {
+            if (Session["UserInfo"] is Account)
+            {
+                if ((Session["UserInfo"] as Account).type == ((int)Enums.Type.ADMIN))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             HttpCookie authCookie = Request.Cookies.Get(COOKIE_NAME);
 
             if (authCookie != null)
@@ -30,7 +38,6 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
                 long exp = Convert.ToInt64(authCookie.Values["exp"]);
                 if (exp > DateTime.Now.Ticks)
                 {
-                    Debug.WriteLine(authCookie.Values["username"]);
                     ViewBag.username = authCookie.Values["username"];
                     ViewBag.password = authCookie.Values["password"];
                     ViewBag.checkbox = authCookie.Values["checkbox"];

@@ -17,7 +17,9 @@ namespace OnlineAptitudeExam.Utils
             USER = 1,
         }
 
-
-
+        public static byte GetOpposite(byte val)
+        {
+            return (byte)(val == 0 ? 1 : 0);
+        }
     }
 }

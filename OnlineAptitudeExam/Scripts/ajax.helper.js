@@ -1,4 +1,4 @@
-﻿ 
+﻿
 /**
  * @param {String} selector
  * @param {String} into
@@ -15,7 +15,7 @@ function prepareMouseAction(selector, into = "#contentTable", rootPath = null, c
         } else {
             url = $(this).data("url");
         }
-        prepareAction(url, into, rootPath, data => {
+        load(url, into, rootPath, data => {
             if (callback != null) {
                 callback(data);
             }
@@ -39,21 +39,7 @@ function prepareKeyboardAction(selector, into = "#contentTable", rootPath = null
         if (val != undefined && val.length > 0) {
             url += "?" + $(this).data("param-key") + "=" + val;
         }
-        prepareAction(url, into, rootPath, callback);
-    });
-}
-
-function prepareAction(url, into, rootPath, callback) {
-    if (rootPath != null) {
-        window.history.pushState(null, null, rootPath + getTailUrl(url));
-    }
-    loadUrl(url, function (data) {
-        if (into != null) {
-            $(into).html(data);
-        }
-        if (callback != null) {
-            callback(data);
-        }
+        load(url, into, rootPath, callback);
     });
 }
 
@@ -71,6 +57,86 @@ function refreshTableItemSort(tableId) {
     })
 }
 
+/**
+ * 
+ * @param {String} searchId
+ * @param {String} varNames
+ */
+function refreshSearchBar(searchId, varNames) {
+    $(searchId).val(getUrlParam(varNames));
+}
+
+function clearFormElements(ele) {
+    $(ele).find(':input').each(function () {
+        switch (this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+    });
+}
+
+function pendingFocus(modal, element) {
+    modal.on('shown.bs.modal', function () {
+        element.focus();
+    });
+}
+
+/**
+ * 
+ * @param {String} $msg
+ * @param {String} $type
+ * @param {String} $title
+ * @param {Integer} $duration
+ */
+function showToast($msg, $type, $title = "", $duration = 3000) {
+    $toast = {
+        "title": $title != "" ? $title : ucfirst($type) + "!",
+        "message": $msg,
+        "type": $type,
+        "duration": $duration
+    };
+    toast($toast);
+}
+
+/**
+ * 
+ * @param {String} $title
+ * @param {String} $msg
+ * @param {String} $submitType class of bootstrap
+ * @param {Function} callback
+ * @param {Boolean} autoHide
+ */
+function showConfirm($title, $msg, $btnType = "danger", callback = null, autoHide = true) {
+    let mModal = $("#confirmDialog");
+    let mSubmit = mModal.find("button[submit]")
+    mModal.find(".modal-title").text($title)
+    mModal.find(".modal-body").text($msg)
+
+    mSubmit.removeClass();
+    mSubmit.addClass("btn btn-" + $btnType)
+
+    mSubmit.off("click").on("click", () => {
+        if (autoHide) {
+            mModal.modal("hide")
+        }
+        if (callback != null) {
+            callback()
+        }
+    })
+    mModal.modal("show")
+}
+
+function hideConfirm() {
+    $("#confirmDialog").modal("hide");
+}
 
 // ============================= Utils ================================
 
@@ -95,11 +161,25 @@ function adapter_ajax_with_file($param) {
     });
 }
 
+function load(url, into, rootPath, callback) {
+    if (rootPath != null) {
+        window.history.pushState(null, null, rootPath + getTailUrl(url));
+    }
+    loadUrl(url, function (data) {
+        if (into != null) {
+            $(into).html(data);
+        }
+        if (callback != null) {
+            callback(data);
+        }
+    });
+}
+
 function loadUrl(url, success = null, type = "GET", data = null) {
     var $param = {
         type: type,
         url: url,
-        data: null,
+        data: data,
         callback: success,
     }
     adapter_ajax($param);
@@ -113,4 +193,20 @@ function getTailUrl(url) {
 function getTailUrlWidthoutQuestionMark(url) {
     let lastIndex = url.lastIndexOf("?");
     return lastIndex != -1 ? url.substring(lastIndex + 1) : "";
+}
+
+function getUrlParam(varNames) {
+    let searchParams = new URLSearchParams(window.location.search)
+    varNames = varNames.split(" ");
+    for (let i = 0; i < varNames.length; i++) {
+        const name = varNames[i].trim();
+        if (searchParams.has(name)) {
+            return searchParams.get(name);
+        }
+    }
+    return null;
+}
+
+function ucfirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
 }
