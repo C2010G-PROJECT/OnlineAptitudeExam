@@ -1,18 +1,4 @@
 // Toast function
-function showToast($msg, $type, $title = "", $duration = 3000) {
-    $toast = {
-        "title": $title != "" ? $title : ucfirst($type) + "!",
-        "message": $msg,
-        "type": $type,
-        "duration": $duration
-    };
-    toast($toast);
-}
-
-function ucfirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 function toast({ title = "", message = "", type = "info", duration = 3000 }) {
     const main = document.getElementById("ct_toast");
     if (main) {

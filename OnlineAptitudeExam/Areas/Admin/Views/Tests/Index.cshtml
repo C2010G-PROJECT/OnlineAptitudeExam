@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-end">
-        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <button onclick="showTestsModal($(this), true, '@Url.Action("Create", "Tests")')" class="btn btn-success" type="button">
             <i class="mdi mdi-plus"></i>
         </button>
     </div>
@@ -20,38 +20,31 @@
     @Html.Action("GetData")
 </div>
 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div id="testsModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-        @using (Html.BeginForm("Index", "Tests", FormMethod.Post))
-        {
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Sign out</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to sign out?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input class="form-control" data-val="true" id="Name" placeholder="Name" type="text">
+                    <span class="field-validation-valid text-danger text-small" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
                 </div>
             </div>
-        }
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary modal-submit">Submit</button>
+            </div>
+        </div>
     </div>
 </div>
 
 @section scripts {
+    <script src="~/Scripts/admin/TestsController.js"></script>
     <script>
-        prepare();
-        prepareKeyboardAction("#searchTests", "#contentTable", '@Url.Action("Index", "Tests")', function () {
-            refreshTableItemSort("#tableTests");
-            prepare();
-        });
-        function prepare() {
-            prepareMouseAction("#contentPager a[href], #contentTable table th .sortable", "#contentTable", '@Url.Action("Index", "Tests")', function () {
-                refreshTableItemSort("#tableTests");
-            });
-        }
+        TestsIndex('@Url.Action("Index", "Tests")','@Url.Action("GetData", "Tests")');
     </script>
 }
