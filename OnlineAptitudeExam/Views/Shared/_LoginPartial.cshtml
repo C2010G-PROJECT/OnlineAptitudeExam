@@ -1,33 +1,29 @@
 ﻿@using Microsoft.AspNet.Identity
 @using OnlineAptitudeExam.Models;
 
-@{
-    Account user= HttpContext.Current.Session["UserInfo"] as Account;
-}
-@if (Session["UserInfo"] != null)
-
+@if (Session["UserInfo"] is Account)
 {
-  
-            <ul class="nav navbar-nav navbar-right">
-                <li class="nav-link">
-                    @if (@user.avatar != null)
-                    {
-                        <img src="@user.avatar.ToString()" style="width:30px;height:30px;"/>
-                    }
-                    else
-                    {
-                        <img src="~/Content/images/user_placeholder.png" style="width:30px;height:30px;"/>
-                    }
-                    @Html.ActionLink(user.fullname.ToString(), "Profile", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
-                </li>
-            <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
-        </ul>
-    
+    Account user = Session["UserInfo"] as Account;
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-link">
+            @if (@user.avatar != null)
+            {
+                <img src="@user.avatar.ToString()" style="width:30px;height:30px;" />
+            }
+            else
+            {
+                <img src="~/Content/images/user_placeholder.png" style="width:30px;height:30px;" />
+            }
+            <a id="fullname_display" href="@Url.Action("Profile", "Home")">@user.fullname</a>
+        </li>
+        <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
+    </ul>
+
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
         <li class="nav-link">@Html.ActionLink("Register", "Register", "Auth", routeValues: null, htmlAttributes: new { id = "nav_register_header" })</li>
-        <li class="nav-link">@Html.ActionLink("Log in", "Login", "Auth", routeValues: null, htmlAttributes: new { id = "nav_login_header"})</li>
+        <li class="nav-link">@Html.ActionLink("Log in", "Login", "Auth", routeValues: null, htmlAttributes: new { id = "nav_login_header" })</li>
     </ul>
 }
