@@ -43,4 +43,32 @@ namespace OnlineAptitudeExam.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class EditProfileViewModel {
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+
+        [Required]
+        [Display(Name = "Age")]
+        [DataType(DataType.PhoneNumber)]
+        public int Age {get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Drescription")]
+        public string Description { get; set; }
+
+    }
+
 }
