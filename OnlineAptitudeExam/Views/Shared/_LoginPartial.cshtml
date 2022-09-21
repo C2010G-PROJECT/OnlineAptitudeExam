@@ -7,18 +7,22 @@
 @if (Session["UserInfo"] != null)
 
 {
-    using (Html.BeginForm("LogOff", "Auth", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-        @Html.AntiForgeryToken()
-
-        <ul class="nav navbar-nav navbar-right">
-            <li class="nav-link">
-
-                @Html.ActionLink(user.fullname.ToString() , "Index", "Manage", routeValues: null, htmlAttributes: new { style = "text-decoration:none" })
-            </li>
-            <li class="nav-link"><a href="javascript:document.getElementById('logoutForm').submit()" style="text-decoration:none;">Log off</a></li>
+  
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-link">
+                    @if (@user.avatar != null)
+                    {
+                        <img src="@user.avatar.ToString()" style="width:30px;height:30px;"/>
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/user_placeholder.png" style="width:30px;height:30px;"/>
+                    }
+                    @Html.ActionLink(user.fullname.ToString(), "Profile", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
+                </li>
+            <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
         </ul>
-    }
+    
 }
 else
 {

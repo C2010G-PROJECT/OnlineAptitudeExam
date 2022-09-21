@@ -5,17 +5,18 @@
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #98d5eb;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #4397f7;
+    border-radius: 10px;
 }
 
     /* Handle on hover */
@@ -70,164 +71,177 @@ textarea {
        color:orange;
    }
 
-footer {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #5579fa;
-    height: auto;
-    width: 100%;
-    padding-top: 40px;
-    color: #fff;
+.footer {
+    padding: 40px 0;
+    background-color: #4397f7;
+    margin-top:50px;
 }
 
-.footer-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}
-
-    .footer-content h3 {
-        font-size: 2.1rem;
-        font-weight: 500;
-        text-transform: capitalize;
-        line-height: 3rem;
+    .footer .social {
+        text-align: center;
+        padding-bottom: 25px;
+        color: #4b4c4d;
     }
 
-    .footer-content p {
-        max-width: 500px;
-        margin: 10px auto;
-        line-height: 28px;
-        font-size: 14px;
-        color: #cacdd2;
-    }
-
-.socials {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1rem 0 3rem 0;
-}
-
-    .socials li {
-        margin: 0 10px;
-    }
-
-    .socials a {
-        text-decoration: none;
-        color: #fff;
-        border: 1.1px solid white;
-        padding: 5px;
-        border-radius: 50%;
-    }
-
-        .socials a i {
-            font-size: 1.1rem;
-            width: 20px;
-            transition: color .4s ease;
+        .footer .social a {
+            font-size: 24px;
+            color: inherit;
+            border: 1px solid #ccc;
+            width: 40px;
+            height: 40px;
+            line-height: 38px;
+            display: inline-block;
+            text-align: center;
+            border-radius: 50%;
+            margin: 0 8px;
+            opacity: 0.75;
         }
 
-        .socials a:hover i {
-            color: aqua;
-        }
-
-.footer-menu {
-    margin-bottom: 20px;
-}
-
-    .footer-menu ul {
-        display: flex;
-    }
-
-        .footer-menu ul li {
-            padding-right: 10px;
-            display: block;
-        }
-            .footer-menu ul li a {
-                color: #cfd2d6;
-                border: 1.3px solid white;
-                padding: 6px 15px;
-                border-radius: 50px;
-                text-decoration: none;
+            .footer .social a:hover {
+                opacity: 0.9;
             }
 
-                .footer-menu ul li a:hover {
-                    color: #27bcda;
-                }
-
-.footer-bottom {
-    background: #0226d9;
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-}
-
-    .footer-bottom p {
+    .footer ul {
+        margin-top: 0;
+        padding: 0;
+        list-style: none;
         text-align: center;
-        font-size: 14px;
-        word-spacing: 2px;
-        text-transform: capitalize;
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 0;
     }
 
-        .footer-bottom p a {
-            color: #44bae8;
-            font-size: 16px;
+        .footer ul a {
+            color: inherit;
             text-decoration: none;
+            opacity: 0.8;
         }
 
-    .footer-bottom span {
-        text-transform: uppercase;
-        opacity: .4;
-        font-weight: 200;
-    }
-
-@media (max-width:500px) {
-    .footer-menu ul {
-        display: inline;
-    }
-
-        .footer-menu ul li {
-            margin-bottom: 20px;
+        .footer ul li {
+            display: inline-block;
+            padding: 0 15px;
         }
+
+        .footer ul a:hover {
+            opacity: 1;
+        }
+
+    .footer .copyright {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 13px;
+        color: #aaa;
+    }
+
+
+#fullname_display {
+   text-decoration:none;
+   color:white;
+   margin-right:20px;
 }
     /* Home/Index */
-    .jumbotron {
-        height: 720px;
-        padding-top: 250px;
-    }
+       .jumbotron {
+         padding-top:250px;
+         padding-left:100px;
+       }
 
-        .jumbotron h1 {
+      .jumbotron h1 {
             margin-bottom: 20px;
             color: blue;
             font-weight: bold;
-        }
+       }
 
-        .jumbotron p {
+     .jumbotron p {
             width: 500px;
-        }
+      }
 
-    .body_intro_flex {
+     .body_intro_flex {
         display: inline-flex;
-    }
+
+     }
 
         .body_intro_flex .img-fluid {
-            padding-top:150px;
-            width: 200px;
-            height: 200px;
+            width: 900px;
+            height: 700px;
         }
 
 
-    .col-md-4 img {
-        width: 320px;
-        margin-left: 10px;
-        height: 250px;
-        padding-left: 30px;
-    }
+
+.col-md-4 img {
+    width: 400px;
+    margin-left: 10px;
+    height: 300px;
+    padding-left: 30px;
+}
 
     .col-md-4 h2 {
         color: blue;
+        margin-left:50px;
     }
+.col-md-4 p{
+    width:400px;
+    padding-left:20px;
+ 
+}
+.social a i {
+    color: white;
+}
+ /*Auth/Login*/
+#loginForm{
+    color:blue;
+    padding-bottom:100px;
+    padding-top:100px;
+    padding-left:100px;
+}
+#loginForm h5{
+    color:red;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+#btn_login{
+    background-color:blue;
+    margin-top:30px;
+    width:100px;
+    color:white;
+}
+    #btn_login:hover {
+        background-color: deepskyblue
+    }
+    #loginForm{
+        max-width:600px;
+    }
+.login{
+   
+    display:inline-flex;
+    
+}
+.login h2 {
+        font-weight: bolder;
+}
+.login img{
+    width:650px;
+}
 
+
+/*Home/Contact*/
+
+.contact_view{
+    display:inline-flex;
+    color:blue;
+    padding-top:50px;
+    padding-left:50px;
+}
+    .contact_view address h2 {
+        font-weight: bolder;
+    }
+    .contact_view img{
+        width:800px;
+        height:500px;   
+        padding-left:30px;
+    }
+.contact_view address iframe{
+    height:300px;
+}
+    .contact_view address strong {
+        color:orange;
+    }

@@ -1,5 +1,4 @@
 // Toast function
-
 function showToast($msg, $type, $title = "", $duration = 3000) {
     $toast = {
         "title": $title != "" ? $title : ucfirst($type) + "!",

@@ -79,7 +79,6 @@ namespace OnlineAptitudeExam.Controllers
                 else
                 {
                     ViewBag.Error = "Username or password is incorrect!";
-                    return View("Login", "Auth");
                 }
             }
             return View();
