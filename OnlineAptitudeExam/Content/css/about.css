@@ -1,0 +1,71 @@
+﻿.layout_8 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 80vh;
+    background-image: url('../img/img_index/img_layout8.jpg');
+    background-origin: content-box;
+    background-size: cover;
+    background-attachment: scroll;
+    background-position: top left;
+    background-repeat: no-repeat;
+}
+
+.Comment_overlay {
+    position: absolute;
+    top: 24px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f9f9ff;
+}
+
+.Comment_items {
+    width: 21%;
+    padding: 12px 8px;
+    height: 70%;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avarta_comment {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: solid 2px white;
+    background-image: url('../img/img_index/image.jpg');
+    background-position: center;
+    background-size: 400px;
+    background-origin: content-box;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+.ti-check {
+    color: white;
+    font-size: 24px;
+    padding: 12px;
+    font-weight: 900;
+}
+
+.Comment_content {
+    color: black;
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.Comment_name {
+    color: black;
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+}
+
+.Comment_work {
+    font-size: 16px;
+    color: black;
+}
