@@ -93,17 +93,20 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
                 {
                     return Json(Responses.Error("Name must be not null!"), JsonRequestBehavior.AllowGet);
                 }
+                var test = db.Tests.Find(id);
+                if (test.Exams.Count() != 0)
+                {
+                    return Json(Responses.Error("This test is already taken by users. You cannot change it!"), JsonRequestBehavior.AllowGet);
+                }
                 if (db.Tests.Where(t => t.id != id && name.Equals(t.name)).Any())
                 {
                     return Json(Responses.Error("Name is exists!"), JsonRequestBehavior.AllowGet);
                 }
-                var test = db.Tests.Find(id);
                 test.name = name;
                 db.Entry(test).State = EntityState.Modified;
                 db.SaveChanges();
-                return Json(Responses.Success(test, "Update success!!!"), JsonRequestBehavior.AllowGet);
+                return Json(Responses.Success(name, "Update success!!!"), JsonRequestBehavior.AllowGet);
             }
-
             else
             {
                 return Json(Responses.Error("Something was wrong"), JsonRequestBehavior.AllowGet);
@@ -126,5 +129,31 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
                 return Json(Responses.Error("Something was wrong"), JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var test = db.Tests.Find(id);
+                if (test.Exams.Count() != 0)
+                {
+                    return Json(Responses.Error("This test is already taken by users. You cannot change it!"), JsonRequestBehavior.AllowGet);
+                }
+                if(test.Questions.Count() != 0)
+                {
+                    db.Questions.RemoveRange(test.Questions);
+                }
+                db.Tests.Remove(test);
+                db.SaveChanges();
+                return Json(Responses.Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Responses.Error("Something was wrong"), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
+
+
 }

@@ -60,7 +60,7 @@
                         </td>
                         <td>
                             <div class="form-switch">
-                                <input class="form-check-input" onclick="TestsToggleStatus($(this), '@Url.Action("ToggleStatus","Tests")')" type="checkbox" id="flexSwitchCheckDefault" @(isPublic ? "checked" : "")>
+                                <input class="form-check-input" data-url='@Url.Action("ToggleStatus","Tests")' type="checkbox" @(isPublic ? "checked" : "")>
                             </div>
                         </td>
                         <td class="d-flex justify-content-center">
@@ -70,7 +70,7 @@
                             <button class="btn btn-primary btn-sm ms-1 me-1" href="@Url.Action("Detail","Tests")">
                                 <i class="mdi mdi-text-box-multiple-outline"></i>
                             </button>
-                            <button class="btn btn-danger btn-sm" >
+                            <button class="btn btn-danger btn-sm" onclick="showDeleteTestsModal($(this), '@Url.Action("Delete", "Tests")')" >
                                 <i class="mdi mdi-delete-outline"></i>
                             </button>
                         </td>
