@@ -28,6 +28,7 @@ namespace OnlineAptitudeExam.Models
         public Nullable<byte> status { get; set; }
         public string descriptions { get; set; }
         public string address { get; set; }
+
         public string avatar { get; set; }
         public Nullable<int> age { get; set; }
     

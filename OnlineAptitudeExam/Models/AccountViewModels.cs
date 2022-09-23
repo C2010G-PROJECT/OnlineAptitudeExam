@@ -69,6 +69,10 @@ namespace OnlineAptitudeExam.Models
         [Display(Name = "Drescription")]
         public string Description { get; set; }
 
+        [DataType(DataType.Text)]
+        [Display(Name = "Drescription")]
+        public string Avatar { get; set; }
+
     }
 
 }
