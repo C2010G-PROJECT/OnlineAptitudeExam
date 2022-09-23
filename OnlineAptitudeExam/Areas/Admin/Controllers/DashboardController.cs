@@ -7,9 +7,11 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
     {
         // GET: Admin/Dashboard
         [Authentication(true)]
-        public ActionResult Index()
+        public ActionResult Index(bool isAjax = false)
         {
+            ViewBag.isAjax = isAjax;
             return View();
         }
+
     }
 }

@@ -180,6 +180,7 @@
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\QuestionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -273,7 +274,9 @@
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\GetData.cshtml" />
+    <Content Include="Areas\Admin\Views\Tests\Detail.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
+    <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
     <Content Include="Scripts\admin\Chart.min.js" />
     <Content Include="Scripts\admin\dashboard.js" />
@@ -283,6 +286,7 @@
     <Content Include="Scripts\admin\flot\jquery.flot.pie.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.resize.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.stack.js" />
+    <Content Include="Scripts\admin\QuestionsController.js" />
     <Content Include="Scripts\ajax.helper.js" />
     <Content Include="Scripts\admin\TestsController.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -332,6 +336,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\Questions\" />
     <Folder Include="Content\css\client\" />
   </ItemGroup>
   <PropertyGroup>

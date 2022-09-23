@@ -16,11 +16,12 @@
             response.data = data;
             return response;
         }
-        public static Responses Error(string message = "error")
+        public static Responses Error(string message = "error", object data = null)
         {
             Responses response = new Responses();
             response.success = false;
             response.message = message;
+            response.data = data;
             return response;
         }
     }

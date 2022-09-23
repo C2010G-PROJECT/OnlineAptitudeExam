@@ -6,7 +6,7 @@
  * @param {Function} callback
  * @param {String} action
  */
-function prepareMouseAction(selector, into = "#contentTable", rootPath = null, callback = null, action = "click") {
+function prepareMouseAction(selector, into = null, rootPath = null, callback = null, action = "click") {
     $(selector).off(action).on(action, function (e) {
         e.preventDefault();
         let url;
@@ -15,12 +15,7 @@ function prepareMouseAction(selector, into = "#contentTable", rootPath = null, c
         } else {
             url = $(this).data("url");
         }
-        load(url, into, rootPath, data => {
-            if (callback != null) {
-                callback(data);
-            }
-            prepareMouseAction(selector, into, rootPath, callback, action);
-        });
+        load(url, into, rootPath, callback);
     });
 }
 
@@ -32,7 +27,7 @@ function prepareMouseAction(selector, into = "#contentTable", rootPath = null, c
  * @param {Function} callback
  * @param {String} action
  */
-function prepareKeyboardAction(selector, into = "#contentTable", rootPath = null, callback = null, action = "keyup") {
+function prepareKeyboardAction(selector, into = null, rootPath = null, callback = null, action = "keyup") {
     $(selector).off(action).on(action, function () {
         let url = $(this).data("url");
         let val = $(this).val();
@@ -114,14 +109,20 @@ function showToast($msg, $type, $title = "", $duration = 3000) {
  * @param {Function} callback
  * @param {Boolean} autoHide
  */
-function showConfirm($title, $msg, $btnType = "danger", callback = null, autoHide = true) {
+function showConfirm($title, $msg, $btnType = "danger", $icon = null, callback = null, autoHide = true) {
     let mModal = $("#confirmDialog");
+    let mIcon = mModal.find(".modal-header i")
     let mSubmit = mModal.find("button[submit]")
     mModal.find(".modal-title").text($title)
     mModal.find(".modal-body").text($msg)
 
     mSubmit.removeClass();
     mSubmit.addClass("btn btn-" + $btnType)
+
+    mIcon.removeClass();
+    if ($icon != null) {
+        mIcon.addClass("mdi mdi-" + $icon)
+    }
 
     mSubmit.off("click").on("click", () => {
         if (autoHide) {
@@ -161,9 +162,32 @@ function adapter_ajax_with_file($param) {
     });
 }
 
-function load(url, into, rootPath, callback) {
+/**
+ * 
+ * @param {String} url
+ * @param {String} into
+ * @param {String} rootPath
+ * @param {Function, String} callback function name with empty param
+ * @param {String} type POST | GET
+ */
+function load(url, into, rootPath, callback = null, type = "GET") {
+    if (url.startsWith(_PREFIX)) {
+        url = _AJAX_PREFIX + url;
+    }
     if (rootPath != null) {
-        window.history.pushState(null, null, rootPath + getTailUrl(url));
+        let realUrl = rootPath + getTailUrl(url)
+        let pushData = {
+            into: into,
+            loadUrl: url,
+            realUrl: realUrl,
+            type: type,
+        }
+        if (typeof callback == "function" && callback.name !== "") {
+            pushData.callback = callback.name;
+        }
+        if (!window.location.href.toLowerCase().endsWith(realUrl)) {
+            history.pushState(pushData, null, realUrl);
+        }
     }
     loadUrl(url, function (data) {
         if (into != null) {
@@ -172,7 +196,7 @@ function load(url, into, rootPath, callback) {
         if (callback != null) {
             callback(data);
         }
-    });
+    }, type);
 }
 
 function loadUrl(url, success = null, type = "GET", data = null) {
@@ -183,6 +207,20 @@ function loadUrl(url, success = null, type = "GET", data = null) {
         callback: success,
     }
     adapter_ajax($param);
+}
+
+function loadScripts(src, raw = false) {
+    let contentScriptSelector = "body #contentScript"
+    let contentScript = $(contentScriptSelector);
+    if (contentScript.length == 0) {
+        $("body").append("<div id='contentScript'></div>")
+        contentScript = $(contentScriptSelector);
+    }
+    let content = raw ?
+        "<script>" + src + "</script>" :
+        "<script src='" + src + "'></script>";
+    contentScript.html(content);
+    contentScript.remove();
 }
 
 function getTailUrl(url) {

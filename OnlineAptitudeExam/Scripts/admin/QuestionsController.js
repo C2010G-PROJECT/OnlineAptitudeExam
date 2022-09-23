@@ -1,0 +1,2 @@
+﻿const _QuestionsTable = "#questionsTable";
+
