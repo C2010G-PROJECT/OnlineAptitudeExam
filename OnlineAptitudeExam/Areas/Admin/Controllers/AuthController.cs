@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using static System.Collections.Specialized.BitVector32;
 
 namespace OnlineAptitudeExam.Areas.Admin.Controllers
 {

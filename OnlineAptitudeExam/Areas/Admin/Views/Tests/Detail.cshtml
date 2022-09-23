@@ -1,0 +1,57 @@
+﻿@model OnlineAptitudeExam.Models.Test
+@using OnlineAptitudeExam.Models
+
+<div class="row justify-content-between">
+    <div class="col-9 mb-3">
+        <button onclick="history.back()" class="btn btn-danger" type="button">
+            <i class="mdi mdi-keyboard-backspace"></i>
+        </button>
+        <b class="ms-1">@Model.name</b>
+    </div>
+    <div class="col-3 mb-3 d-flex justify-content-end">
+        <button onclick="" class="btn btn-success" type="button">
+            <i class="mdi mdi-plus"></i>
+        </button>
+    </div>
+</div>
+
+<div id="questionsTable">
+
+</div>
+
+<div id="testsModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="Name">Name</label>
+                    <input class="form-control" data-val="true" id="Name" placeholder="Name" type="text">
+                    <span class="field-validation-valid text-danger text-small" data-valmsg-for="UserName" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary modal-submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+    <script>
+        if (!window.TestsIndex) {
+            loadScripts("/Scripts/admin/TestsController.js");
+        }
+        loadScripts("TestsIndex()", true)
+    </script>
+}
+@section scripts {
+    <script src="~/Scripts/admin/TestsController.js"></script>
+    <script>TestsIndex()</script>
+}

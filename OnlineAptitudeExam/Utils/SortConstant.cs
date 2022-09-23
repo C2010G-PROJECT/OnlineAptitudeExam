@@ -25,7 +25,7 @@ namespace OnlineAptitudeExam.Utils
             return string.IsNullOrEmpty(order) ? DESC : (order == DESC) ? ASC : null;
         }
 
-        public static bool isAsc(string s)
+        public static bool IsAsc(string s)
         {
             return ASC.Equals(s);
         }

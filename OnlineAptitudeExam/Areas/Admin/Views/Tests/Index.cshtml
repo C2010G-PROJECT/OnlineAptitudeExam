@@ -10,13 +10,13 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-end">
-        <button onclick="showTestsModal($(this), true, '@Url.Action("Create", "Tests")')" class="btn btn-success" type="button">
+        <button class="btn btn-success" onclick="showTestsModal($(this), true)" type="button">
             <i class="mdi mdi-plus"></i>
         </button>
     </div>
 </div>
 
-<div id="contentTable">
+<div id="testsTable">
     @Html.Action("GetData")
 </div>
 
@@ -42,9 +42,17 @@
     </div>
 </div>
 
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+    <script>
+        if (!window.TestsIndex) {
+            loadScripts("/Scripts/admin/TestsController.js");
+        }
+        loadScripts("TestsIndex()", true)
+    </script>
+}
 @section scripts {
     <script src="~/Scripts/admin/TestsController.js"></script>
-    <script>
-        TestsIndex('@Url.Action("Index", "Tests")','@Url.Action("GetData", "Tests")');
-    </script>
+    <script>TestsIndex()</script>
 }

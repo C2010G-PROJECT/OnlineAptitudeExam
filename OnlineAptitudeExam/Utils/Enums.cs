@@ -1,6 +1,12 @@
 ﻿
 namespace OnlineAptitudeExam.Utils
 {
+
+    public class Constants
+    {
+        public const int TOTAL_QUESTION_IN_TEST = 15;
+    }
+
     public class Enums
     {
         public enum Status : ushort
