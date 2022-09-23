@@ -1,10 +1,9 @@
 ﻿@model OnlineAptitudeExam.Models.Account
 @{
     @Styles.Render("~/Content/css/editProfile.css")
-
 }
 
-@using (Html.BeginForm("Profile", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <div class="container rounded bg-white mt-5 mb-5">
         <div class="row">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 using OnlineAptitudeExam.Models;
+using OnlineAptitudeExam.Utils;
 
 namespace OnlineAptitudeExam.Controllers
 {
@@ -31,49 +33,30 @@ namespace OnlineAptitudeExam.Controllers
             return View();
         }
 
+        [Authentication]
         public ActionResult Profile()
         {
             ViewBag.Message = "Your contact page.";
             Account user = Session["UserInfo"] as Account;
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-            else
-            {
-                ViewBag.accountLogin = user;
-            }
-
             ViewBag.accountLogin = user;
 
             return View();
         }
 
+        [Authentication]
         public ActionResult EditProfile()
         {
             Account user = Session["UserInfo"] as Account;
-
-
-            if (user == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-            else
-            {
-                ViewBag.accountLogin = user;
-            }
-
             ViewBag.accountEdit = user;
-
             return View(user);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult EditProfile(FormCollection key)
         {
-            Account modelEdit = Session["UserInfo"] as Account;
+            Account currentAccountSession = Session["UserInfo"] as Account;
 
-            if (modelEdit != null) {
+            if (currentAccountSession != null) {
                 string sAvatar = key["NameAvatar"];
                 string sFullName = key["fullname"];
                 string sUseName = key["username"];
@@ -81,18 +64,20 @@ namespace OnlineAptitudeExam.Controllers
                 string sAddress = key["address"];
                 string sDescriptions = key["descriptions"];
 
-                modelEdit.avatar = sAvatar;
-                modelEdit.fullname = sFullName;
-                modelEdit.username = sUseName;
-                if (sAge != null) {
-                    modelEdit.age = Int32.Parse(sAge);
-                }
-                modelEdit.address = sAddress;
-                modelEdit.descriptions = sDescriptions;
-                
-                UpdateModel(modelEdit);
-                dbEntities.SaveChanges();
+                var account = dbEntities.Accounts.Find(currentAccountSession.id);
 
+                account.avatar = sAvatar;
+                account.fullname = sFullName;
+                account.username = sUseName;
+                if (sAge != null) {
+                    account.age = Int32.Parse(sAge);
+                }
+                account.address = sAddress;
+                account.descriptions = sDescriptions;
+                 
+                dbEntities.Entry(account).State = EntityState.Modified;
+                dbEntities.SaveChanges();
+                Session["UserInfo"] = account;
             }
 
             return View();
