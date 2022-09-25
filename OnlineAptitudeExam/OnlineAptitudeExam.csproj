@@ -206,6 +206,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AptitudeExamModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\FormModelView.cs" />
     <Compile Include="Models\Responses.cs" />
     <Compile Include="Utils\Authentication.cs" />
     <Compile Include="Utils\DateUtils.cs" />
@@ -234,6 +235,8 @@
       <DependentUpon>OnlineAptitudeExam.mdf</DependentUpon>
     </Content>
     <Content Include="Content\css\admin\custom.css" />
+    <Content Include="Content\css\admin\draganddrop.css" />
+    <Content Include="Scripts\admin\dragdroplist.js" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\editProfile.css" />
     <Content Include="Content\css\profile.css" />
@@ -275,6 +278,8 @@
     <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Questions\Test.cshtml" />
+    <Content Include="Areas\Admin\Views\Questions\GetData.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
@@ -336,7 +341,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Questions\" />
     <Folder Include="Content\css\client\" />
   </ItemGroup>
   <PropertyGroup>

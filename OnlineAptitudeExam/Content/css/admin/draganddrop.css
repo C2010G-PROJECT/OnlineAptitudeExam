@@ -1,0 +1,40 @@
+.drag-container.active:has(.draggable) {
+    overflow-x: hidden;
+    padding: 12px 24px;
+}
+
+.drag-container.active .draggable {
+    padding: 8px;
+    border: 2px dotted #2c9a00;
+    margin-bottom: 1rem !important;
+    user-select: none;
+    cursor: move;
+}
+
+.drag-container.active .draggable label.error {
+    display:none;
+}
+
+.drag-container.active .draggable * {
+    cursor: move;
+    user-select: none;
+    pointer-events: none;
+}
+
+.drag-container .draggable:has(input.error) {
+    margin-bottom: 2rem;
+}
+
+.drag-container .draggable {
+    will-change: transform;
+    list-style-type: none;
+    color: #212121;
+    transition: all 200ms;
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.drag-container.active .draggable.over {
+    transform: scale(1.03, 1.05);
+    border: 2px dotted #009aff;
+}

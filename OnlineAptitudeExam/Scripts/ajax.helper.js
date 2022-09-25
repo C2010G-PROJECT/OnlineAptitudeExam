@@ -27,14 +27,19 @@ function prepareMouseAction(selector, into = null, rootPath = null, callback = n
  * @param {Function} callback
  * @param {String} action
  */
-function prepareKeyboardAction(selector, into = null, rootPath = null, callback = null, action = "keyup") {
+function prepareKeyboardAction(selector, into = null, rootPath = null, callback = null, type = "GET", action = "keyup") {
     $(selector).off(action).on(action, function () {
-        let url = $(this).data("url");
-        let val = $(this).val();
+        let url = $(this).data("url") + removeUrlParam(location.search, "page")
+        let val = $(this).val()
+        let paramKey = $(this).data("param-key");
+
         if (val != undefined && val.length > 0) {
-            url += "?" + $(this).data("param-key") + "=" + val;
+            url = replaceUrlParam(url, paramKey, val)
+        } else {
+            url = removeUrlParam(url, paramKey)
         }
-        load(url, into, rootPath, callback);
+
+        load(url, into, rootPath, callback, type);
     });
 }
 
@@ -61,27 +66,15 @@ function refreshSearchBar(searchId, varNames) {
     $(searchId).val(getUrlParam(varNames));
 }
 
-function clearFormElements(ele) {
-    $(ele).find(':input').each(function () {
-        switch (this.type) {
-            case 'password':
-            case 'select-multiple':
-            case 'select-one':
-            case 'text':
-            case 'textarea':
-                $(this).val('');
-                break;
-            case 'checkbox':
-            case 'radio':
-                this.checked = false;
-        }
+function pendingFocus(modal, ele) {
+    modal.on('shown.bs.modal', function () {
+        ele.focus();
     });
 }
 
-function pendingFocus(modal, element) {
-    modal.on('shown.bs.modal', function () {
-        element.focus();
-    });
+function clearFormElements(ele) {
+    ele.find(":input").removeClass("valid error");
+    ele[0].reset();
 }
 
 /**
@@ -147,7 +140,8 @@ function adapter_ajax($param) {
         type: $param.type,
         data: $param.data,
         async: true,
-        success: $param.callback,
+        success: $param.success,
+        error: $param.error
     });
 }
 
@@ -158,7 +152,8 @@ function adapter_ajax_with_file($param) {
         data: $param.data,
         contentType: false,
         processData: false,
-        success: $param.callback,
+        success: $param.success,
+        error: $param.error
     });
 }
 
@@ -169,8 +164,9 @@ function adapter_ajax_with_file($param) {
  * @param {String} rootPath
  * @param {Function, String} callback function name with empty param
  * @param {String} type POST | GET
+ * @param {Object} data
  */
-function load(url, into, rootPath, callback = null, type = "GET") {
+function load(url, into, rootPath, callback = null, type = "GET", data = null) {
     if (url.startsWith(_PREFIX)) {
         url = _AJAX_PREFIX + url;
     }
@@ -185,26 +181,32 @@ function load(url, into, rootPath, callback = null, type = "GET") {
         if (typeof callback == "function" && callback.name !== "") {
             pushData.callback = callback.name;
         }
-        if (!window.location.href.toLowerCase().endsWith(realUrl)) {
+        if (history.state == null || history.state.realUrl !== realUrl) {
             history.pushState(pushData, null, realUrl);
         }
     }
     loadUrl(url, function (data) {
         if (into != null) {
-            $(into).html(data);
+            if (typeof into == 'string') {
+                $(into).html(data);
+            }
+            if (typeof into == 'object') {
+                into.html(data);
+            }
         }
         if (callback != null) {
             callback(data);
         }
-    }, type);
+    }, null, type, data);
 }
 
-function loadUrl(url, success = null, type = "GET", data = null) {
+function loadUrl(url, success = null, error = null, type = "GET", data = null) {
     var $param = {
         type: type,
         url: url,
         data: data,
-        callback: success,
+        success: success,
+        error: error,
     }
     adapter_ajax($param);
 }
@@ -243,6 +245,46 @@ function getUrlParam(varNames) {
         }
     }
     return null;
+}
+
+function replaceUrlParam(url, paramName, paramValue) {
+    if (paramValue == null) {
+        paramValue = '';
+    }
+    var pattern = new RegExp('\\b(' + paramName + '=).*?(&|#|$)');
+    if (url.search(pattern) >= 0) {
+        return url.replace(pattern, '$1' + paramValue + '$2');
+    }
+    url = url.replace(/[?#]$/, '');
+    return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue;
+}
+
+function removeUrlParam(url, paramName) {
+    var rtn = url.split("?")[0],
+        param,
+        params_arr = [],
+        queryString = (url.indexOf("?") !== -1) ? url.split("?")[1] : "";
+    if (queryString !== "") {
+        params_arr = queryString.split("&");
+        for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+            param = params_arr[i].split("=")[0];
+            if (param === paramName) {
+                params_arr.splice(i, 1);
+            }
+        }
+        if (params_arr.length) rtn = rtn + "?" + params_arr.join("&");
+    }
+    return rtn;
+}
+
+function objectifyForm(formElement) {
+    formArray = formElement.serializeArray();
+    //serialize data function
+    var returnArray = {};
+    for (var i = 0; i < formArray.length; i++) {
+        returnArray[formArray[i]['name']] = formArray[i]['value'];
+    }
+    return returnArray;
 }
 
 function ucfirst(string) {

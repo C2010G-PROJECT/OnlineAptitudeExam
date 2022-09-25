@@ -12,7 +12,10 @@ var body = $('body');
 var sidebar = $('.sidebar');
 
 function addActiveClasss() {
-    let current = location.pathname.split("/").slice(-1)[0].replace(/^\/|\/$/g, '');
+    let current = location.pathname.toLowerCase()
+        .replace(_AJAX_PREFIX.toLowerCase(), "")
+        .replace(_PREFIX.toLowerCase(), "")
+        .split("/")[1];
     $("#sidebar .nav-item.active").each(function () {
         $(this).removeClass("active")
     })
@@ -35,7 +38,6 @@ addActiveClasss();
 //Add active class to nav-link based on url dynamically
 //Active class can be hard coded directly in html file also as required
 function addActiveClass(element, current) {
-    current = current.toLowerCase();
     if (current === "") {
         //for root url
         if (element.attr('href').toLowerCase().indexOf("index.html") !== -1) {
@@ -129,6 +131,7 @@ $(window).off('popstate').on('popstate', function (e) {
             callback = addActiveClasss;
         }
         load(url, null, null, (data) => {
+            $(".modal").modal("hide");
             into.html(data);
             if (typeof callback == "string") {
                 window[callback]();

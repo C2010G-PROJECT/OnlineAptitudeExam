@@ -198,7 +198,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="test_id" Type="Int32" />
-          <Property Name="question1" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="question" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="answers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="correct_answers" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="type" Type="Byte" />
@@ -352,7 +352,7 @@
               <MappingFragment StoreEntitySet="Question">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="test_id" ColumnName="test_id" />
-                <ScalarProperty Name="question1" ColumnName="question" />
+                <ScalarProperty Name="question" ColumnName="question" />
                 <ScalarProperty Name="answers" ColumnName="answers" />
                 <ScalarProperty Name="correct_answers" ColumnName="correct_answers" />
                 <ScalarProperty Name="type" ColumnName="type" />

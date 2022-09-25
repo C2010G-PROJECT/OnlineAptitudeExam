@@ -4,7 +4,7 @@
 @{
     Layout = null;
 }
-<div class="card card-body">
+<div class="card card-body shadow-sm">
     <div class="table-responsive">
         <table class="table table-custom table-hover table-bordered" data-sort="@ViewBag.CurrentSort" data-order="@ViewBag.CurrentOrder">
             @{
@@ -42,7 +42,7 @@
                 @for (int i = 0; i < Model.Count(); i++)
                 {
                     var item = Model[i];
-                    bool isPublic = item.status == (int)OnlineAptitudeExam.Utils.Enums.Status.PUBLIC;
+                    bool isPublic = item.status == (int)Enums.Status.PUBLIC;
 
                     <tr data-id='@item.id'>
                         <td>
@@ -91,7 +91,7 @@
     </div>
 </div>
 <script>
-    if (window.prepareTestTable) {
-        loadScripts("prepareTestTable()", true)
+    if (window.TestsIndex) {
+        loadScripts("TestsIndex()", true)
     }
 </script>

@@ -21,11 +21,21 @@ namespace OnlineAptitudeExam.Utils
         {
             ADMIN = 0,
             USER = 1,
+
+            GENERAL_KNOWLEDGE = 0,
+            MATHEMATICS = 1,
+            COMPUTER_TECHNOLOGY = 2
         }
 
         public static byte GetOpposite(byte val)
         {
             return (byte)(val == 0 ? 1 : 0);
+        }
+
+        public static string GetQuestionType(int val)
+        {
+            return val == 0 ? "General Knowledge" : 
+                val == 1 ? "Mathematics" : "Computer Technology";
         }
     }
 }

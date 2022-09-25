@@ -17,3 +17,19 @@
 ::-webkit-scrollbar-thumb:hover {
     background: blue;
 }
+
+.form-group label.error {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+    font-size: 12px;
+}
+
+.form-group.question-answer {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.form-group.question-answer label.error {
+    position: absolute;
+    margin-top: 0.5rem;
+}

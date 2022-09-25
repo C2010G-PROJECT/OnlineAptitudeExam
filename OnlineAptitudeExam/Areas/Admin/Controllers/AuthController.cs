@@ -51,6 +51,13 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model)
         {
+            if (Session["UserInfo"] is Account)
+            {
+                if ((Session["UserInfo"] as Account).type == ((int)Enums.Type.ADMIN))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             if (ModelState.IsValid)
             {
                 string password = Helper.GetMD5(model.Password);
@@ -83,6 +90,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
                 }
                 else
                 {
+                    ViewBag.username = model.UserName;
                     ViewBag.Error = "Username or password is incorrect!";
                 }
             }
