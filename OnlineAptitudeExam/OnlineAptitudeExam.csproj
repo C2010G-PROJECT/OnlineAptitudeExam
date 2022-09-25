@@ -202,6 +202,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -305,6 +306,7 @@
     <Content Include="Areas\Admin\Views\Tests\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Questions\Test.cshtml" />
     <Content Include="Areas\Admin\Views\Questions\GetData.cshtml" />
+    <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
@@ -355,7 +357,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\tmp_Chart.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
   </ItemGroup>
