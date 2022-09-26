@@ -48,7 +48,7 @@ function refreshTableItemSort(tableId) {
     let currentSort = tbl.data("sort");
     let currentOrder = tbl.data("order");
 
-    tbl.find("thead th .sortable").each(function () {
+    tbl.find("thead th.sortable").each(function () {
         $(this).removeClass("asc desc");
         if ($(this).data("sort") === currentSort) {
             $(this).addClass(currentOrder);

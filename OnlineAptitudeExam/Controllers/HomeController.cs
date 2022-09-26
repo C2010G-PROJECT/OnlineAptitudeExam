@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Migrations;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using System.Web.WebPages;
-using Microsoft.AspNetCore.Http;
-using OnlineAptitudeExam.Models;
+﻿using OnlineAptitudeExam.Models;
 using OnlineAptitudeExam.Utils;
-using static System.Net.WebRequestMethods;
+using System;
+using System.Data.Entity;
+using System.Web;
+using System.Web.Mvc;
 
 namespace OnlineAptitudeExam.Controllers
 {
@@ -46,7 +34,8 @@ namespace OnlineAptitudeExam.Controllers
         {
             ViewBag.Message = "Your contact page.";
             Account user = Session["UserInfo"] as Account;
-            if (user.avatar == null) {
+            if (user.avatar == null)
+            {
                 user.avatar = "img_user_default.png";
             }
             ViewBag.accountLogin = user;
@@ -86,29 +75,31 @@ namespace OnlineAptitudeExam.Controllers
                 }
             }
 
-            if (currentAccountSession != null) {
-                    string sAvatar = avatar.FileName;
-                    string sFullName = key["fullname"];
-                    string sUseName = key["username"];
-                    string sAge = key["age"];
-                    string sAddress = key["address"];
-                    string sDescriptions = key["descriptions"];
+            if (currentAccountSession != null)
+            {
+                string sAvatar = avatar.FileName;
+                string sFullName = key["fullname"];
+                string sUseName = key["username"];
+                string sAge = key["age"];
+                string sAddress = key["address"];
+                string sDescriptions = key["descriptions"];
 
-                    var account = dbEntities.Accounts.Find(currentAccountSession.id);
+                var account = dbEntities.Accounts.Find(currentAccountSession.id);
 
-                    account.avatar = sAvatar;
-                    account.fullname = sFullName;
-                    account.username = sUseName;
-                    if (sAge != null) {
-                        account.age = Int32.Parse(sAge);
-                    }
-                    account.address = sAddress;
-                    account.descriptions = sDescriptions;
-
-                    dbEntities.Entry(account).State = EntityState.Modified;
-                    dbEntities.SaveChanges();
-                    Session["UserInfo"] = account;
+                account.avatar = sAvatar;
+                account.fullname = sFullName;
+                account.username = sUseName;
+                if (sAge != null)
+                {
+                    account.age = Int32.Parse(sAge);
                 }
+                account.address = sAddress;
+                account.descriptions = sDescriptions;
+
+                dbEntities.Entry(account).State = EntityState.Modified;
+                dbEntities.SaveChanges();
+                Session["UserInfo"] = account;
+            }
 
             return RedirectToAction("Profile", "Home");
         }

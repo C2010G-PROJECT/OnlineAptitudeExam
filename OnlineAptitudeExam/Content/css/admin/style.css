@@ -5035,7 +5035,7 @@ progress {
     }
 }
 
-.table-custom thead th .sortable {
+.table-custom thead th.sortable {
     cursor: pointer;
     background-position: right;
     background-repeat: no-repeat;

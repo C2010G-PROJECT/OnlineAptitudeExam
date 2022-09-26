@@ -262,6 +262,7 @@
     </Content>
     <Content Include="Content\css\admin\custom.css" />
     <Content Include="Content\css\admin\draganddrop.css" />
+    <Content Include="Content\images\ic_move.svg" />
     <Content Include="Scripts\admin\dragdroplist.js" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\editProfile.css" />
@@ -304,7 +305,6 @@
     <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Detail.cshtml" />
-    <Content Include="Areas\Admin\Views\Questions\Test.cshtml" />
     <Content Include="Areas\Admin\Views\Questions\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />

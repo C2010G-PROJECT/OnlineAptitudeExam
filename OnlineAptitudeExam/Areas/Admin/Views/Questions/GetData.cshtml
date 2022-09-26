@@ -6,14 +6,14 @@
     List<Question> questions = ViewBag.questions;
 }
 
-<div class="visually-hidden data-card" data-total-question="@questions.Count"></div>
+<div class="visually-hidden data-card" data-total-question="@questions.Count" data-can-create='@(questions.Count < @Constants.TOTAL_QUESTION_IN_CATEGORY?"true":"false")'></div>
 <div class="row justify-content-between">
     <div class="col-8 d-flex align-items-center">
         <button class="btn p-1" onclick="toggleQuestionTable($(this), '#questionsTable@(ViewBag.type)')">
             <i class="mdi mdi-minus-box-outline"></i>
         </button>
         <span class="fw-bold">@Enums.GetQuestionType(ViewBag.type)</span>
-        <span>(@questions.Count/5)</span>
+        <span>(@questions.Count/@Constants.TOTAL_QUESTION_IN_CATEGORY)</span>
     </div>
     <div class="col-4 d-flex justify-content-end">
         <button onclick="showQuestionsModal($(this), @ViewBag.testId, @ViewBag.type)" class="btn btn-success" type="button">
@@ -46,20 +46,20 @@
                     <td>
                         @(j + 1)
                     </td>
-                    <td class="text-start" style="max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                    <td class="text-start field-question" style="padding: 8px 16px;max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
                         <span class="overflow-hidden" style="">
                             @Html.DisplayFor(modelItem => item.question)
                         </span>
                     </td>
-                    <td>@item.score</td>
+                    <td class="field-score">@item.score</td>
                     <td class="d-flex justify-content-center">
-                        <button class="btn btn-warning btn-sm" onclick="showTestsModal($(this), false);">
+                        <button class="btn btn-warning btn-sm" onclick="showQuestionsModal($(this), @ViewBag.testId, @ViewBag.type, false)">
                             <i class="mdi mdi-pencil"></i>
                         </button>
                         <button class="btn btn-primary btn-sm ms-1 me-1" onclick="showDetailTest($(this))">
                             <i class="mdi mdi-text-box-multiple-outline"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="showDeleteTestsModal($(this))">
+                        <button class="btn btn-danger btn-sm" onclick="showDeleteQuestionModal($(this), @ViewBag.testId, @ViewBag.type)">
                             <i class="mdi mdi-delete-outline"></i>
                         </button>
                     </td>

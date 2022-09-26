@@ -1,7 +1,10 @@
 ﻿const _QuestionsTable = '#questionsTable';
 const _ACTION_Questions_Index = _PREFIX + '/Questions';
 const _ACTION_Questions_GetData = _ACTION_Questions_Index + '/GetData';
+const _ACTION_Questions_GetQuestion = _ACTION_Questions_Index + '/GetQuestion';
 const _ACTION_Questions_Create = _ACTION_Questions_Index + '/Create';
+const _ACTION_Questions_Update = _ACTION_Questions_Index + '/Update';
+const _ACTION_Questions_Delete = _ACTION_Questions_Index + '/Delete';
 
 function toggleQuestionTable(element, tableId) {
     const mTable = $(tableId);
@@ -18,7 +21,7 @@ function toggleQuestionTable(element, tableId) {
 }
 
 function showQuestionsModal(element, testId, type, isCreate = true) {
-    if (isCreate && element.closest('.card').find('.data-card').data('total-question') == 5) {
+    if (isCreate && !element.closest('.card').find('.data-card').data('can-create')) {
         showToast('This category has enough question!', 'warning');
         return;
     }
@@ -34,6 +37,7 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
         mForm = mModal.find('form'),
         mEdtQuestion = mModal.find('#Question'),
         mSlbScore = mForm.find('#Score');
+
     // setup modal
     let title = isCreate ? 'Create' : 'Update';
     mIcon.removeClass().addClass('mdi mdi-' + (isCreate ? 'playlist-plus' : 'playlist-edit'))
@@ -45,6 +49,58 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
     clearFormElements(mForm);
 
     // validate rule
+    jQuery.validator.addMethod("anwer_unique", function (value, element) {
+        let match = true;
+        let questionsEle = $('.question-answer input[value!=""]');
+
+        let addError = function (ele) {
+            if (!ele.hasClass('error')) {
+                ele.attr('aria-invalid', true)
+                ele.removeClass('valid')
+                ele.addClass('error');
+                let label = ele.next('label');
+                if (label.length == 0) {
+                    let id = ele.attr('id');
+                    label = $('<label class="error"></label>')
+                    label.attr('id', id + '-error"')
+                    label.attr('for', id)
+                    ele.parent().append(label);
+                }
+                label.text('Answer is not unique.').css('display', 'block')
+            }
+        }
+
+        let removeError = function (ele) {
+            if (ele.hasClass('error')) {
+                ele.attr('aria-invalid', false)
+                ele.removeClass('error');
+                ele.addClass('valid')
+                ele.next('label').css('display', 'none')
+            }
+        }
+
+        questionsEle.each(function () {
+            removeError($(this))
+            if (this != element && $(this).val() == value) {
+                match = false;
+            }
+        })
+
+        for (let i = 0; i < questionsEle.length - 1; i++) {
+            for (let j = i + 1; j < questionsEle.length; j++) {
+                var e1 = $(questionsEle[i]), e2 = $(questionsEle[j]);
+                if (e1.val() === e2.val()) {
+                    addError(e1)
+                    addError(e2)
+                }
+            }
+        }
+
+        return match;
+    }, "Answer is not unique.");
+    jQuery.validator.classRuleSettings.unique = {
+        anwer_unique: true
+    };
     mForm.validate({
         rules: {
             Question: {
@@ -67,12 +123,27 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
         }
     }).resetForm()
 
-
+    // clear answer
     cancelSortAnswer(mSortAnwer);
     mContainerAnswer.html('')
 
-    mAddAnwer.off('click').on('click', () => mContainerAnswer.prepend(createAnwer()))
+    // bind data if edit
+    let id = null;
+    if (!isCreate) {
+        id = element.closest('tr').data('id');
+        loadUrl(_ACTION_Questions_GetQuestion, data => {
+            mEdtQuestion.text(data.question);
+            mSlbScore.find('option[value="' + data.score + '"]').prop('selected', true);
+            let answers = JSON.parse(data.answers);
+            let correct_answers = JSON.parse(data.correct_answers);
+            answers.forEach(function (currentValue, index, arr) {
+                mContainerAnswer.append(createAnwer(correct_answers.indexOf(index) != -1, currentValue))
+            })
+        }, null, 'POST', { id: id })
+    }
+
     // init event
+    mAddAnwer.off('click').on('click', () => mContainerAnswer.prepend(createAnwer()))
     mEdtQuestion.off('focusout').on('focusout', function () {
         $(this).val($(this).val().trim())
     })
@@ -106,7 +177,7 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
             }
 
             let data = {
-                id: 1,
+                id: id,
                 model: {
                     testId: testId,
                     type: type,
@@ -116,14 +187,11 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
                     score: score
                 }
             }
-
             if (isCreate) {
                 QuestionsCreate(mModal, data, testId, type);
             } else {
                 QuestionsUpdate(mModal, element, data)
             }
-
-            console.log(data)
             e.preventDefault();
             e.stopPropagation();
         } else {
@@ -154,6 +222,7 @@ function createAnwer(checked = false, value = '') {
     let ele = $(html);
     let answerInput = ele.find('.question-answer .form-control');
     answerInput.val(value)
+    answerInput.attr('value', value)
     answerInput.on('focusout', function () {
         let val = $(this).val().trim();
         $(this).attr('value', val).val(val)
@@ -161,14 +230,15 @@ function createAnwer(checked = false, value = '') {
     ele.find('.delete-answer').click(function () {
         $(this).closest('.draggable').remove();
     })
-    ele.find('.correct-answer').prop('checked', checked)
+    ele.find('.correct-answer').attr('checked', checked)
 
     var observer = new MutationObserver(function () {
         if (document.contains(ele[0])) {
             answerInput.rules('add', {
                 onkeyup: false,
                 required: true,
-                maxlength: 200
+                maxlength: 200,
+                anwer_unique: true
             })
             answerInput.focus();
             observer.disconnect();
@@ -219,21 +289,38 @@ function cancelSortAnswer(ele) {
     container.removeClass('active')
     ele.removeClass('btn-warning').addClass('btn-info')
     mIcon.removeClass('mdi-close').addClass('mdi-arrow-all');
-    $('#questionsModal').find('.modal-submit, .add-answer').prop('disabled', (i, v) => false);
+    $('#questionsModal').find('.modal-submit, .add-answer').prop('disabled', false);
     mSpan.text('Sort answer')
     container.find('.draggable').each(function () {
         removeEventsDragAndDrop(this);
         $(this).attr('draggable', false);
     });
 }
+ 
+function showDeleteQuestionModal(element, testId, type) {
+    showConfirm('Delete question',
+        'Are you sure to delete this record?',
+        'outline-danger',
+        'delete-outline', () => QuestionsDelete(element, testId, type))
+}
+
+function loadTable(testId, type) {
+    load(_ACTION_Questions_GetData, $(_QuestionsTable + type).closest('.card'), null, () => {
+        let totalQuestion = 0;
+        let totalQuestionEle = $('#totalQuestion');
+        $('.card .data-card').each(function () {
+            totalQuestion += $(this).data('total-question');
+        })
+        totalQuestionEle.text(totalQuestion + "/" + totalQuestionEle.data('limit'))
+    }, 'POST', { testId: testId, type: type });
+}
 
 function QuestionsCreate(mModal, data, testId, type) {
     loadUrl(_ACTION_Questions_Create, data => {
-        console.log(data)
         if (data.success) {
             mModal.modal('hide')
             showToast(data.message, data.msgType)
-            load(_ACTION_Questions_GetData, $(_QuestionsTable + type).closest('.card'), null, null, 'POST', { testId: testId, type: type });
+            loadTable(testId, type)
         } else {
             showToast(data.message, data.msgType)
         }
@@ -241,5 +328,30 @@ function QuestionsCreate(mModal, data, testId, type) {
 }
 
 function QuestionsUpdate(mModal, element, data) {
+    loadUrl(_ACTION_Questions_Update, data => {
+        console.log(data)
+        if (data.success) {
+            mModal.modal('hide')
+            showToast(data.message, data.msgType)
+            let tr = element.closest('tr');
+            tr.find('.field-question').text(data.data.question)
+            tr.find('.field-score').text(data.data.score)
+        } else {
+            showToast(data.message, data.msgType)
+        }
+    }, null, 'POST', data)
+}
 
+function QuestionsDelete(element, testId, type) {
+    console.log(testId)
+    console.log(type)
+    let id = element.closest('tr').data('id');
+    loadUrl(_ACTION_Questions_Delete, data => {
+        if (data.success) {
+            showToast(data.message, data.msgType)
+            loadTable(testId, type)
+        } else {
+            showToast(data.message, data.msgType)
+        }
+    }, null, 'POST', { id: id })
 }

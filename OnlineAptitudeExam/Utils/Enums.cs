@@ -5,6 +5,7 @@ namespace OnlineAptitudeExam.Utils
     public class Constants
     {
         public const int TOTAL_QUESTION_IN_TEST = 15;
+        public const int TOTAL_QUESTION_IN_CATEGORY = 5;
     }
 
     public class Enums
@@ -34,7 +35,7 @@ namespace OnlineAptitudeExam.Utils
 
         public static string GetQuestionType(int val)
         {
-            return val == 0 ? "General Knowledge" : 
+            return val == 0 ? "General Knowledge" :
                 val == 1 ? "Mathematics" : "Computer Technology";
         }
     }

@@ -18,7 +18,7 @@ function prepareSearchBar() {
 }
 
 function prepareTestTable() {
-    const mMouseSeletor = '#contentPager a[href], .table-custom thead th .sortable';
+    const mMouseSeletor = '#contentPager a[href], .table-custom thead th.sortable';
     refreshTableItemSort('.table-custom')
     prepareMouseAction(mMouseSeletor, _TestsTable, _ACTION_Tests_Index);
 }
@@ -59,7 +59,7 @@ function showTestsModal(element, isCreate = true) {
         }
     }).resetForm()
 
-   
+
     let id = null;
     if (!isCreate) {
         let mTr = element.closest('tr');
@@ -70,7 +70,7 @@ function showTestsModal(element, isCreate = true) {
     // init event
     mEdtName.off('focusout').on('focusout', function () {
         $(this).val($(this).val().trim())
-    }) 
+    })
     mSubmit.off('click').on('click', function (e) {
         if (mForm.valid()) {
             let data = {
@@ -129,8 +129,10 @@ function TestsUpdate(mModal, element, data) {
     }, null, 'POST', data)
 }
 
-function TestsToggleStatus(element) {
-    let id = element.closest('tr').data('id');
+function TestsToggleStatus(element, id = -1) {
+    if (id == -1) {
+        id = element.closest('tr').data('id');
+    }
     loadUrl(_ACTION_Tests_ToggleStatus, data => {
         if (data.success) {
             showToast(data.message, data.msgType)

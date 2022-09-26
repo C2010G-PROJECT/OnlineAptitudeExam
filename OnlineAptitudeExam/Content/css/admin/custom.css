@@ -1,11 +1,12 @@
 ﻿/* width */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
+    box-shadow: inset 0 0 6px grey;
 }
 
 /* Handle */
@@ -17,6 +18,8 @@
 ::-webkit-scrollbar-thumb:hover {
     background: blue;
 }
+
+/*   ============================================   */
 
 .form-group label.error {
     --bs-text-opacity: 1;
@@ -32,4 +35,29 @@
 .form-group.question-answer label.error {
     position: absolute;
     margin-top: 0.5rem;
+}
+/*   ============================================   */
+.sidebar::-webkit-scrollbar {
+    width: 3px;
+}
+
+.sidebar .nav::-webkit-scrollbar {
+    display:none;
+}
+
+@media screen and (min-width: 991px) {
+    .sidebar .nav {
+        position: fixed;
+        overflow-x: hidden !important;
+        overflow-y: hidden !important;
+        top: 0;
+        left: 0;
+        bottom: -60px;
+        margin-top: 60px;
+    }
+
+    .sidebar .nav:hover {
+        overflow-y: auto !important;
+        transition: all ease;
+    }
 }

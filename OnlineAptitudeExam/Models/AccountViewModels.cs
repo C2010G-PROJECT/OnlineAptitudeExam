@@ -43,7 +43,8 @@ namespace OnlineAptitudeExam.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class EditProfileViewModel {
+    public class EditProfileViewModel
+    {
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "User Name")]
@@ -57,7 +58,7 @@ namespace OnlineAptitudeExam.Models
         [Required]
         [Display(Name = "Age")]
         [DataType(DataType.PhoneNumber)]
-        public int Age {get; set; }
+        public int Age { get; set; }
 
         [Required]
         [DataType(DataType.Text)]

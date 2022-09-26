@@ -17,20 +17,14 @@
             }
             <thead>
                 <tr>
-                    <th>
-                        <div class="sortable" data-sort="@SortHelper.STT" data-url="@Url.Action("GetData", new { sort = stt, order = orderStt, filter = ViewBag.CurrentFilter })">
-                            #
-                        </div>
+                    <th class="sortable" data-sort="@SortHelper.STT" data-url="@Url.Action("GetData", new { sort = stt, order = orderStt, filter = ViewBag.CurrentFilter })">
+                        #
                     </th>
-                    <th style="width:25%">
-                        <div class="sortable" data-sort="@SortHelper.NAME" data-url="@Url.Action("GetData", new { sort = name, order = orderName, filter = ViewBag.CurrentFilter })">
-                            Name
-                        </div>
+                    <th style="width:25%" class="sortable" data-sort="@SortHelper.NAME" data-url="@Url.Action("GetData", new { sort = name, order = orderName, filter = ViewBag.CurrentFilter })">
+                        Name
                     </th>
-                    <th>
-                        <div class="sortable" data-sort="@SortHelper.DATE" data-url="@Url.Action("GetData", new { sort = date, order = orderDate, filter = ViewBag.CurrentFilter })">
-                            Date Create
-                        </div>
+                    <th class="sortable" data-sort="@SortHelper.DATE" data-url="@Url.Action("GetData", new { sort = date, order = orderDate, filter = ViewBag.CurrentFilter })">
+                        Date Create
                     </th>
                     <th>Total questions</th>
                     <th>Status</th>

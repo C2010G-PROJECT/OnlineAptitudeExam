@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OnlineAptitudeExam.Models
+﻿namespace OnlineAptitudeExam.Models
 {
     public class Responses
     {
@@ -30,10 +28,10 @@ namespace OnlineAptitudeExam.Models
             return response;
         }
 
-        public enum MessageType 
+        public enum MessageType
         {
-            SUCCESS, INFO, WARNING, ERROR   
-        }        
-        
-    }               
-}                 
+            SUCCESS, INFO, WARNING, ERROR
+        }
+
+    }
+}
