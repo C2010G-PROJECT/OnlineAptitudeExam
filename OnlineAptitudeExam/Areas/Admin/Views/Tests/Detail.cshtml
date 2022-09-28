@@ -73,7 +73,7 @@
                                 <button class="btn btn-warning btn-sm" onclick="showQuestionsModal($(this), @Model.id, @i, false)">
                                     <i class="mdi mdi-pencil"></i>
                                 </button>
-                                <button class="btn btn-primary btn-sm ms-1 me-1" onclick="showDetailTest($(this))">
+                                <button class="btn btn-primary btn-sm ms-1 me-1" onclick="showDetailQuestionModal($(this))">
                                     <i class="mdi mdi-text-box-multiple-outline"></i>
                                 </button>
                                 <button class="btn btn-danger btn-sm" onclick="showDeleteQuestionModal($(this), @Model.id, @i)">
@@ -88,7 +88,6 @@
     </div>
 }
 
-
 <div id="questionsModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-sm-down">
         <div class="modal-content">
@@ -97,7 +96,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="modal-body" style="overflow-x: hidden;">
+            <form class="modal-body custom-scroll" style="overflow-x: hidden;">
                 <div class="form-group">
                     <label for="Question">Question</label>
                     <textarea id="Question" name="Question" class="form-control mb-2" rows="5" placeholder="Question" type="text"></textarea>
@@ -146,13 +145,40 @@
                             </div>
                         </div>
                     *@
-
-
                 </div>
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary modal-submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="questionsDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="p-0 me-1"><i class="mdi mdi-format-list-bulleted" style="font-size:1.5em"></i></span>
+                <h5 class="modal-title" id="staticBackdropLabel">Detail question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body custom-scroll">
+                <div><span class="fw-bold" style="color:#ff6a00">Question (<span class="score">2</span> mark).</span></div>
+                <div class="question mt-2">
+                    
+                </div>
+                <div class="container-answer mt-2">
+                    @*<div class="d-flex">
+                        <input class="me-3" type="checkbox" style="width:18px;" disabled />
+                        <div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">
+                            answer
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

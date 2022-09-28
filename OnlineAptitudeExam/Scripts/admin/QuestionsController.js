@@ -296,7 +296,34 @@ function cancelSortAnswer(ele) {
         $(this).attr('draggable', false);
     });
 }
- 
+
+function showDetailQuestionModal(element) {
+    let mModal = $('#questionsDetailModal'),
+        mScore = $('.score'),
+        mQuestion = $('.question'),
+        mContainer = mModal.find('.container-answer')
+
+    let id = element.closest('tr').data('id');
+    mContainer.html('')
+    loadUrl(_ACTION_Questions_GetQuestion, data => {
+        console.log(data)
+        mScore.text(data.score);
+        mQuestion.text(data.question);
+        answers = JSON.parse(data.answers);
+        correctAnswers = JSON.parse(data.correct_answers);
+        for (let i = 0; i < answers.length; i++) {
+            let isCorrect = correctAnswers.indexOf(i) !== -1;
+            let html =
+                '<div class="d-flex">' +
+                '<input class="me-3" type="checkbox" style="width:18px; pointer-events: none" ' + (isCorrect ? 'checked' : '') +'/>' +
+                '<div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">'+answers[i]+'</div>' +
+                '</div>';
+            mContainer.append(html)
+        }
+    }, null, 'POST', { id: id })
+    mModal.modal('show')
+}
+
 function showDeleteQuestionModal(element, testId, type) {
     showConfirm('Delete question',
         'Are you sure to delete this record?',
@@ -329,7 +356,6 @@ function QuestionsCreate(mModal, data, testId, type) {
 
 function QuestionsUpdate(mModal, element, data) {
     loadUrl(_ACTION_Questions_Update, data => {
-        console.log(data)
         if (data.success) {
             mModal.modal('hide')
             showToast(data.message, data.msgType)
@@ -343,8 +369,6 @@ function QuestionsUpdate(mModal, element, data) {
 }
 
 function QuestionsDelete(element, testId, type) {
-    console.log(testId)
-    console.log(type)
     let id = element.closest('tr').data('id');
     loadUrl(_ACTION_Questions_Delete, data => {
         if (data.success) {
