@@ -2,15 +2,11 @@
 using Microsoft.Owin.Security;
 using OnlineAptitudeExam.Models;
 using OnlineAptitudeExam.Utils;
-using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
- 
+
 namespace OnlineAptitudeExam.Controllers
 {
     [Authorize]
@@ -56,10 +52,10 @@ namespace OnlineAptitudeExam.Controllers
             if (ModelState.IsValid)
             {
                 string password = Helper.GetMD5(model.Password);
-                var user = dbEntities.Accounts.Where(x => 
+                var user = dbEntities.Accounts.Where(x =>
                 x.username.Equals(model.UserName) &&
                 x.password.Equals(password)).FirstOrDefault();
- 
+
                 if (user != null)
                 {
                     Session["UserInfo"] = user;
