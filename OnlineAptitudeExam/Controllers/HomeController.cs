@@ -30,5 +30,17 @@ namespace OnlineAptitudeExam.Controllers
             return View();
         }
 
+        public ActionResult PrepareTesting()
+        {
+
+            return View();
+        }
+
+        public ActionResult QuestionExam()
+        {
+
+            return View();
+        }
+
     }
 }

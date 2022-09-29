@@ -6,6 +6,8 @@
  * @param {Function} callback
  * @param {String} action
  */
+
+//Use
 function prepareMouseAction(selector, into = "#contentTable", rootPath = null, callback = null, action = "click") {
     $(selector).off(action).on(action, function (e) {
         e.preventDefault();
