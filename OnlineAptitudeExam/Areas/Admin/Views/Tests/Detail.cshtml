@@ -1,0 +1,201 @@
+﻿@model OnlineAptitudeExam.Models.Test
+@using OnlineAptitudeExam.Models
+@using OnlineAptitudeExam.Utils
+@using System.Text
+@using Newtonsoft.Json
+@{
+    bool isPublic = Model.status == (int)Enums.Status.PUBLIC;
+}
+<div class="mb-3 d-flex align-items-center">
+    <button onclick="history.back()" class="btn btn-outline-github" type="button">
+        <i class="mdi mdi-keyboard-backspace"></i>
+    </button>
+    <div class="ms-2 d-inline">
+        <span class="fw-bold" style="font-size:20px;">@Model.name</span>
+        <span id="totalQuestion" data-limit="@Constants.TOTAL_QUESTION_IN_TEST"> (@Model.Questions.Count/@Constants.TOTAL_QUESTION_IN_TEST)</span>
+    </div>
+    <div class="form-switch ms-2 d-inline">
+        <input class="form-check-input" style="margin-top:2px" onclick="TestsToggleStatus($(this), @Model.id); return false" type="checkbox" @(isPublic ? "checked" : "")>
+    </div>
+</div>
+
+@for (int i = 0; i < 3; i++)
+{
+    List<Question> questions = Model.Questions.Where(q => q.type == i).ToList();
+    <div class="card card-body shadow-sm mb-3">
+        <div class="visually-hidden data-card" data-total-question="@questions.Count" data-can-create='@(questions.Count < @Constants.TOTAL_QUESTION_IN_CATEGORY?"true":"false")'></div>
+        <div class="row justify-content-between">
+            <div class="col-8 d-flex align-items-center">
+                <button class="btn p-1" onclick="toggleQuestionTable($(this), '#questionsTable@(i)')">
+                    <i class="mdi mdi-minus-box-outline"></i>
+                </button>
+                <span class="fw-bold">@Enums.GetQuestionType(i)</span>
+                <span>(@questions.Count/@Constants.TOTAL_QUESTION_IN_CATEGORY)</span>
+            </div>
+            <div class="col-4 d-flex justify-content-end">
+                <button onclick="showQuestionsModal($(this), @Model.id, @i)" class="btn btn-success" type="button">
+                    <i class="mdi mdi-plus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="questionsTable@(i)" class="table table-custom table-hover table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th style="width:80px;">
+                            #
+                        </th>
+                        <th class="text-start">
+                            Question
+                        </th>
+                        <th style="width:80px;">
+                            Score
+                        </th>
+                        <th style="width:150px">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int j = 0; j < questions.Count; j++)
+                    {
+                        var item = questions[j];
+                        <tr data-id='@item.id'>
+                            <td>
+                                @(j + 1)
+                            </td>
+                            <td class="text-start field-question" style="padding: 8px 16px;max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                                <span class="overflow-hidden">
+                                    @Html.DisplayFor(modelItem => item.question)
+                                </span>
+                            </td>
+                            <td class="field-score">@item.score</td>
+                            <td class="d-flex justify-content-center">
+                                <button class="btn btn-warning btn-sm" onclick="showQuestionsModal($(this), @Model.id, @i, false)">
+                                    <i class="mdi mdi-pencil"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm ms-1 me-1" onclick="showDetailQuestionModal($(this))">
+                                    <i class="mdi mdi-text-box-multiple-outline"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" onclick="showDeleteQuestionModal($(this), @Model.id, @i)">
+                                    <i class="mdi mdi-delete-outline"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div id="questionsModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="p-0 me-1"><i class="mdi mdi-logout-variant" style="font-size:1.5em"></i></span>
+                <h5 class="modal-title" id="staticBackdropLabel">Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="modal-body custom-scroll" style="overflow-x: hidden;">
+                <div class="form-group">
+                    <label for="Question">Question</label>
+                    <textarea id="Question" name="Question" class="form-control mb-2" rows="5" placeholder="Question" type="text"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="Score">Score</label>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-5">
+                            <select class="form-control form-control-sm mb-2" id="Score" name="Score" style="color:black">
+                                <option value="" selected disabled>Choose score</option>
+                                <option value="1">1.0</option>
+                                <option value="1.5">1.5</option>
+                                <option value="2">2.0</option>
+                                <option value="2.5">2.5</option>
+                                <option value="3">3.0</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-7 d-flex justify-content-end mt-1 mt-sm-1 mt-md-0" style="height: 2.575rem">
+                            <button type="button" onclick="toggleSortAnswer($(this))" class="btn btn-info btn-sm d-flex align-items-center sort-answer">
+                                <i class="mdi mdi-arrow-all"></i>
+                                <span class="text-small fw-normal ms-1 me-1">Sort answer</span>
+                            </button>
+                            <button type="button" class="btn btn-success btn-sm d-flex align-items-center ms-2 add-answer">
+                                <i class="mdi mdi-tray-plus"></i>
+                                <span class="text-small fw-normal ms-1 me-1">Add answer</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-answer drag-container">
+                    @* // Add more in js code
+                        <div class="d-flex align-items-center draggable">
+                            <div class="me-3">
+                                <input class="right-answer" style="width: 18px; height: 18px " type="checkbox" />
+                            </div>
+                            <div class="flex-grow-1 form-group question-answer">
+                                <input class="form-control" placeholder="Answer 3" type="text" />
+                                <label id="Name-error" class="error" for="Name">Please enter at least 6 characters.</label>
+                            </div>
+                            <div class="ms-2">
+                                <button type="button" class="btn btn-danger btn-sm">
+                                    <i class="mdi mdi-delete-outline"></i>
+                                </button>
+                            </div>
+                        </div>
+                    *@
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary modal-submit">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="questionsDetailModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="p-0 me-1"><i class="mdi mdi-format-list-bulleted" style="font-size:1.5em"></i></span>
+                <h5 class="modal-title" id="staticBackdropLabel">Detail question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body custom-scroll">
+                <div><span class="fw-bold" style="color:#ff6a00">Question (<span class="score">2</span> mark).</span></div>
+                <div class="question mt-2">
+                    
+                </div>
+                <div class="container-answer mt-2">
+                    @*<div class="d-flex">
+                        <input class="me-3" type="checkbox" style="width:18px;" disabled />
+                        <div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">
+                            answer
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+    <script>
+        if (!window.toggleQuestionTable) {
+            loadScripts("/Scripts/admin/dragdroplist.js");
+            loadScripts("/Scripts/admin/QuestionsController.js");
+        }
+    </script>
+}
+@section scripts {
+    <script src="~/Scripts/admin/dragdroplist.js"></script>
+    <script src="~/Scripts/admin/TestsController.js"></script>
+    <script src="~/Scripts/admin/QuestionsController.js"></script>
+}

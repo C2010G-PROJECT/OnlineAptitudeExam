@@ -30,6 +30,7 @@ namespace OnlineAptitudeExam.Models
         public string address { get; set; }
         public string avatar { get; set; }
         public Nullable<int> age { get; set; }
+        public Nullable<long> created_at { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Exam> Exams { get; set; }

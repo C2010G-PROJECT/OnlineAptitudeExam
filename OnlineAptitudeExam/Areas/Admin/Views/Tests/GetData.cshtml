@@ -4,9 +4,9 @@
 @{
     Layout = null;
 }
-<div class="card card-body">
+<div class="card card-body shadow-sm">
     <div class="table-responsive">
-        <table id="tableTests" class="table table-custom table-hover table-bordered" data-sort="@ViewBag.CurrentSort" data-order="@ViewBag.CurrentOrder">
+        <table class="table table-custom table-hover table-bordered" data-sort="@ViewBag.CurrentSort" data-order="@ViewBag.CurrentOrder">
             @{
                 string orderStt = SortHelper.GetOrder(SortHelper.STT, ViewBag.CurrentSort, ViewBag.CurrentOrder);
                 string stt = SortHelper.ValueOrNull(SortHelper.STT, orderStt);
@@ -17,20 +17,14 @@
             }
             <thead>
                 <tr>
-                    <th>
-                        <div class="sortable" data-sort="@SortHelper.STT" data-url="@Url.Action("GetData", new { sort = stt, order = orderStt, filter = ViewBag.CurrentFilter })">
-                            #
-                        </div>
+                    <th class="sortable" data-sort="@SortHelper.STT" data-url="@Url.Action("GetData", new { sort = stt, order = orderStt, filter = ViewBag.CurrentFilter })">
+                        #
                     </th>
-                    <th style="width:25%">
-                        <div class="sortable" data-sort="@SortHelper.NAME" data-url="@Url.Action("GetData", new { sort = name, order = orderName, filter = ViewBag.CurrentFilter })">
-                            Name
-                        </div>
+                    <th style="width:25%" class="sortable" data-sort="@SortHelper.NAME" data-url="@Url.Action("GetData", new { sort = name, order = orderName, filter = ViewBag.CurrentFilter })">
+                        Name
                     </th>
-                    <th>
-                        <div class="sortable" data-sort="@SortHelper.DATE" data-url="@Url.Action("GetData", new { sort = date, order = orderDate, filter = ViewBag.CurrentFilter })">
-                            Date Create
-                        </div>
+                    <th class="sortable" data-sort="@SortHelper.DATE" data-url="@Url.Action("GetData", new { sort = date, order = orderDate, filter = ViewBag.CurrentFilter })">
+                        Date Create
                     </th>
                     <th>Total questions</th>
                     <th>Status</th>
@@ -42,37 +36,36 @@
                 @for (int i = 0; i < Model.Count(); i++)
                 {
                     var item = Model[i];
-                    bool isPublic = item.status == (int)OnlineAptitudeExam.Utils.Enums.Status.PUBLIC;
-                    //string status = item.status == (int)OnlineAptitudeExam.Utils.Enums.Status.PUBLIC ? "Published" : "Private";
+                    bool isPublic = item.status == (int)Enums.Status.PUBLIC;
 
-                    <tr>
+                    <tr data-id='@item.id'>
                         <td>
                             @((Model.PageNumber - 1) * Model.PageSize + i + 1)
                         </td>
-                        <td>
+                        <td class="field-name">
                             @Html.DisplayFor(modelItem => item.name)
                         </td>
                         <td>
                             @OnlineAptitudeExam.Utils.DateUtils.toDateString(item.created_date)
                         </td>
                         <td>
-                            @item.Questions.Count
+                            @item.Questions.Count / @Constants.TOTAL_QUESTION_IN_TEST
                         </td>
                         <td>
                             <div class="form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" @(isPublic ? "checked" : "")>
+                                <input class="form-check-input" onclick="TestsToggleStatus($(this)); return false" type="checkbox" @(isPublic ? "checked" : "")>
                             </div>
                         </td>
                         <td class="d-flex justify-content-center">
-                            <a class="btn btn-warning btn-sm" href="@Url.Action("Edit","Tests")">
+                            <button class="btn btn-warning btn-sm" onclick="showTestsModal($(this), false);">
                                 <i class="mdi mdi-pencil"></i>
-                            </a>
-                            <a class="btn btn-primary btn-sm ms-1 me-1" href="@Url.Action("Detail","Tests")">
+                            </button>
+                            <button class="btn btn-primary btn-sm ms-1 me-1" onclick="showDetailTest($(this))">
                                 <i class="mdi mdi-text-box-multiple-outline"></i>
-                            </a>
-                            <a class="btn btn-danger btn-sm" href="@Url.Action("Delete","Tests")">
+                            </button>
+                            <button class="btn btn-danger btn-sm" onclick="showDeleteTestsModal($(this))">
                                 <i class="mdi mdi-delete-outline"></i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 }
@@ -82,8 +75,17 @@
     <br />
     <div id="contentPager">
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("GetData",
-            new { sort = ViewBag.CurrentSort, order = ViewBag.CurrentOrder, filter = ViewBag.CurrentFilter, page = page }))
+        @Html.PagedListPager(Model, page => Url.Action("GetData", new
+        {
+            sort = ViewBag.CurrentSort,
+            order = ViewBag.CurrentOrder,
+            filter = ViewBag.CurrentFilter,
+            page = page
+        }))
     </div>
 </div>
- 
+<script>
+    if (window.TestsIndex) {
+        loadScripts("TestsIndex()", true)
+    }
+</script>

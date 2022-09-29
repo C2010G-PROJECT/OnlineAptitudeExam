@@ -46,10 +46,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=5.0.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.5.0.17\lib\net461\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Primitives, Version=5.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.5.0.1\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -57,10 +63,29 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -177,9 +202,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\AccountsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\QuestionsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TestsController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -205,6 +232,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AptitudeExamModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\FormModelView.cs" />
+    <Compile Include="Models\Responses.cs" />
     <Compile Include="Utils\Authentication.cs" />
     <Compile Include="Utils\DateUtils.cs" />
     <Compile Include="Utils\Enums.cs" />
@@ -232,10 +261,15 @@
       <DependentUpon>OnlineAptitudeExam.mdf</DependentUpon>
     </Content>
     <Content Include="Content\css\admin\custom.css" />
+    <Content Include="Content\css\admin\draganddrop.css" />
+    <Content Include="Content\images\ic_move.svg" />
+    <Content Include="Scripts\admin\dragdroplist.js" />
     <Content Include="Content\css\admin\style.css" />
+    <Content Include="Content\css\editProfile.css" />
     <Content Include="Content\css\profile.css" />
-    <Content Include="Content\images\contact_img.jpg" />
-    <Content Include="Content\images\body_intro.jpg" />
+    <Content Include="Content\images\avatars\img_user_default.png" />
+    <Content Include="Content\images\edit.svg" />
+    <Content Include="Content\images\ic_camera.svg" />
     <Content Include="Content\images\logo-mini.svg" />
     <Content Include="Content\images\logo.svg" />
     <Content Include="Content\images\sort_asc.png" />
@@ -271,7 +305,12 @@
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Auth\Login.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\GetData.cshtml" />
+    <Content Include="Areas\Admin\Views\Tests\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Questions\GetData.cshtml" />
+    <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
+    <Content Include="Scripts\admin\AdminConst.js" />
+    <Content Include="Scripts\admin\AuthController.js" />
     <Content Include="Scripts\admin\Chart.min.js" />
     <Content Include="Scripts\admin\dashboard.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.categories.js" />
@@ -280,8 +319,9 @@
     <Content Include="Scripts\admin\flot\jquery.flot.pie.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.resize.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.stack.js" />
+    <Content Include="Scripts\admin\QuestionsController.js" />
     <Content Include="Scripts\ajax.helper.js" />
-    <Content Include="Scripts\admin\flot\TestsController.js" />
+    <Content Include="Scripts\admin\TestsController.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
     <Content Include="Scripts\jquery-3.6.0.slim.js" />
@@ -315,16 +355,12 @@
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Areas\Admin\Views\Tests\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Tests\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Tests\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Tests\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\tmp_Chart.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
     <Content Include="Views\Home\PrepareTesting.cshtml" />
     <Content Include="Views\Home\QuestionExam.cshtml" />
+    <Content Include="Views\Home\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

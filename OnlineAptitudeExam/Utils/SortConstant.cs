@@ -2,10 +2,10 @@
 namespace OnlineAptitudeExam.Utils
 {
     public class SortHelper
-    { 
+    {
         public const string ASC = "asc";
         public const string DESC = "desc";
-      
+
         public const string STT = "stt";
         public const string NAME = "name";
         public const string DATE = "date";
@@ -25,7 +25,7 @@ namespace OnlineAptitudeExam.Utils
             return string.IsNullOrEmpty(order) ? DESC : (order == DESC) ? ASC : null;
         }
 
-        public static bool isAsc(string s)
+        public static bool IsAsc(string s)
         {
             return ASC.Equals(s);
         }

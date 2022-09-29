@@ -9,24 +9,26 @@
     <title>Plus Admin</title>
     <link rel="shortcut icon" href="~/Content/images/logo-mini.svg" />
     <!-- plugins:css -->
-    <link rel="stylesheet" href="https://cdn.usebootstrap.com/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    @*<link rel="stylesheet" href="https://cdn.usebootstrap.com/bootstrap/5.0.1/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">*@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@("@")mdi/font@6.9.96/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/toast.custom.css" rel="stylesheet" />
+    <link href="~/Content/css/admin/draganddrop.css" rel="stylesheet" />
     <link href="~/Content/css/admin/style.css" rel="stylesheet" />
-    <link href="~/Content/css/admin/custom.css" rel="stylesheet" />  
+    <link href="~/Content/css/admin/custom.css" rel="stylesheet" />
     <!-- end plugins:css -->
 </head>
 
 <body>
     <div class="container-scroller">
         <div id="ct_toast"></div>
+        <div id="modalContent"></div>
         <!-- partial:partials/_sidebar.html -->
         <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item nav-profile border-bottom">
-                    <a href="#" class="nav-link flex-column">
+                    <a class="nav-link flex-column">
                         <div class="nav-profile-image">
                             <img src="~/Content/images/user_placeholder.png" alt="profile" />
                             <!--change to offline or busy as needed-->
@@ -64,25 +66,25 @@
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover">
-                    <a class="nav-link" href="#">
-                        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                        <span class="menu-title">Forms</span>
+                    <a class="nav-link" href="@Url.Action("Index", "Accounts")">
+                        <i class="mdi mdi-account-details menu-icon"></i>
+                        <span class="menu-title">Accounts</span>
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover">
-                    <a class="nav-link" href="pages/charts/chartjs.html">
+                    <a class="nav-link">
                         <i class="mdi mdi-chart-bar menu-icon"></i>
                         <span class="menu-title">Charts</span>
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover">
-                    <a class="nav-link" href="pages/tables/basic-table.html">
+                    <a class="nav-link">
                         <i class="mdi mdi-table-large menu-icon"></i>
                         <span class="menu-title">Tables</span>
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover d-lg-none">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutDialog">
+                    <a class="nav-link" onclick="SignOut()">
                         <i class="mdi mdi-logout-variant menu-icon"></i>
                         <span class="menu-title">Logout</span>
                     </a>
@@ -235,7 +237,7 @@
                             </div>
                         </li>
                         <li class="nav-item nav-logout d-none d-lg-block">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutDialog">
+                            <a class="nav-link" onclick="SignOut()">
                                 <i class="mdi mdi-logout-variant"></i>
                             </a>
                         </li>
@@ -247,8 +249,7 @@
             </nav>
             <!-- partial -->
             <div class="main-panel">
-                <div class="content-wrapper container-fluid pb-0 pt-3">
-                    <div id="main-container"></div>
+                <div id="contentBody" class="content-wrapper container-fluid pb-0 pt-3">
                     @RenderBody()
                 </div>
                 <!-- content-wrapper ends -->
@@ -264,25 +265,22 @@
             <!-- main-panel ends -->
         </div>
         <!-- page-body-wrapper ends -->
-        <!-- Logout dialog -->
-        <div class="modal fade" id="logoutDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <!-- Confirm dialog -->
+        <div class="modal fade" id="confirmDialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
-                @using (Html.BeginForm("LogOut", "Auth", FormMethod.Post))
-                {
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Sign out</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to sign out?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger">Yes</button>
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span class="p-0 me-1"><i class="mdi mdi-logout-variant" style="font-size:1.5em"></i></span>
+                        <h5 class="modal-title" id="staticBackdropLabel">Sign out</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                }
+                    <div class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" submit>Yes</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -306,13 +304,13 @@
         <script src="~/Scripts/admin/Chart.min.js"></script>
         <script src="~/Scripts/admin/dashboard.js"></script>
     *@
-
+    <script src="~/Scripts/ajax.helper.js"></script>
+    <script src="~/Scripts/admin/AdminConst.js"></script>
     <script src="~/Scripts/admin/misc.js"></script>
     <script src="~/Scripts/admin/settings.js"></script>
-    <script src="~/Scripts/ajax.helper.js"></script>
+    <script src="~/Scripts/admin/AuthController.js"></script>
     <!-- endinject -->
     @RenderSection("scripts", required: false)
-    @RenderSection("scripts1", required: false)
 
 
 </body>
