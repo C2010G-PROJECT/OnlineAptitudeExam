@@ -359,7 +359,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Profile.cshtml" />
+    <Content Include="Views\Home\Profiles.cshtml" />
     <Content Include="Views\Home\PrepareTesting.cshtml" />
     <Content Include="Views\Home\QuestionExam.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
