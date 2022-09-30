@@ -276,6 +276,7 @@
     <Content Include="Content\images\sort_asc.png" />
     <Content Include="Content\images\sort_both.png" />
     <Content Include="Content\images\sort_desc.png" />
+    <Content Include="Content\images\rule_img.jpg" />
     <Content Include="Content\images\user_placeholder.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\toast.custom.css" />
@@ -354,12 +355,13 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Auth\Login.cshtml" />
-    <Content Include="Views\Auth\Register.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Profile.cshtml" />
+    <Content Include="Views\Home\PrepareTesting.cshtml" />
+    <Content Include="Views\Home\QuestionExam.cshtml" />
     <Content Include="Views\Home\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>

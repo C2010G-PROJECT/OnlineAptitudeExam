@@ -1,31 +1,34 @@
 ﻿@using Microsoft.AspNet.Identity
 @using OnlineAptitudeExam.Models;
 
+@{
+    Account user= HttpContext.Current.Session["UserInfo"] as Account;
+}
+
 
 @if (Session["UserInfo"] is Account)
 {
-
-    Account user = Session["UserInfo"] as Account;
-    if (user.avatar == null)
-    {
-        user.avatar = "img_user_default.png";
-    }
-
+  
     <ul class="nav navbar-nav navbar-right">
         <li class="nav-link">
-
-            <img src="~/Content/images/avatars/@user.avatar" style="width: 30px; height: 30px; border-radius: 50%;" />
-        
-            <a id="fullname_display" href="@Url.Action("Profile", "Home")">@user.fullname</a>
+            @if (@user.avatar != null)
+            {
+                <img src="@user.avatar.ToString()" style="width:30px;height:30px;"/>
+            }
+            else
+            {
+                <img src="~/Content/images/user_placeholder.png" style="width:30px;height:30px;"/>
+            }
+            @Html.ActionLink(user.fullname.ToString(), "Profile", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
         </li>
-        <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
-    </ul>
-
+    <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
+</ul>
+    
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li class="nav-link">@Html.ActionLink("Register", "Register", "Auth", routeValues: null, htmlAttributes: new { id = "nav_register_header" })</li>
-        <li class="nav-link">@Html.ActionLink("Log in", "Login", "Auth", routeValues: null, htmlAttributes: new { id = "nav_login_header" })</li>
+        <li class="nav-link"><i class="fa-solid fa-right-to-bracket" style="color:white;">&nbsp;
+             </i> @Html.ActionLink(" Log in", "Login", "Auth", routeValues: null, htmlAttributes: new { id = "nav_login_header"})</li>
     </ul>
 }
