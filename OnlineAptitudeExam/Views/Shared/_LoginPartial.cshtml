@@ -19,7 +19,7 @@
             {
                 <img src="~/Content/images/user_placeholder.png" style="width:30px;height:30px;"/>
             }
-            @Html.ActionLink(user.fullname.ToString(), "Profile", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
+            @Html.ActionLink(user.fullname.ToString(), "Profiles", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
         </li>
     <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
 </ul>
