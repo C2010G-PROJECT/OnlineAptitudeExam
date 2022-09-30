@@ -2,10 +2,10 @@
 namespace OnlineAptitudeExam.Utils
 {
     public class SortHelper
-    { 
+    {
         public const string ASC = "asc";
         public const string DESC = "desc";
-      
+
         public const string STT = "stt";
         public const string NAME = "name";
         public const string DATE = "date";

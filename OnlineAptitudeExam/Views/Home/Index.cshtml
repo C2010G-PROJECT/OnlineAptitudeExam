@@ -1,17 +1,28 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div class="body_intro_flex">
 
+<div class="body_intro_flex">
+    
     <div class="jumbotron">
         <h1>Online Atitude Test</h1>
         <p class="lead">
             Online Atitude Test is an online recruitment solution and helps job seekers prove their abilities to employers through online tests.
         </p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Start Testing &raquo;</a></p>
+
+        @if (Session["UserInfo"] != null)
+        {
+            <p><a href="@Url.Action("PrepareTesting","Home")" class="btn btn-primary btn-lg">Start Testing &raquo;</a></p>
+        }
+        else
+        {
+            <p><a href="@Url.Action("Login","Auth")" class="btn btn-primary btn-lg">Start Testing &raquo;</a></p>
+
+        }
+
     </div>
 
-    <img src="~/Content/images/body_intro.jpg" class="img-fluid" >
+    <img src="~/Content/images/body_intro.jpg" class="img-fluid">
 </div>
 
 <div class="row">

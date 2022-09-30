@@ -5,6 +5,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using static OnlineAptitudeExam.Models.Responses;
 
 namespace OnlineAptitudeExam.Areas.Admin.Controllers
 {
@@ -22,16 +23,17 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
 
         // GET: Admin/Tests/GetData
         [Authentication(true)]
-        public ActionResult GetData(string sort, string order, string filter, string search, int? page)
+        [ValidateInput(false)]
+        public ActionResult GetData(string sort, string order, string filter, int? page)
         {
             ViewBag.CurrentSort = sort;
             ViewBag.CurrentOrder = order;
-            ViewBag.CurrentFilter = search = search ?? filter;
+            ViewBag.CurrentFilter = filter;
 
             var tests = from s in db.Tests select s;
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(filter))
             {
-                tests = tests.Where(s => s.name.Contains(search));
+                tests = tests.Where(s => s.name.Contains(filter));
             }
 
             if (!string.IsNullOrEmpty(order))
@@ -58,135 +60,104 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
 
         [HttpPost, ValidateInput(false)]
         [Authentication(true)]
-        public ActionResult Create(string name)
+        public JsonResult Create(FormModelView.Test model)
         {
-            if (ModelState.IsValid)
+            string name = model.Name;
+            if (db.Tests.Where(t => name.Equals(t.name)).Any())
             {
-                if (string.IsNullOrEmpty(name))
-                {
-                    return Json(Responses.Error("Name must be not null!"), JsonRequestBehavior.AllowGet);
-                }
-                if (db.Tests.Where(t => name.Equals(t.name)).Any())
-                {
-                    return Json(Responses.Error("Name is exists!"), JsonRequestBehavior.AllowGet);
-                }
-                Test test = new Test();
-                test.name = name;
-                test.created_date = DateTime.Now.Ticks;
-                test.status = (byte?)Enums.Status.PRIVATE;
-                db.Tests.Add(test);
-                db.SaveChanges();
-                return Json(Responses.Success(test, "Created test!!!"), JsonRequestBehavior.AllowGet);
+                return Json(Error("Name is exists!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                return Json(Responses.Error("Something was wrong"));
-            }
+            Test test = new Test();
+            test.name = name;
+            test.created_date = DateTime.Now.Ticks;
+            test.status = (byte?)Enums.Status.PRIVATE;
+            db.Tests.Add(test);
+            db.SaveChanges();
+            return Json(Success(test, "Created test!!!"), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost, ValidateInput(false)]
         [Authentication(true)]
-        public ActionResult Update(int id, string name)
+        public JsonResult Update(int id, FormModelView.Test model)
         {
-            if (ModelState.IsValid)
+            string name = model.Name;
+            var test = db.Tests.Find(id);
+            if (test == null)
             {
-                if (string.IsNullOrEmpty(name))
-                {
-                    return Json(Responses.Error("Name must be not null!"), JsonRequestBehavior.AllowGet);
-                }
-                var test = db.Tests.Find(id);
-                if (test == null)
-                {
-                    return Json(Responses.Error("Not found item!"), JsonRequestBehavior.AllowGet);
-                }
-                if (test.Exams.Count() != 0)
-                {
-                    return Json(Responses.Error("This test is already taken by users. You cannot change it!"), JsonRequestBehavior.AllowGet);
-                }
-                if (db.Tests.Where(t => t.id != id && name.Equals(t.name)).Any())
-                {
-                    return Json(Responses.Error("Name is exists!"), JsonRequestBehavior.AllowGet);
-                }
-                test.name = name;
-                db.Entry(test).State = EntityState.Modified;
-                db.SaveChanges();
-                return Json(Responses.Success(name, "Update success!!!"), JsonRequestBehavior.AllowGet);
+                return Json(Error("Not found item!"), JsonRequestBehavior.AllowGet);
             }
-            else
+            if (test.Exams.Count() != 0)
             {
-                return Json(Responses.Error("Something was wrong"), JsonRequestBehavior.AllowGet);
+                return Json(Error("This test is already taken by users. You cannot change it!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
             }
+            if (db.Tests.Where(t => t.id != id && name.Equals(t.name)).Any())
+            {
+                return Json(Error("Name is exists!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
+            }
+            test.name = name;
+            db.Entry(test).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(Success(name, "Update success!!!"), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         [Authentication(true)]
-        public ActionResult ToggleStatus(int id)
-        {
-            if (ModelState.IsValid)
-            {
-                var test = db.Tests.Find(id);
-                if (test == null)
-                {
-                    return Json(Responses.Error("Not found item!"), JsonRequestBehavior.AllowGet);
-                }
-                if (test.Exams.Count() < Constants.TOTAL_QUESTION_IN_TEST)
-                {
-                    if (test.status != (byte?)Enums.Status.PRIVATE)
-                    {
-                        test.status = (byte?)Enums.Status.PRIVATE;
-                        db.Entry(test).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-                    return Json(Responses.Error("This test does not have enough questions.Please create more questions.", new {status = test.status}), JsonRequestBehavior.AllowGet);
-                }
-                test.status = Enums.GetOpposite(test.status.Value);
-                db.Entry(test).State = EntityState.Modified;
-                db.SaveChanges();
-                return Json(Responses.Success(new { status = test.status }, "Update success!"), JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(Responses.Error("Something was wrong"), JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [HttpPost]
-        [Authentication(true)]
-        public ActionResult Delete(int id)
-        {
-            if (ModelState.IsValid)
-            {
-                var test = db.Tests.Find(id);
-                if(test == null)
-                {
-                    return Json(Responses.Error("Not found item!"), JsonRequestBehavior.AllowGet);
-                }
-                if (test.Exams.Count() != 0)
-                {
-                    return Json(Responses.Error("This test is already taken by users. You cannot change it!"), JsonRequestBehavior.AllowGet);
-                }
-                if (test.Questions.Count() != 0)
-                {
-                    db.Questions.RemoveRange(test.Questions);
-                }
-                db.Tests.Remove(test);
-                db.SaveChanges();
-                return Json(Responses.Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(Responses.Error("Something was wrong"), JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        [Authentication(true)]
-        public ActionResult Detail(int id, bool isAjax = false)
+        public JsonResult ToggleStatus(int id)
         {
             var test = db.Tests.Find(id);
+            if (test == null)
+            {
+                return Json(Error("Not found item!"), JsonRequestBehavior.AllowGet);
+            }
+            if (test.Questions.Count() < Constants.TOTAL_QUESTION_IN_TEST)
+            {
+                if (test.status != (byte?)Enums.Status.PRIVATE)
+                {
+                    test.status = (byte?)Enums.Status.PRIVATE;
+                    db.Entry(test).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json(Error("This test does not have enough questions.Please create more questions.", MessageType.WARNING, new { status = test.status }), JsonRequestBehavior.AllowGet);
+            }
+            test.status = Enums.GetOpposite(test.status.Value);
+            db.Entry(test).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(Success(new { test.status }, "Update success!"), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Authentication(true)]
+        public JsonResult Delete(int id)
+        {
+            var test = db.Tests.Find(id);
+            if (test == null)
+            {
+                return Json(Error("Not found item!"), JsonRequestBehavior.AllowGet);
+            }
+            if (test.Exams.Count() != 0)
+            {
+                return Json(Error("This test is already taken by users. You cannot change it!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
+            }
+            if (test.Questions.Count() != 0)
+            {
+                db.Questions.RemoveRange(test.Questions);
+            }
+            db.Tests.Remove(test);
+            db.SaveChanges();
+            return Json(Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
+        }
+
+        [Authentication(true)]
+        public ActionResult Detail(int id = -1, bool isAjax = false)
+        {
+            var test = db.Tests.Find(id);
+            if (test == null)
+            {
+                return HttpNotFound("404 Page not found");
+            }
             ViewBag.IsAjax = isAjax;
             return View(test);
         }
     }
-
 
 }

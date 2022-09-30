@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "PrepareTesting";
+}
+
+
+<div class="rule_layout">
+    <div class="row-cols-lg-2">
+        <h2 style="color:blue;">PrepareTesting</h2>
+
+        <div class="container-fluid">
+
+            <p>
+                <i class="fa-solid fa-1" style="color:blue;">.</i> The exam has 3 parts : <b>General Knowledge</b>,<b>Mathematics</b> and <b>Computer Technology</b>.
+            </p>
+        </div>
+        <div class="container-fluid">
+
+            <p>
+                <i class="fa-solid fa-2" style="color:blue;">.</i> Each item consists of <b>5 questions</b> and the test time is <b>30 minutes</b>
+            </p>
+        </div>
+        <div class="container-fluid">
+
+            <p>
+                <i class="fa-solid fa-3" style="color:blue;">.</i> After each test item, <b>it is not possible to go back to previous questions</b>, so think carefully before giving an answer.
+            </p>
+        </div>
+        <div class="container-fluid">
+
+            <p>
+                <i class="fa-solid fa-4" style="color:blue;">.</i> <b style="color:limegreen">Take the test with your true ability.</b>
+            </p>
+        </div>
+
+        <a href="@Url.Action("QuestionExam","Home")" id="start_test">Start Test <i class="fa-solid fa-hourglass-start"></i> </a>
+    </div>
+    
+        <img src="~/Content/images/rule_img.jpg" />
+</div>
+

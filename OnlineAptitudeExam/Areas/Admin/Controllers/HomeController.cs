@@ -6,7 +6,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         // GET: Admin/Home
-        [Authentication(true)]
+        [AuthenticationAttribute(true)]
         public ActionResult Index()
         {
             return RedirectToAction("Index", "Dashboard");

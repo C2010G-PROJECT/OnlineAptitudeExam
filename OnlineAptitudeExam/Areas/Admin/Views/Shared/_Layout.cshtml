@@ -14,8 +14,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/toast.custom.css" rel="stylesheet" />
+    <link href="~/Content/css/admin/draganddrop.css" rel="stylesheet" />
     <link href="~/Content/css/admin/style.css" rel="stylesheet" />
-    <link href="~/Content/css/admin/custom.css" rel="stylesheet" />  
+    <link href="~/Content/css/admin/custom.css" rel="stylesheet" />
     <!-- end plugins:css -->
 </head>
 
@@ -65,19 +66,19 @@
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover">
-                    <a class="nav-link" >
-                        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                        <span class="menu-title">Forms</span>
+                    <a class="nav-link" href="@Url.Action("Index", "Accounts")">
+                        <i class="mdi mdi-account-details menu-icon"></i>
+                        <span class="menu-title">Accounts</span>
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover">
-                    <a class="nav-link" >
+                    <a class="nav-link">
                         <i class="mdi mdi-chart-bar menu-icon"></i>
                         <span class="menu-title">Charts</span>
                     </a>
                 </li>
                 <li class="nav-item nav-item-hover">
-                    <a class="nav-link" >
+                    <a class="nav-link">
                         <i class="mdi mdi-table-large menu-icon"></i>
                         <span class="menu-title">Tables</span>
                     </a>
@@ -269,7 +270,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <i class="mdi mdi-logout-variant" style="padding: 12.5px 13px; margin: -13px -8px -13px -12.5px; font-size: 1.6rem "></i>
+                        <span class="p-0 me-1"><i class="mdi mdi-logout-variant" style="font-size:1.5em"></i></span>
                         <h5 class="modal-title" id="staticBackdropLabel">Sign out</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -304,9 +305,9 @@
         <script src="~/Scripts/admin/dashboard.js"></script>
     *@
     <script src="~/Scripts/ajax.helper.js"></script>
+    <script src="~/Scripts/admin/AdminConst.js"></script>
     <script src="~/Scripts/admin/misc.js"></script>
     <script src="~/Scripts/admin/settings.js"></script>
-    <script src="~/Scripts/admin/AdminConst.js"></script>
     <script src="~/Scripts/admin/AuthController.js"></script>
     <!-- endinject -->
     @RenderSection("scripts", required: false)

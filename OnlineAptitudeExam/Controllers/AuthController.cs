@@ -2,15 +2,11 @@
 using Microsoft.Owin.Security;
 using OnlineAptitudeExam.Models;
 using OnlineAptitudeExam.Utils;
-using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
- 
+
 namespace OnlineAptitudeExam.Controllers
 {
     [Authorize]
@@ -41,10 +37,7 @@ namespace OnlineAptitudeExam.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    return RedirectToAction("Index", "Admin");
-                }
+                
             }
             return View();
         }
@@ -59,17 +52,18 @@ namespace OnlineAptitudeExam.Controllers
             if (ModelState.IsValid)
             {
                 string password = Helper.GetMD5(model.Password);
-                var user = dbEntities.Accounts.Where(x => 
+                var user = dbEntities.Accounts.Where(x =>
                 x.username.Equals(model.UserName) &&
                 x.password.Equals(password)).FirstOrDefault();
- 
+
                 if (user != null)
                 {
                     Session["UserInfo"] = user;
                     bool isAdmin = user.type == ((int)Enums.Type.ADMIN);
                     if (isAdmin)
                     {
-                        return RedirectToAction("Index", "Admin");
+                        ViewBag.Error = "Username or password is incorrect!";
+                        Session["UserInfo"] = null;
                     }
                     else
                     {
@@ -84,62 +78,7 @@ namespace OnlineAptitudeExam.Controllers
             return View();
         }
          
-        //
-        // GET: /Auth/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            if (Session["UserInfo"] is Account)
-            {
-                Account user = Session["UserInfo"] as Account;
-                if (user.type.Equals((int)Enums.Type.USER))
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Admin");
-                }
-            }
-            return View();
-        }
-
-        //
-        // POST: /Auth/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-
-                var user = new Account();
-                user.username = model.UserName;
-                user.fullname = model.FullName;
-                user.password = Helper.GetMD5(model.ConfirmPassword);
-                user.status = 0;
-                user.type = 1;
-
-                var checkAuthExist = dbEntities.Accounts.FirstOrDefault(x => x.username == user.username);
-
-                if (checkAuthExist == null)
-                {
-                    dbEntities.Accounts.Add(user);
-                    dbEntities.SaveChanges();
-                    return RedirectToAction("Login", "Auth");
-                }
-                else
-                {
-                    ViewBag.error = "Username already exists.";
-                    return View();
-                }
-            }
-
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
-
+       
 
         // POST: /Auth/LogOff
         [HttpPost]
@@ -166,7 +105,7 @@ namespace OnlineAptitudeExam.Controllers
             return View();
         }
          
-
+       
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

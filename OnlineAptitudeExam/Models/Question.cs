@@ -22,7 +22,7 @@ namespace OnlineAptitudeExam.Models
     
         public int id { get; set; }
         public Nullable<int> test_id { get; set; }
-        public string question1 { get; set; }
+        public string question { get; set; }
         public string answers { get; set; }
         public string correct_answers { get; set; }
         public Nullable<byte> type { get; set; }
