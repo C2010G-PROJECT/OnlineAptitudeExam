@@ -9,12 +9,17 @@
 
 @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="container rounded bg-white mt-5 mb-5">
+    <div class="container rounded bg-white mt-5 mb-5 " style="
+    margin-bottom: 163px !important;
+">
         <div class="row">
             <div class="col-md-3 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5" style="
+    margin-top: 74px;
+">
+                    <input type="file" value="@account.avatar" name="avatar" />
 
-                    @Html.TextBoxFor(m => m.avatar, new { @class = "form-control", type = "file" })
+                    @*@Html.TextBoxFor(m => m.avatar, new { @class = "form-control", type = "file" })*@
 
                 </div>
             </div>

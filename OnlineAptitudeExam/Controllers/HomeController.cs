@@ -42,6 +42,9 @@ namespace OnlineAptitudeExam.Controllers
             else
             {
                 ViewBag.accountLogin = user;
+                if (user.avatar == null) {
+                    user.avatar = "user_placeholder.png";
+                }
             }
 
             ViewBag.accountLogin = user;
@@ -53,18 +56,40 @@ namespace OnlineAptitudeExam.Controllers
         public ActionResult EditProfile()
         {
             Account user = Session["UserInfo"] as Account;
-            ViewBag.accountEdit = user;
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            else { 
+                ViewBag.accountEdit = user;
+            }
             return View(user);
         }
 
+        string avatarCurrentFile;
+
         [HttpPost]
-        public ActionResult EditProfile(FormCollection key)
+        public ActionResult EditProfile(FormCollection key, HttpPostedFileBase avatar)
         {
             Account currentAccountSession = Session["UserInfo"] as Account;
 
+            if (avatar.ContentLength > 0)
+            {
+
+                // Save file
+                string rootPathFolder = Server.MapPath("/Content/images/avatars/");
+                string pathImage = rootPathFolder + avatar.FileName;
+                avatar.SaveAs(pathImage);
+                avatarCurrentFile = rootPathFolder + currentAccountSession.avatar;
+                if (System.IO.File.Exists(avatarCurrentFile) && avatar.FileName != currentAccountSession.avatar && currentAccountSession.avatar != "user_placeholder.png")
+                {
+                    System.IO.File.Delete(avatarCurrentFile);
+                }
+            }
+
             if (currentAccountSession != null)
             {
-                string sAvatar = key["NameAvatar"];
+                string sAvatar = avatar.FileName;
                 string sFullName = key["fullname"];
                 string sUseName = key["username"];
                 string sAge = key["age"];
@@ -88,7 +113,7 @@ namespace OnlineAptitudeExam.Controllers
                 Session["UserInfo"] = account;
             }
 
-            return RedirectToAction("Profiles");
+            return RedirectToAction("Profiles", "Home");
         }
 
         public ActionResult PrepareTesting()
