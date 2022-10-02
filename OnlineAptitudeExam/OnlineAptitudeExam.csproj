@@ -234,6 +234,7 @@
       <DependentUpon>AptitudeExamModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\FormModelView.cs" />
+    <Compile Include="Models\CustomModel.cs" />
     <Compile Include="Models\Responses.cs" />
     <Compile Include="Utils\Authentication.cs" />
     <Compile Include="Utils\DateUtils.cs" />
@@ -313,6 +314,8 @@
     <Content Include="Areas\Admin\Views\Accounts\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Accounts\GetDataAccount.cshtml" />
     <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\GetDataReport.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
