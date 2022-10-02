@@ -1,0 +1,59 @@
+﻿@model OnlineAptitudeExam.Models.Account
+@using OnlineAptitudeExam.Models;
+@using OnlineAptitudeExam.Utils;
+@using System.Text;
+@using Newtonsoft.Json;
+@{
+    bool isPublic = Model.status == (int)Enums.Status.UNLOCK;
+}
+<div class="mb-3 d-flex align-items-center">
+    <button onclick="history.back()" class="btn btn-outline-github" type="button">
+        <i class="mdi mdi-keyboard-backspace"></i>
+    </button>
+    <div class="ms-2 d-inline">
+        <span  style="font-size:20px;">&nbsp;Account Detail</span>
+    </div>
+</div>
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <span class="font-weight-bold"></span>
+                <span >@Model.fullname</span>
+            </div>
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                    </div>
+                    <br/> 
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Usename:&nbsp;</label>@Model.username
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <label class="labels">Age:&nbsp;</label>@Model.age
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <label class="labels">Descriptions:&nbsp;</label>@Model.descriptions
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <label class="labels">Address:&nbsp;</label>@Model.address
+                        </div>
+                        <hr/> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+}
+
