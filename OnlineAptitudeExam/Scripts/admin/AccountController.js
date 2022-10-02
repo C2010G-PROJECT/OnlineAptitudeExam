@@ -33,6 +33,7 @@ function showAccountsModal(element, isCreate = true) {
         mSubmit = mModal.find('.modal-submit'),
         mForm = mModal.find('form'),
         mEdtFullname = mModal.find('#Fullname'),
+        mEdtEmail = mModal.find('#Email'),
         mEdtUsername = mModal.find('#Username'),
         mEdtPassword = mModal.find('#Password')
 
@@ -42,8 +43,13 @@ function showAccountsModal(element, isCreate = true) {
     mTitle.text(title + ' Account')
     mSubmit.text(title)
 
+    let showFullname = document.getElementById("fullname-area");
+    showFullname.style.display = isCreate ? 'block' : 'none';
     let showUsername = document.getElementById("username-area");
     showUsername.style.display = isCreate ? 'block' : 'none';
+    let showEmail = document.getElementById("email-area");
+    showEmail.style.display = isCreate ? 'block' : 'none';
+
 
     // setup data
     pendingFocus(mModal, mEdtFullname);
@@ -51,18 +57,25 @@ function showAccountsModal(element, isCreate = true) {
     mEdtPassword.attr('type', 'password');
     mEdtPassword.val(generatePassword());
 
-    // VALIDATE USERNAME
-    jQuery.validator.addMethod('valid_username', function (mEdtUsername) {
-        var regexUsername = /^[a-zA-Z]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/;
-        return mEdtUsername.trim().match(regexUsername);
-    });
-    // VALIDATE NAME
+    // validate fullname
     jQuery.validator.addMethod('valid_fullname', function (mEdtFullname) {
         var regexFullname = /^[a-zA-Z-'. ]+$/;
         return mEdtFullname.trim().match(regexFullname);
     });
+
+    // validate email
+    jQuery.validator.addMethod('valid_email', function (mEdtEmail) {
+        var regexEmaile = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        return mEdtEmail.trim().match(regexEmaile);
+    });
+
+    // validate username
+    jQuery.validator.addMethod('valid_username', function (mEdtUsername) {
+        var regexUsername = /^[a-zA-Z]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$/;
+        return mEdtUsername.trim().match(regexUsername);
+    });
     
-    //VALIDATE PASWORD
+    // validate password
     jQuery.validator.addMethod('valid_password', function (mEdtPassword) {
         var regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/;
         return mEdtPassword.trim().match(regexPassword);
@@ -85,6 +98,10 @@ function showAccountsModal(element, isCreate = true) {
             Password: {
                 required: true,
                 valid_password:true
+            },
+            Email: {
+                required: true,
+                email: true
             }
         },
         messages: {
@@ -99,6 +116,10 @@ function showAccountsModal(element, isCreate = true) {
             Password: {
                 required: 'Please enter the Password',
                 valid_password: 'Password not match "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/"'
+            },
+            Email: {
+                required: 'Please enter the Email',
+                valid_email: 'Email not match "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"'
             }
         }
     }).resetForm()
@@ -110,6 +131,7 @@ function showAccountsModal(element, isCreate = true) {
         id = mTr.data('id');
         //mEdtUsername.val(mTr.find('.field-username').text().trim())
         mEdtFullname.val(mTr.find('.field-fullname').text().trim())
+        //mEdtEmail.val(mTr.find('.field-email').text().trim())
     }
 
     // init event
@@ -167,12 +189,9 @@ function AccountsUpdate(mModal, element, data) {
             mModal.modal('hide')
             showToast(data.message, data.msgType)
             let tr = element.closest('tr');
-            tr.find('.field-fullname').text(data.dataFullname),
-                //tr.find('.field-username').text(data.dataUsername),
-                tr.find('.field-password').text(data.dataPassword);
-
-            //$('#table-data-accounts')
-           
+            //tr.find('.field-fullname').text(data.dataFullname),
+            //tr.find('.field-username').text(data.dataUsername),
+            tr.find('.field-password').text(data.dataPassword);           
         } else {
             showToast(data.message, data.msgType)
         }

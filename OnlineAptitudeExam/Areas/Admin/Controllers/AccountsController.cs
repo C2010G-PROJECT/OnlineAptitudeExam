@@ -86,15 +86,21 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         public JsonResult Create(FormModelView.Account model)
         {
             string fullname = model.fullname;
+            string email = model.email;
             string username = model.username;
             string password = model.password;
             if (db.Accounts.Where(t => username.Equals(t.username)).Any())
             {
                 return Json(Error("Username is exists!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
             }
+            if(db.Accounts.Where(t => email.Equals(t.email)).Any())
+            {
+                return Json(Error("Email is exists!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
+            }
             Account account = new Account();
+            account.email = email;
             account.fullname = fullname;
-            account.username = username;
+            account.username = username;            
             account.password = Helper.GetMD5(password);
             account.type = (byte?)Enums.Type.USER;
             account.status = (byte?)Enums.Status.UNLOCK;
@@ -109,12 +115,12 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         [Authentication(true)]
         public JsonResult Update(int id, FormModelView.Account model)
         {
-            string fullname = model.fullname;
+            //string fullname = model.fullname;
             //string username = model.username;
             string password = model.password;
 
             var account = db.Accounts.Find(id);
-            if (password == null || fullname == null)
+            if (password == null)
             {
                 return Json(Error("Can not be blank!"), JsonRequestBehavior.AllowGet);
             }
@@ -127,7 +133,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
                 return Json(Error("Password not duplicate old password!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
             }
 
-            account.fullname = fullname;
+            //account.fullname = fullname;
             //account.username = username;
             account.password = Helper.GetMD5(password);
             db.Entry(account).State = EntityState.Modified;

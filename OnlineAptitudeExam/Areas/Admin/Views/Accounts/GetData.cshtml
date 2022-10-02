@@ -28,6 +28,7 @@
                     <th class="sortable" data-sort="@SortHelper.DATE" data-url="@Url.Action("GetData", new { sort = date, order = orderDate, filter = ViewBag.CurrentFilter })">
                         Created at
                     </th>
+                    <th>Email</th>
                     <th colspan="2"> Status </th>
                     <th colspan="2"> Actions</th>
                 </tr>
@@ -54,6 +55,9 @@
                         </td>
                         <td>
                             @OnlineAptitudeExam.Utils.DateUtils.toDateString(item.created_at)
+                        </td>
+                        <td class="field-email">
+                            @Html.DisplayFor(modelItem => item.email)
                         </td>
                         <td class="field-status">
                             @(item.status == 0 ? "Unlock":"Locked")
