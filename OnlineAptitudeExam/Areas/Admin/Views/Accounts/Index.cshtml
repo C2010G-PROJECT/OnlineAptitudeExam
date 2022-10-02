@@ -1,9 +1,5 @@
-﻿@model PagedList.IPagedList<OnlineAptitudeExam.Models.Account>
-@using PagedList.Mvc;
-@using OnlineAptitudeExam.Utils;
-
-<div class="row flex-md-row flex-sm-column-reverse justify-content-between">
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-3">
+﻿<div class="row flex-md-row flex-sm-row flex-column-reverse justify-content-between">
+    <div class="col-lg-4 col-md-6 col-sm-10 mb-3">
         <div class="input-group shadow-sm">
             <input id="searchAccounts" class="form-control form-control-sm " type="text" placeholder="Search"
                    data-param-key="filter"
@@ -13,7 +9,7 @@
             </button>
         </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-end">
+    <div class="col-lg-4 col-md-6 col-sm-2 mb-3 d-flex justify-content-end">
         <button class="btn btn-success" onclick="showAccountsModal($(this))" type="button">
             <i class="mdi mdi-plus"></i>
         </button>
