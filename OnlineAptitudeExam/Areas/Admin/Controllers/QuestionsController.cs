@@ -134,5 +134,13 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             db.SaveChanges();
             return Json(Responses.Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
         }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

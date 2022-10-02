@@ -28,7 +28,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
 
         [Authentication(true)]
         //[ValidateInput(false)]
-        public ActionResult GetDataAccount(string sort, string order, string filter, int? page)
+        public ActionResult GetData(string sort, string order, string filter, int? page)
         {
             ViewBag.CurrentSort = sort;
             ViewBag.CurrentOrder = order;
@@ -36,7 +36,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
 
             var accounts = from s in db.Accounts
                            select s;
-            accounts = accounts.Where(a => a.type == 1);
+            accounts = accounts.Where(a => a.type == (int)Enums.Type.USER);
             if (!string.IsNullOrEmpty(filter))
             {
                 accounts = accounts.Where(s => s.fullname.Contains(filter));
@@ -97,7 +97,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             account.username = username;
             account.password = Helper.GetMD5(password);
             account.type = (byte?)Enums.Type.USER;
-            account.status = (byte?)Enums.Status.LOCK;
+            account.status = (byte?)Enums.Status.UNLOCK;
             account.created_at = DateTime.Now.Ticks;
 
             db.Accounts.Add(account);
@@ -135,6 +135,24 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             return Json(Success(password, "Update success!!!"), JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        [Authentication(true)]
+        public JsonResult Delete(int id)
+        {
+            var account = db.Accounts.Find(id);
+            if (account == null)
+            {
+                return Json(Error("Not found item!"), JsonRequestBehavior.AllowGet);
+            }
+            if (account.Exams.Count() != 0)
+            {
+                return Json(Error("This account is already tested. You cannot remove it!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
+            }
+            db.Accounts.Remove(account);
+            db.SaveChanges();
+            return Json(Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
+        }
+
         [Authentication(true)]
         public ActionResult Detail(int id = -1, bool isAjax = false)
         {
@@ -151,81 +169,6 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         public ActionResult Create()
         {
             return View();
-        }
-
-        // POST: Admin/Accounts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        /* public ActionResult Create([Bind(Include = "id,username,password,fullname,type,status,descriptions,address,avatar,age")] Account account)
-         {
-             if (ModelState.IsValid)
-             {
-                 db.Accounts.Add(account);
-                 db.SaveChanges();
-                 return RedirectToAction("Index");
-             }
-
-             return View(account);
-         }
-        */
-
-        // GET: Admin/Accounts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
-
-        // POST: Admin/Accounts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,username,password,fullname,type,status,descriptions,address,avatar,age")] Account account)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(account).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(account);
-        }
-
-        // GET: Admin/Accounts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Account account = db.Accounts.Find(id);
-            if (account == null)
-            {
-                return HttpNotFound();
-            }
-            return View(account);
-        }
-
-        // POST: Admin/Accounts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Account account = db.Accounts.Find(id);
-            db.Accounts.Remove(account);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

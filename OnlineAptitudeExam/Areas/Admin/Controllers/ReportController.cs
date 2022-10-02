@@ -65,7 +65,15 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             int pageNumber = (page == null || page < 1) ? 1 : (int)page;
             return View(testsReport.ToPagedList(pageNumber, pageSize));
         }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 
-  
+
 }

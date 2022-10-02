@@ -7,12 +7,10 @@
         <div class="input-group shadow-sm">
             <input id="searchAccounts" class="form-control form-control-sm " type="text" placeholder="Search"
                    data-param-key="filter"
-                   data-url="@Url.Action("GetDataAccount")">
-            <div class="input-group-append">
-                <button class="btn btn-info" type="button">
-                    <i class="mdi mdi-magnify"></i>
-                </button>
-            </div>
+                   data-url="@Url.Action("GetData")">
+            <button class="btn btn-info input-group-append" type="button">
+                <i class="mdi mdi-magnify"></i>
+            </button>
         </div>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12 mb-3 d-flex justify-content-end">
@@ -23,7 +21,7 @@
 </div>
 
 <div id="accountsTable">
-    @Html.Action("GetDataAccount")
+    @Html.Action("GetData")
 </div>
 
 <div id="accountsModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -45,10 +43,10 @@
                 </div>
                 <div class="form-group">
                     <label for="Password">Password</label>
-                    <input id="Password" name="Password" class="form-control mb-2" type="password" value=@Membership.GeneratePassword(12, 1) />
+                    <input id="Password" name="Password" class="form-control mb-2" type="password" />
                     <div>
-                        <input type="checkbox" onclick="showPassword()">
-                        <span>Show Password</span>
+                        <input id="showPass" class="mouse-pointer" type="checkbox" onclick="showPassword()">
+                        <label for="showPass" class="user-select-none mouse-pointer">Show Password</label>
                     </div>
                 </div>
             </form>
@@ -66,12 +64,12 @@
         if (!window.AccountIndex) {
             loadScripts("/Scripts/admin/AccountController.js");
         }
+        loadScripts("AccountsIndex()", true)
     </script>
 }
 @section scripts {
     <script src="~/Scripts/admin/AccountController.js"></script>
-
     <script>
-        AccountsIndex()
+        AccountsIndex(true)
     </script>
 }

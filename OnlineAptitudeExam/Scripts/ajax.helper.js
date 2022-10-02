@@ -286,3 +286,13 @@ function objectifyForm(formElement) {
 function ucfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+function generatePassword() {
+    var length = 20,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
