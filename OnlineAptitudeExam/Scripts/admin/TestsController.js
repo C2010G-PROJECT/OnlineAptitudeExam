@@ -13,7 +13,7 @@ function TestsIndex() {
 }
 
 function prepareSearchBar() {
-    refreshSearchBar('#searchTests', 'filter');
+    refreshSearchBar('#searchTests');
     prepareKeyboardAction('#searchTests', _TestsTable, _ACTION_Tests_Index);
 }
 

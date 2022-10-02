@@ -1,67 +1,54 @@
-﻿@if (ViewBag.isAjax != null && ViewBag.isAjax)
-{
-    Layout = null;
-}
-
-<h2>Report Index</h2>
-
-
-<div class="row flex-md-row flex-sm-row flex-column-reverse justify-content-between">
-    <div class="col-lg-4 col-md-6 col-sm-10 mb-3 w-25">
+﻿<div class="row justify-content-between">
+    <div class="col-lg-5 col-md-8 col-sm-8 col-12 mb-3">
         <div class="input-group shadow-sm">
-            <input id="searchTests" class="form-control form-control-sm " type="text" placeholder="Name Exam"
+            <input id="startDate" class="form-control form-control-sm " type="date"  data-url="@Url.Action("GetData")">
+            <button class="input-group-append btn btn-secondary px-3 py-0" style="pointer-events:none">
+                to
+            </button>
+            <input id="endDate" class="form-control form-control-sm " type="date" data-url="@Url.Action("GetData")">
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-4 col-sm-4 col-12 mb-3 g-lg-0">
+        <div class="input-group flex-nowrap" style="height:100%">
+            <button id="btnW" class="btn btn-outline-github px-2 flex-grow-1">
+                Week
+            </button>
+            <button id="btnM" class="btn btn-outline-youtube px-2 flex-grow-1">
+                Month
+            </button>
+            <button id="btnQ" class="btn btn-outline-behance px-2 flex-grow-1">
+                Quarter
+            </button>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-8 col-sm-12 col-12 mb-3">
+        <div class="input-group shadow-sm">
+            <input id="searchTestsReport" class="form-control form-control-sm " type="text" placeholder="Search"
                    data-param-key="filter"
                    data-url="@Url.Action("GetData")">
-        </div>
-    </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-2 mb-3 w-25">
-        <div class="input-group shadow-sm">
-            <input id="searchTests" class="form-control form-control-sm " type="date"
-                   data-param-key="filter"
-                   data-url="@Url.Action("GetDataReport")">
-        </div>
-    </div>
-
-    <div class="mb-3 d-flex" style="width:fit-content; align-items:center"> To </div>
-
-    <div class="col-lg-4 col-md-6 col-sm-2 mb-3 w-25">
-        <div class="input-group shadow-sm">
-            <input id="searchTests" class="form-control form-control-sm " type="date"
-                   data-param-key="filter"
-                   data-url="@Url.Action("GetDataReport")">
-        </div>
-    </div>
-
-    <div class="input-group-append">
-        <button class="btn btn-info" type="button">
-            <i class="mdi mdi-magnify"></i>
-        </button>
-    </div>
-</div>
-
-<div class="reportTable">
-    @Html.Action("GetDataReport")
-</div>
-
-<div id="testsModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="p-0 me-1"><i class="mdi mdi-logout-variant" style="font-size:1.5em"></i></span>
-                <h5 class="modal-title" id="staticBackdropLabel">Title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form class="modal-body">
-                <div class="form-group">
-                    <label for="Name">Name</label>
-                    <input id="Name" name="Name" class="form-control mb-2" placeholder="Name" type="text" />
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary modal-submit">Submit</button>
-            </div>
+            <button class="input-group-append btn btn-info" type="button">
+                <i class="mdi mdi-magnify"></i>
+            </button>
         </div>
     </div>
 </div>
+
+<div id="reportTable">
+    @Html.Action("GetData")
+</div>
+
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+    <script>
+        if (!window.ReportIndex) {
+            loadScripts("/Scripts/admin/ReportController.js");
+        }
+        loadScripts("ReportIndex()", true)  
+    </script>
+}
+@section scripts {
+    <script src="~/Scripts/admin/ReportController.js"></script>
+    <script>ReportIndex()</script>
+}

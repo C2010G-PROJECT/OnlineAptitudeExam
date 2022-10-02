@@ -60,10 +60,10 @@ function refreshTableItemSort(tableId) {
 /**
  * 
  * @param {String} searchId
- * @param {String} varNames
  */
-function refreshSearchBar(searchId, varNames) {
-    $(searchId).val(getUrlParam(varNames));
+function refreshSearchBar(searchId) {
+    let paramKey = $(searchId).data("param-key");
+    $(searchId).val(getUrlParam(paramKey));
 }
 
 function pendingFocus(modal, ele) {
@@ -235,14 +235,10 @@ function getTailUrlWidthoutQuestionMark(url) {
     return lastIndex != -1 ? url.substring(lastIndex + 1) : "";
 }
 
-function getUrlParam(varNames) {
+function getUrlParam(param) {
     let searchParams = new URLSearchParams(window.location.search)
-    varNames = varNames.split(" ");
-    for (let i = 0; i < varNames.length; i++) {
-        const name = varNames[i].trim();
-        if (searchParams.has(name)) {
-            return searchParams.get(name);
-        }
+    if (searchParams.has(param)) {
+        return searchParams.get(param);
     }
     return null;
 }

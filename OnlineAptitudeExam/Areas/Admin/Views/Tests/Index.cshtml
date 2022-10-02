@@ -1,21 +1,13 @@
-﻿@if (ViewBag.isAjax != null && ViewBag.isAjax)
-{
-    Layout = null;
-}
-
-<h2>Test Index</h2>
-
+﻿
 <div class="row flex-md-row flex-sm-row flex-column-reverse justify-content-between">
     <div class="col-lg-4 col-md-6 col-sm-10 mb-3">
         <div class="input-group shadow-sm">
             <input id="searchTests" class="form-control form-control-sm " type="text" placeholder="Search"
                    data-param-key="filter"
                    data-url="@Url.Action("GetData")">
-            <div class="input-group-append">
-                <button class="btn btn-info" type="button">
-                    <i class="mdi mdi-magnify"></i>
-                </button>
-            </div>
+            <button class="input-group-append btn btn-info" type="button">
+                <i class="mdi mdi-magnify"></i>
+            </button>
         </div>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-2 mb-3 d-flex justify-content-end">

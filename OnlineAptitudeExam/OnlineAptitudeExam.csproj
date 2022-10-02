@@ -311,7 +311,7 @@
     <Content Include="Areas\Admin\Views\Questions\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Report\GetDataReport.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\GetData.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
@@ -324,6 +324,7 @@
     <Content Include="Scripts\admin\flot\jquery.flot.resize.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.stack.js" />
     <Content Include="Scripts\admin\QuestionsController.js" />
+    <Content Include="Scripts\admin\ReportController.js" />
     <Content Include="Scripts\ajax.helper.js" />
     <Content Include="Scripts\admin\TestsController.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
