@@ -13,10 +13,10 @@ namespace OnlineAptitudeExam.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class OnlineAptitudeExamEntities : DbContext
+    public partial class OnlineAptitudeExamEntities1 : DbContext
     {
-        public OnlineAptitudeExamEntities()
-            : base("name=OnlineAptitudeExamEntities")
+        public OnlineAptitudeExamEntities1()
+            : base("name=OnlineAptitudeExamEntities1")
         {
         }
     

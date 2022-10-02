@@ -12,14 +12,15 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="username" Type="nvarchar" MaxLength="32" />
           <Property Name="password" Type="varchar" MaxLength="32" />
+          <Property Name="email" Type="varchar" MaxLength="150" />
           <Property Name="fullname" Type="nvarchar" MaxLength="100" />
-          <Property Name="type" Type="tinyint" />
-          <Property Name="status" Type="tinyint" />
-          <Property Name="descriptions" Type="nvarchar" MaxLength="255" />
+          <Property Name="age" Type="int" />
           <Property Name="address" Type="nvarchar" MaxLength="100" />
           <Property Name="avatar" Type="nvarchar" MaxLength="150" />
-          <Property Name="age" Type="int" />
+          <Property Name="descriptions" Type="nvarchar" MaxLength="255" />
           <Property Name="created_at" Type="bigint" />
+          <Property Name="type" Type="tinyint" />
+          <Property Name="status" Type="tinyint" />
         </EntityType>
         <EntityType Name="Exam">
           <Key>
@@ -159,15 +160,16 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="username" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="fullname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="type" Type="Byte" />
-          <Property Name="status" Type="Byte" />
-          <Property Name="descriptions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="age" Type="Int32" />
           <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="avatar" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="age" Type="Int32" />
+          <Property Name="descriptions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Exams" Relationship="Self.FK_Exam_User" FromRole="Account" ToRole="Exam" />
           <Property Name="created_at" Type="Int64" />
+          <Property Name="type" Type="Byte" />
+          <Property Name="status" Type="Byte" />
         </EntityType>
         <EntityType Name="Exam">
           <Key>
@@ -314,6 +316,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="OnlineAptitudeExamModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="created_at" ColumnName="created_at" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="username" ColumnName="username" />
