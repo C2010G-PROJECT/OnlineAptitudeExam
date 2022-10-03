@@ -7,9 +7,9 @@ const _ACTION_Report_Delete = _ACTION_Report_Index + '/Delete'
 const _ACTION_Report_ToggleStatus = _ACTION_Report_Index + '/ToggleStatus'
 const _ACTION_Report_Detail = _ACTION_Report_Index + '/Detail'
 
-function ReportIndex() {
+function ReportIndex(isReload = false) {
     prepareDatePicker();
-    prepareSearchBar();
+    prepareReportSearchBar(isReload);
     prepareReportTable();
 }
 
@@ -17,21 +17,85 @@ function prepareDatePicker() {
     let mSDate = $('#startDate');
     let mEDate = $('#endDate');
 
-    $('#btnW').off('click').on('click', function () { set_current_week(mSDate, mEDate) })
-    $('#btnM').off('click').on('click', function () { set_current_month(mSDate, mEDate) })
-    $('#btnQ').off('click').on('click', function () { set_current_quarter(mSDate, mEDate) })
+    let date = new Date();
+    let defMin = '1900-01-01';
+    let defMax = date.getFullYear() + '-' + zezoFirstIfNeed(date.getMonth() + 1) + '-' + zezoFirstIfNeed(date.getDate());
+
+    let setupData = function (first, second, param_key, attr, defVal) {
+        let searchParams = new URLSearchParams(location.search)
+        if (searchParams.has(param_key)) {
+            first.val(new Date(Number.parseInt(searchParams.get(param_key))).toISOString().split("T")[0])
+            second.attr(attr, first.val())
+        } else {
+            first.val('')
+            second.attr(attr, defVal)
+        }
+    }
+
+    mSDate.attr('min', defMin);
+    mEDate.attr('max', defMax);
+
+    setupData(mSDate, mEDate, 'd_start', 'min', defMin)
+    setupData(mEDate, mSDate, 'd_end', 'max', defMax)
+
+    let onDateChange = function () {
+        let s_val = mSDate.val();
+        let e_val = mEDate.val();
+        let searchParams = new URLSearchParams(location.search)
+        searchParams.delete('page')
+        searchParams.delete('d_start')
+        searchParams.delete('d_end')
+        if (s_val.length != 0) {
+            searchParams.set('d_start', new Date(s_val).getTime())
+        }
+        if (e_val.length != 0) {
+            searchParams.set('d_end', new Date(e_val).getTime() + (23 * 59 * 59 * 1000))
+        }
+        load(_ACTION_Report_GetData + '?' + searchParams.toString(), _ReportTable, _ACTION_Report_Index)
+    }
+
+    $('#btnW').off('click').on('click', function () {
+        set_current_week(mSDate, mEDate)
+        onDateChange();
+    })
+    $('#btnM').off('click').on('click', function () {
+        set_current_month(mSDate, mEDate)
+        onDateChange();
+    })
+    $('#btnQ').off('click').on('click', function () {
+        set_current_quarter(mSDate, mEDate)
+        onDateChange();
+    })
+
+    $(':input[type=date]').off('click').on('click', function () { $(this).blur() });
 
     mSDate.off('change').on('change', function () {
-        
+        console.log('change')
+        let startDate = new Date(mSDate.val());
+        let endDate = new Date(mEDate.val());
+        if (startDate.getTime() > endDate.getTime()) {
+            mSDate.val(mEDate.val());
+        }
+        mEDate.attr('min', mSDate.val())
+        onDateChange();
     })
     mEDate.off('change').on('change', function () {
         console.log('change')
+        let startDate = new Date(mSDate.val());
+        let endDate = new Date(mEDate.val());
+        if (startDate.getTime() > endDate.getTime()) {
+            mEDate.val(mSDate.val());
+        }
+        mSDate.attr('max', mEDate.val())
+        onDateChange();
     })
 
 }
 
-function prepareSearchBar() {
-    refreshSearchBar('#searchTestsReport');
+function prepareReportSearchBar(isReload = false) {
+    if (isReload) {
+        refreshSearchBar('#searchTestsReport');
+    }
     prepareKeyboardAction('#searchTestsReport', _ReportTable, _ACTION_Report_Index);
 }
 
@@ -41,22 +105,20 @@ function prepareReportTable() {
     prepareMouseAction(mMouseSeletor, _ReportTable, _ACTION_Report_Index);
 }
 
+function zezoFirstIfNeed(num) {
+    if (num < 10) {
+        return '0' + num;
+    }
+    return num;
+}
 
 function set_current_week(from, to) {
     var date = new Date();
-    var first = date.getDate() - 5;
-    var last = date.getDate();
-
-    var start = new Date(date.getFullYear(), date.getMonth(), first).toISOString().split("T")[0];
-    var end = new Date(date.setDate(last)).toISOString().split("T")[0];
-    //var date = new Date();
-    //var minusDay = date.getDay() - 1;
-    //minusDay = minusDay == -1 ? 6 : minusDay;
-
-    //console.log(date.getDay())
-    //var start = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getUTCDay()).toISOString().split("T")[0];
-    //var end = new Date(date.setDate(date.getDate() + 7)).toISOString().split("T")[0];
-
+    var minusDay = date.getDay() - 1;
+    minusDay = minusDay == -1 ? 6 : minusDay;
+    var startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - minusDay + 1);
+    var start = startDate.toISOString().split("T")[0];
+    var end = new Date(startDate.setDate(startDate.getDate() + 6)).toISOString().split("T")[0];
     from.val(start); to.val(end);
 }
 

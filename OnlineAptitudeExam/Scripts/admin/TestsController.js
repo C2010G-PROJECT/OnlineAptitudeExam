@@ -7,13 +7,15 @@ const _ACTION_Tests_Delete = _ACTION_Tests_Index + '/Delete'
 const _ACTION_Tests_ToggleStatus = _ACTION_Tests_Index + '/ToggleStatus'
 const _ACTION_Tests_Detail = _ACTION_Tests_Index + '/Detail'
 
-function TestsIndex() {
-    prepareSearchBar();
+function TestsIndex(isReload = false) {
+    prepareTestsSearchBar(isReload);
     prepareTestTable();
 }
 
-function prepareSearchBar() {
-    refreshSearchBar('#searchTests');
+function prepareTestsSearchBar(isReload = false) {
+    if (isReload) {
+        refreshSearchBar('#searchTests');
+    }
     prepareKeyboardAction('#searchTests', _TestsTable, _ACTION_Tests_Index);
 }
 

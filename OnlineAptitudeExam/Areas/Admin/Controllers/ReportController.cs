@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using OnlineAptitudeExam.Models;
 using OnlineAptitudeExam.Utils;
@@ -25,7 +22,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         // GET: Admin/Tests/GetData
         [Authentication(true)]
         [ValidateInput(false)]
-        public ActionResult GetData(string sort, string order, string filter, string d_start, string d_end, int? page)
+        public ActionResult GetData(string sort, string order, string filter, long? d_start, long? d_end, int? page)
         {
             ViewBag.CurrentSort = sort;
             ViewBag.CurrentOrder = order;
@@ -37,10 +34,17 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             FROM Test JOIN Exam on Test.id = Exam.test_id
             GROUP BY Test.id, Test.name;*/
 
-            var testsReport = (from t in db.Tests 
-                        join e in db.Exams on t.id equals e.test_id 
-                        group t by t.id into g 
-                        select g)
+            long start = 0, end = long.MaxValue;
+            if (d_start.HasValue)
+                start = DateUtils.FromUnixTime(d_start.Value).Ticks;
+            if (d_end.HasValue)
+                end = DateUtils.FromUnixTime(d_end.Value).Ticks;
+
+            var testsReport = (from t in db.Tests
+                               join e in db.Exams on t.id equals e.test_id
+                               where e.time_start > start && e.time_start < end
+                               group t by t.id into g
+                               select g)
                         .ToList()
                         .Select(val => new TestReport(val.First().id, val.First().name, val.Count()));
             if (!string.IsNullOrEmpty(filter))
@@ -74,6 +78,5 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
     }
-
 
 }

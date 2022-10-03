@@ -8,11 +8,11 @@ const _ACTION_Accounts_ToggleStatus = _ACTION_Accounts_Index + '/ToggleStatus'
 const _ACTION_Accounts_Detail = _ACTION_Accounts_Index + '/Detail'
 
 function AccountsIndex(isReload = false) {
-    prepareSearchBar(isReload);
+    prepareTestsSearchBar(isReload);
     prepareAccountTable();
 }
 
-function prepareSearchBar(isReload) {
+function prepareTestsSearchBar(isReload) {
     if (isReload) {
         refreshSearchBar('#searchAccounts');
     }
