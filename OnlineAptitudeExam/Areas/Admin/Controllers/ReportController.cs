@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using OnlineAptitudeExam.Models;
 using OnlineAptitudeExam.Utils;
@@ -43,31 +44,43 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             var testsReport = (from t in db.Tests
                                join e in db.Exams on t.id equals e.test_id
                                where e.time_start > start && e.time_start < end
-                               group t by t.id into g
+                               group e by e.test_id into g
                                select g)
                         .ToList()
-                        .Select(val => new TestReport(val.First().id, val.First().name, val.Count()));
+                        .Select(val => new TestReport(val.First().test_id, val.First().Test.name, val.ToList()));
             if (!string.IsNullOrEmpty(filter))
             {
-                testsReport = testsReport.Where(s => s.name.Contains(filter));
+                testsReport = testsReport.Where(s => s.Name.Contains(filter));
             }
             if (!string.IsNullOrEmpty(order))
             {
                 switch (sort)
                 {
                     case SortHelper.NAME:
-                        testsReport = SortHelper.IsAsc(order) ? testsReport.OrderBy(s => s.name) : testsReport.OrderByDescending(s => s.name);
+                        testsReport = SortHelper.IsAsc(order) ? testsReport.OrderBy(s => s.Name) : testsReport.OrderByDescending(s => s.Name);
                         break;
                     default:
-                        testsReport = SortHelper.IsAsc(order) ? testsReport.OrderBy(s => s.id) : testsReport.OrderByDescending(s => s.id);
+                        testsReport = SortHelper.IsAsc(order) ? testsReport.OrderBy(s => s.Id) : testsReport.OrderByDescending(s => s.Id);
                         break;
                 }
             }
-            else testsReport = testsReport.OrderByDescending(s => s.id);
+            else testsReport = testsReport.OrderByDescending(s => s.Id);
 
             int pageSize = 5;
             int pageNumber = (page == null || page < 1) ? 1 : (int)page;
             return View(testsReport.ToPagedList(pageNumber, pageSize));
+        }
+
+        [Authentication(true)]
+        public ActionResult Detail(int id = -1, bool isAjax = false)
+        {
+            var exam = db.Exams.Find(id);
+            if (exam == null)
+            {
+                return HttpNotFound("404 Page not found");
+            }
+            ViewBag.IsAjax = isAjax;
+            return View(exam);
         }
 
         protected override void Dispose(bool disposing)
@@ -80,4 +93,5 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         }
     }
 
+   
 }

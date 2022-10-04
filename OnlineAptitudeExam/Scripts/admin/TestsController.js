@@ -103,7 +103,7 @@ function showDeleteTestsModal(element) {
 function showDetailTest(element) {
     let id = element.closest('tr').data('id');
     let url = _ACTION_Tests_Detail + '/' + id;
-    load(url, ContentBody, url)
+    load(url, ContentBody, url, "addActiveClasss")
 }
 
 function TestsCreate(mModal, data) {

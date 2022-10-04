@@ -142,3 +142,39 @@ function set_current_quarter(from, to) {
     var end = lastDate.toISOString().split("T")[0];
     from.val(start); to.val(end);
 }
+
+function toggleReportTable(element) {
+    let mTable = element.closest('table');
+    let mTr = element.closest('tr').next();
+    let mIcon = element.find('i');
+
+    if (!mIcon.hasClass('active')) {
+        mTable.find('.btn-toggle').find('i').each(function () {
+            if ($(this).hasClass('mdi-minus')) {
+                let mParent = $(this).parent();
+                mParent.removeClass('btn-outline-youtube')
+                mParent.addClass('btn-outline-behance')
+                $(this).removeClass('mdi-minus active').addClass('mdi-plus')
+                $(this).closest('tr').next().hide();
+            }
+        })
+    }
+
+    element.removeClass('btn-outline-youtube btn-outline-behance')
+    mIcon.removeClass();
+    if (!mTr.is(':visible')) {
+        element.addClass('btn-outline-youtube')
+        mIcon.addClass('mdi mdi-minus active')
+    } else {
+        element.addClass('btn-outline-behance')
+        mIcon.addClass('mdi mdi-plus')
+    }
+    element.css('pointer-events', 'none')
+    mTr.toggle(300, function () { element.css('pointer-events', 'all') });
+}
+
+function showDetailReport(element) {
+    let id = element.closest('tr').data('id');
+    let url = _ACTION_Report_Detail + '/' + id;
+    load(url, ContentBody, url, "addActiveClasss")
+}

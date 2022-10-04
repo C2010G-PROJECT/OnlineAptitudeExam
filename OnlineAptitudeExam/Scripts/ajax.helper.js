@@ -178,6 +178,9 @@ function load(url, into, rootPath, callback = null, type = "GET", data = null) {
             realUrl: realUrl,
             type: type,
         }
+        if (typeof callback == "string") {
+            pushData.callback = callback;
+        }
         if (typeof callback == "function" && callback.name !== "") {
             pushData.callback = callback.name;
         }
@@ -194,7 +197,7 @@ function load(url, into, rootPath, callback = null, type = "GET", data = null) {
                 into.html(data);
             }
         }
-        if (callback != null) {
+        if (typeof callback == "function") {
             callback(data);
         }
     }, null, type, data);

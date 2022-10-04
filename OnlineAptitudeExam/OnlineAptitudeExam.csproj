@@ -265,6 +265,7 @@
     <Content Include="Content\css\about.css" />
     <Content Include="Content\css\admin\custom.css" />
     <Content Include="Content\css\admin\draganddrop.css" />
+    <Content Include="Content\images\avatars\logoTheWebster.png" />
     <Content Include="Content\images\body_intro.jpg" />
     <Content Include="Content\images\body_intro.png" />
     <Content Include="Content\images\body_intro_timestamp.png" />
@@ -323,6 +324,7 @@
     <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Report\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\Detail.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />

@@ -4,54 +4,36 @@ namespace OnlineAptitudeExam.Models
 {
     public class CustomModel
     {
-        public struct TestReport
+        public class TestReport
         {
-            public int id;
-            public string name;
-            public int totalUser;
+            public int? Id { get; }
+            public string Name { get; }
+            public List<Exam> Exams { get; }
 
-            public TestReport(int id, string name, int totalUser)
+            public TestReport(int? id, string name, List<Exam> exams)
             {
-                this.id = id;
-                this.name = name;
-                this.totalUser = totalUser;
+                Id = id;
+                Name = name;
+                Exams = exams;
             }
 
             public override bool Equals(object obj)
             {
                 return obj is TestReport other &&
-                       id == other.id &&
-                       name == other.name &&
-                       totalUser == other.totalUser;
+                       Id == other.Id &&
+                       Name == other.Name &&
+                       EqualityComparer<List<Exam>>.Default.Equals(Exams, other.Exams);
             }
 
             public override int GetHashCode()
             {
-                int hashCode = -3333083;
-                hashCode = hashCode * -1521134295 + id.GetHashCode();
-                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(name);
-                hashCode = hashCode * -1521134295 + totalUser.GetHashCode();
+                int hashCode = 1536209737;
+                hashCode = hashCode * -1521134295 + Id.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+                hashCode = hashCode * -1521134295 + EqualityComparer<List<Exam>>.Default.GetHashCode(Exams);
                 return hashCode;
             }
-
-            public void Deconstruct(out int id, out string name, out int item3)
-            {
-                id = this.id;
-                name = this.name;
-                item3 = totalUser;
-            }
-
-            public static implicit operator (int id, string name, int totalUser)(TestReport value)
-            {
-                return (value.id, value.name, value.totalUser);
-            }
-
-            public static implicit operator TestReport((int id, string name, int totalUser) value)
-            {
-                return new TestReport(value.id, value.name, value.totalUser);
-            }
         }
-
 
     }
 }
