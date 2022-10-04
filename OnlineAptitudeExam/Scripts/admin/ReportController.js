@@ -38,6 +38,10 @@ function prepareDatePicker() {
     setupData(mSDate, mEDate, 'd_start', 'min', defMin)
     setupData(mEDate, mSDate, 'd_end', 'max', defMax)
 
+    if (new Date(mSDate.attr('max')).getTime() > new Date(mEDate.attr('max')).getTime()) {
+        mSDate.attr('max', mEDate.attr('max'));
+    }
+
     let onDateChange = function () {
         let s_val = mSDate.val();
         let e_val = mEDate.val();
@@ -70,7 +74,6 @@ function prepareDatePicker() {
     $(':input[type=date]').off('click').on('click', function () { $(this).blur() });
 
     mSDate.off('change').on('change', function () {
-        console.log('change')
         let startDate = new Date(mSDate.val());
         let endDate = new Date(mEDate.val());
         if (startDate.getTime() > endDate.getTime()) {
@@ -80,7 +83,6 @@ function prepareDatePicker() {
         onDateChange();
     })
     mEDate.off('change').on('change', function () {
-        console.log('change')
         let startDate = new Date(mSDate.val());
         let endDate = new Date(mEDate.val());
         if (startDate.getTime() > endDate.getTime()) {

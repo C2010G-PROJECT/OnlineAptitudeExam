@@ -161,7 +161,7 @@ function showAccountsModal(element, isCreate = true) {
 function showDeleteAccountsModal(element) {
     showConfirm('Delete test',
         'Are you sure to delete this account?',
-        'outline-danger',
+        'outline-youtube',
         'delete-outline', () => AccountsDelete(element))
 }
 

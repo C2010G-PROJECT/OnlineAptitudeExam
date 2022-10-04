@@ -98,9 +98,7 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
 
         return match;
     }, "Answer is not unique.");
-    jQuery.validator.classRuleSettings.unique = {
-        anwer_unique: true
-    };
+
     mForm.validate({
         rules: {
             Question: {
@@ -132,7 +130,7 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
     if (!isCreate) {
         id = element.closest('tr').data('id');
         loadUrl(_ACTION_Questions_GetQuestion, data => {
-            mEdtQuestion.text(data.question);
+            mEdtQuestion.val(data.question);
             mSlbScore.find('option[value="' + data.score + '"]').prop('selected', true);
             let answers = JSON.parse(data.answers);
             let correct_answers = JSON.parse(data.correct_answers);
@@ -206,7 +204,8 @@ function createAnwer(checked = false, value = '') {
         return Math.random().toString(16).substr(2, length);
     };
     let name = random(14);
-    let html = '<div class="d-flex align-items-center draggable item-answer">' +
+    let html =
+        '<div class="d-flex align-items-center draggable item-answer">' +
         '<div class="me-3">' +
         '<input class="correct-answer" style="width: 18px; height: 18px " type="checkbox" title="Is correct answer" />' +
         '</div>' +
@@ -306,7 +305,7 @@ function showDetailQuestionModal(element) {
     let id = element.closest('tr').data('id');
     mContainer.html('')
     loadUrl(_ACTION_Questions_GetQuestion, data => {
-        console.log(data)
+        //console.log(data)
         mScore.text(data.score);
         mQuestion.text(data.question);
         answers = JSON.parse(data.answers);
@@ -315,8 +314,8 @@ function showDetailQuestionModal(element) {
             let isCorrect = correctAnswers.indexOf(i) !== -1;
             let html =
                 '<div class="d-flex">' +
-                '<input class="me-3" type="checkbox" style="width:18px; pointer-events: none" ' + (isCorrect ? 'checked' : '') +'/>' +
-                '<div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">'+answers[i]+'</div>' +
+                '<input class="me-3" type="checkbox" style="width:18px; pointer-events: none" ' + (isCorrect ? 'checked' : '') + '/>' +
+                '<div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">' + answers[i] + '</div>' +
                 '</div>';
             mContainer.append(html)
         }
@@ -327,7 +326,7 @@ function showDetailQuestionModal(element) {
 function showDeleteQuestionModal(element, testId, type) {
     showConfirm('Delete question',
         'Are you sure to delete this record?',
-        'outline-danger',
+        'outline-youtube',
         'delete-outline', () => QuestionsDelete(element, testId, type))
 }
 

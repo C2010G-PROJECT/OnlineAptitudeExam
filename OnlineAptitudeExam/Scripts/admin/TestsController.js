@@ -96,7 +96,7 @@ function showTestsModal(element, isCreate = true) {
 function showDeleteTestsModal(element) {
     showConfirm('Delete test',
         'Are you sure to delete this record?',
-        'outline-danger',
+        'outline-youtube',
         'delete-outline', () => TestsDelete(element))
 }
 

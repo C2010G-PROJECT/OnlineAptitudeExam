@@ -10,45 +10,48 @@
         <i class="mdi mdi-keyboard-backspace"></i>
     </button>
     <div class="ms-2 d-inline">
-        <span  style="font-size:20px;">&nbsp;Account Detail</span>
+        <span style="font-size:20px;">Account Detail</span>
     </div>
 </div>
-<div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                <img class="rounded-circle mt-5" style="width:150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
-                <span class="font-weight-bold"></span>
-                <div>@Model.fullname</div>
-                <div>@Model.email</div>
+<div class="card card-body bg-white">
+    <div class="row align-items-center">
+        <div class="col-md-3 my-4">
+            <div class="d-flex flex-column align-items-center text-center">
+                <img class="rounded-circle" style="width:150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <div><span class="font-weight-bold">@(Model.fullname == null ? "unknown": Model.fullname)</span></div>
+                <div>@(Model.email == null ? "unknown": Model.email)</div>
             </div>
         </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
-                <div class="row mt-2">
-                    <div class="col-md-6">
-                    </div>
-                    <br/> 
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <label class="labels">Usename:&nbsp;</label>@Model.username
-                        </div>
-                        <hr />
-                        <div class="col-md-12">
-                            <label class="labels">Age:&nbsp;</label>@Model.age
-                        </div>
-                        <hr />
-                        <div class="col-md-12">
-                            <label class="labels">Descriptions:&nbsp;</label>@Model.descriptions
-                        </div>
-                        <hr />
-                        <div class="col-md-12">
-                            <label class="labels">Address:&nbsp;</label>@Model.address
-                        </div>
-                        <hr/> 
-                    </div>
+        <div class="col-md-9">
+            <div class="d-flex">
+                <span style="min-width:120px">Usename:</span>
+                <div class="flex-grow-1">
+                    @(Model.username == null ? "unknown": Model.username)
+                    <hr class="mt-1 mb-3" />
                 </div>
             </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Age:</span>
+                <div class="flex-grow-1">
+                    @(Model.age == null ? "unknown": Model.age.ToString())
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Address:</span>
+                <div class="flex-grow-1">
+                    @(Model.address == null ? "unknown": Model.address)
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div> 
+            <div class="d-flex">
+                <span style="min-width:120px">Descriptions:</span>
+                <div class="flex-grow-1">
+                    @(Model.descriptions == null ? "unknown": Model.descriptions)
+                    <hr class="mt-1" />
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

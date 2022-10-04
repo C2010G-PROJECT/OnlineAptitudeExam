@@ -27,7 +27,7 @@ function addActiveClasss() {
     })
 }
 
-$("#sidebar .nav li a[href]").off("click").on("click", function (e) {
+$("#sidebar .nav li a[href], .navbar .navbar-brand").off("click").on("click", function (e) {
     e.preventDefault();
     let url = $(this).attr("href");
     load(url, ContentBody, url, addActiveClasss, "GET")
