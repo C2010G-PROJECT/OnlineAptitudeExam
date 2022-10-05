@@ -55,7 +55,7 @@ namespace OnlineAptitudeExam.Controllers
                 var user = dbEntities.Accounts.Where(x =>
                 x.username.Equals(model.UserName) &&
                 x.password.Equals(password)).FirstOrDefault();
-
+                    
                 if (user != null)
                 {
                     Session["UserInfo"] = user;
