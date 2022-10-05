@@ -1,0 +1,72 @@
+﻿@model OnlineAptitudeExam.Models.Exam
+@using OnlineAptitudeExam.Utils
+@{
+    var account = Model.Account;
+}
+
+<div class="mb-3 d-flex align-items-center">
+    <button onclick="history.back()" class="btn btn-outline-github" type="button">
+        <i class="mdi mdi-keyboard-backspace"></i>
+    </button>
+    <div class="ms-2 d-inline">
+        <span style="font-size:20px;">Report Detail</span>
+    </div>
+</div>
+<div class="card card-body">
+    <h3 class="text-center text-decoration-underline my-4">Candidate Information</h3>
+    <div class="row align-items-center">
+        <div class="col-md-3 my-4">
+            <div class="d-flex flex-column align-items-center text-center">
+                <img class="rounded-circle mb-2" style="width:100px" src="~/Content/images/avatars/@(account.avatar == null ? "user_placeholder.png": account.avatar)">
+                <div><span class="font-weight-bold">@(account.fullname == null ? "unknown": account.fullname)</span></div>
+                <div>@(account.email == null ? "unknown": account.email)</div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="d-flex">
+                <span style="min-width:120px">Usename:</span>
+                <div class="flex-grow-1">
+                    @(account.username == null ? "unknown": account.username)
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Age:</span>
+                <div class="flex-grow-1">
+                    @(account.age == null ? "unknown": account.age.ToString())
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Address:</span>
+                <div class="flex-grow-1">
+                    @(account.address == null ? "unknown": account.address)
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Descriptions:</span>
+                <div class="flex-grow-1">
+                    @(account.descriptions == null ? "unknown": account.descriptions)
+                    <hr class="mt-1" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr />
+    <h3 class="text-center text-decoration-underline my-4">Exam Result</h3>
+    <div class="d-flex flex-column align-items-end">
+        <span class="fw-bold text-behance my-1">Time Start: @DateUtils.toDateString(Model.time_start)</span>        
+        <span class="fw-bold text-behance my-1">Time End&nbsp;: @DateUtils.toDateString(Model.time_end)</span>        
+        <span class="fw-bold text-warning my-1">Score: 20/30</span>        
+
+    </div>
+
+</div>
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+}
+
+

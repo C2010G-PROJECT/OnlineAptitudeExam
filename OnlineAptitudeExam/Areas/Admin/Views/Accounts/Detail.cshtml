@@ -1,0 +1,57 @@
+﻿@model OnlineAptitudeExam.Models.Account
+
+<div class="mb-3 d-flex align-items-center">
+    <button onclick="history.back()" class="btn btn-outline-github" type="button">
+        <i class="mdi mdi-keyboard-backspace"></i>
+    </button>
+    <div class="ms-2 d-inline">
+        <span style="font-size:20px;">Account Detail</span>
+    </div>
+</div>
+<div class="card card-body">
+    <div class="row align-items-center">
+        <div class="col-md-3 my-4">
+            <div class="d-flex flex-column align-items-center text-center">
+                <img class="rounded-circle mb-2" style="width:100px" src="~/Content/images/avatars/@(Model.avatar == null ? "user_placeholder.png": Model.avatar)">
+                <div><span class="font-weight-bold">@(Model.fullname == null ? "unknown": Model.fullname)</span></div>
+                <div>@(Model.email == null ? "unknown": Model.email)</div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="d-flex">
+                <span style="min-width:120px">Usename:</span>
+                <div class="flex-grow-1">
+                    @(Model.username == null ? "unknown": Model.username)
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Age:</span>
+                <div class="flex-grow-1">
+                    @(Model.age == null ? "unknown": Model.age.ToString())
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div>
+            <div class="d-flex">
+                <span style="min-width:120px">Address:</span>
+                <div class="flex-grow-1">
+                    @(Model.address == null ? "unknown": Model.address)
+                    <hr class="mt-1 mb-3" />
+                </div>
+            </div> 
+            <div class="d-flex">
+                <span style="min-width:120px">Descriptions:</span>
+                <div class="flex-grow-1">
+                    @(Model.descriptions == null ? "unknown": Model.descriptions)
+                    <hr class="mt-1" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@if (ViewBag.isAjax != null && ViewBag.isAjax)
+{
+    Layout = null;
+}
+

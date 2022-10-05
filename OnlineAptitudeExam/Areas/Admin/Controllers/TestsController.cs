@@ -2,7 +2,6 @@
 using OnlineAptitudeExam.Utils;
 using PagedList;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -157,6 +156,14 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             }
             ViewBag.IsAjax = isAjax;
             return View(test);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 

@@ -106,5 +106,13 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             return RedirectToAction("Login", "Auth");
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

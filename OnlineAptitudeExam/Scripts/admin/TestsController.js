@@ -7,13 +7,15 @@ const _ACTION_Tests_Delete = _ACTION_Tests_Index + '/Delete'
 const _ACTION_Tests_ToggleStatus = _ACTION_Tests_Index + '/ToggleStatus'
 const _ACTION_Tests_Detail = _ACTION_Tests_Index + '/Detail'
 
-function TestsIndex() {
-    prepareSearchBar();
+function TestsIndex(isReload = false) {
+    prepareTestsSearchBar(isReload);
     prepareTestTable();
 }
 
-function prepareSearchBar() {
-    refreshSearchBar('#searchTests', 'filter');
+function prepareTestsSearchBar(isReload = false) {
+    if (isReload) {
+        refreshSearchBar('#searchTests');
+    }
     prepareKeyboardAction('#searchTests', _TestsTable, _ACTION_Tests_Index);
 }
 
@@ -94,14 +96,14 @@ function showTestsModal(element, isCreate = true) {
 function showDeleteTestsModal(element) {
     showConfirm('Delete test',
         'Are you sure to delete this record?',
-        'outline-danger',
+        'outline-youtube',
         'delete-outline', () => TestsDelete(element))
 }
 
 function showDetailTest(element) {
     let id = element.closest('tr').data('id');
     let url = _ACTION_Tests_Detail + '/' + id;
-    load(url, ContentBody, url)
+    load(url, ContentBody, url, "addActiveClasss")
 }
 
 function TestsCreate(mModal, data) {

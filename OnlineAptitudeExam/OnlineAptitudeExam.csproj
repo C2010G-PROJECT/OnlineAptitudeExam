@@ -235,6 +235,7 @@
     </Compile>
     <Compile Include="Models\ChoiceAnswer.cs" />
     <Compile Include="Models\FormModelView.cs" />
+    <Compile Include="Models\CustomModel.cs" />
     <Compile Include="Models\Responses.cs" />
     <Compile Include="Utils\Authentication.cs" />
     <Compile Include="Utils\DateUtils.cs" />
@@ -262,9 +263,19 @@
     <Content Include="App_Data\OnlineAptitudeExam_log.ldf">
       <DependentUpon>OnlineAptitudeExam.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\css\about.css" />
     <Content Include="Content\css\admin\custom.css" />
     <Content Include="Content\css\admin\draganddrop.css" />
+    <Content Include="Content\images\avatars\logoTheWebster.png" />
+    <Content Include="Content\images\body_intro.jpg" />
+    <Content Include="Content\images\body_intro.png" />
+    <Content Include="Content\images\body_intro_timestamp.png" />
+    <Content Include="Content\images\check_test.png" />
+    <Content Include="Content\images\contact_img.jpg" />
     <Content Include="Content\images\ic_move.svg" />
+    <Content Include="Content\images\login_img.jpg" />
+    <Content Include="Content\images\question.png" />
+    <Content Include="Scripts\admin\AccountController.js" />
     <Content Include="Scripts\admin\dragdroplist.js" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\editProfile.css" />
@@ -309,8 +320,12 @@
     <Content Include="Areas\Admin\Views\Tests\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Tests\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Questions\GetData.cshtml" />
+    <Content Include="Areas\Admin\Views\Accounts\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Accounts\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Accounts\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\GetData.cshtml" />
     <Content Include="Areas\Admin\Views\Report\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Report\Detail.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
@@ -323,6 +338,7 @@
     <Content Include="Scripts\admin\flot\jquery.flot.resize.js" />
     <Content Include="Scripts\admin\flot\jquery.flot.stack.js" />
     <Content Include="Scripts\admin\QuestionsController.js" />
+    <Content Include="Scripts\admin\ReportController.js" />
     <Content Include="Scripts\ajax.helper.js" />
     <Content Include="Scripts\admin\TestsController.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />

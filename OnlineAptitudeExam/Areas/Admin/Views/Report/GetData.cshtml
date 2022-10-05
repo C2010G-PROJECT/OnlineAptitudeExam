@@ -1,0 +1,121 @@
+﻿@model PagedList.IPagedList<OnlineAptitudeExam.Models.CustomModel.TestReport>
+@using PagedList.Mvc;
+@using OnlineAptitudeExam.Utils;
+@{
+    Layout = null;
+}
+
+<div class="card card-body shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-custom table-hover table-bordered" data-sort="@ViewBag.CurrentSort" data-order="@ViewBag.CurrentOrder">
+            @{
+                string orderStt = SortHelper.GetOrder(SortHelper.STT, ViewBag.CurrentSort, ViewBag.CurrentOrder);
+                string stt = SortHelper.ValueOrNull(SortHelper.STT, orderStt);
+                string orderName = SortHelper.GetOrder(SortHelper.NAME, ViewBag.CurrentSort, ViewBag.CurrentOrder);
+                string name = SortHelper.ValueOrNull(SortHelper.NAME, orderName);
+            }
+            <thead>
+                <tr>
+                    <th style="width:50px"></th>
+                    <th class="sortable" data-sort="@SortHelper.STT" data-url="@Url.Action("GetData", new { sort = stt, order = orderStt, filter = ViewBag.CurrentFilter, d_start = ViewBag.CurrentDateStart, d_end = ViewBag.CurrentDateEnd })">
+                        #
+                    </th>
+                    <th class="sortable" data-sort="@SortHelper.NAME" data-url="@Url.Action("GetData", new { sort = name, order = orderName, filter = ViewBag.CurrentFilter, d_start = ViewBag.CurrentDateStart, d_end = ViewBag.CurrentDateEnd })">
+                        Test Name
+                    </th>
+                    <th style="width:20%">
+                        Total Users
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var item = Model[i];
+                    <tr>
+                        <td>
+                            <button class="btn btn-outline-behance btn-sm btn-toggle" onclick="toggleReportTable($(this))">
+                                <i class="mdi mdi-plus"></i>
+                            </button>
+                        </td>
+                        <td>
+                            @((Model.PageNumber - 1) * Model.PageSize + i + 1)
+                        </td>
+                        <td class="field-name">
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Exams.Count
+                        </td>
+                    </tr>
+                    <tr class="sub-table no-hover" style="display:none;">
+                        <td></td>
+                        <td class="p-0" colspan="3">
+                            <table class="table table-custom table-borderless table-hover table-primary">
+                                <thead>
+                                    <tr style="border-bottom: solid 0.5px #464646">
+                                        <th style="width: 80px">
+                                            #
+                                        </th>
+                                        <th>
+                                            Full Name
+                                        </th>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th style="width: 80px">
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int j = 0; j < item.Exams.Count; j++)
+                                    {
+                                        var exam = item.Exams[j];
+                                        var account = exam.Account;
+                                        <tr data-id='@exam.id'>
+                                            <td>
+                                                @( j + 1)
+                                            </td>
+                                            <td>
+                                                @(account.fullname == null ? "unknown" : account.fullname)
+                                            </td>
+                                            <td>
+                                                @(account.email == null ? "unknown" : account.email)
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm" onclick="showDetailReport($(this))">
+                                                    <i class="mdi mdi-text-box-multiple-outline"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+    </div>
+    <div id="contentPager">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("GetData", new
+   {
+       sort = ViewBag.CurrentSort,
+       order = ViewBag.CurrentOrder,
+       filter = ViewBag.CurrentFilter,
+       d_start = ViewBag.CurrentDateStart,
+       d_end = ViewBag.CurrentDateEnd,
+       page = page
+   }))
+    </div>
+
+</div>
+<script>
+    if (window.ReportIndex) {
+        loadScripts("ReportIndex()", true)
+    }
+</script>
