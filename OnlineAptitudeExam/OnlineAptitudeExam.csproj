@@ -233,7 +233,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AptitudeExamModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ChoiceAnswer.cs" />
     <Compile Include="Models\FormModelView.cs" />
     <Compile Include="Models\CustomModel.cs" />
     <Compile Include="Models\Responses.cs" />
