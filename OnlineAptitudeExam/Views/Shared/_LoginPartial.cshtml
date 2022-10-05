@@ -13,11 +13,13 @@
         <li class="nav-link">
             @if (@user.avatar != null)
             {
-                <img src="@user.avatar.ToString()" style="width:30px;height:30px;"/>
+                // change path to avatar and add new adtribute 'border-radius:50%' line 17
+                <img src="~/Content/images/avatars/@user.avatar" style="width:30px;height:30px;border-radius:50%"/>
             }
             else
             {
-                <img src="~/Content/images/user_placeholder.png" style="width:30px;height:30px;"/>
+                // change path to avatar line 22 
+                <img src="~/Content/images/avatars/user_placeholder.png" style="width:30px;height:30px;"/>
             }
             @Html.ActionLink(user.fullname.ToString(), "Profiles", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
         </li>
