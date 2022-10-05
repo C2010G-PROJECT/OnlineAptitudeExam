@@ -11,8 +11,8 @@
 </head>
 
 <body>
-   
-    <nav class="navbar navbar-expand-lg accordion-collapse" style="width: 100%; background-color: #0226d9; position: fixed; z-index:999999;top: 0";>
+
+    <nav class="navbar navbar-expand-lg accordion-collapse" style="width: 100%; background-color: #0226d9; position: fixed; z-index:999999;top: 0" ;>
         <div class="container-fluid">
             <a class="navbar-brand" href="@Url.Action("Index", "Home")">
                 <img src="~/Content/images/logo.svg" />
@@ -69,10 +69,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
-    @* Thg nay cho vao co tac dung gì k? Luận*@
-    @*khong, no tu rant ra , toi chua xoa di*@
-    @* @Scripts.Render("~/bundles/modernizr")*@
+    <script src="~/Scripts/ajax.helper.js"></script>
 
     @RenderSection("scripts", required: false)
 

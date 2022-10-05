@@ -14,6 +14,8 @@ namespace OnlineAptitudeExam.Models
     
     public partial class Question
     {
+        internal int? question_id;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Question()
         {

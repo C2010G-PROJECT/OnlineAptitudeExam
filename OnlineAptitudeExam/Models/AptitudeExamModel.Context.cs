@@ -16,7 +16,7 @@ namespace OnlineAptitudeExam.Models
     public partial class OnlineAptitudeExamEntities : DbContext
     {
         public OnlineAptitudeExamEntities()
-            : base("name=OnlineAptitudeExamEntities")
+            : base("name=OnlineAptitudeExamEntities1")
         {
         }
     
