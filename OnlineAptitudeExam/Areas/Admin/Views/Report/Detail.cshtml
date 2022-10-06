@@ -1,72 +1,162 @@
 ﻿@model OnlineAptitudeExam.Models.Exam
 @using OnlineAptitudeExam.Utils
+@using OnlineAptitudeExam.Models
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+
 @{
     var account = Model.Account;
 }
 
-<div class="mb-3 d-flex align-items-center">
-    <button onclick="history.back()" class="btn btn-outline-github" type="button">
-        <i class="mdi mdi-keyboard-backspace"></i>
-    </button>
-    <div class="ms-2 d-inline">
-        <span style="font-size:20px;">Report Detail</span>
+<div class="row">
+    <div class="col-9 mb-3">
+        <button onclick="history.back()" class="btn btn-outline-github" type="button">
+            <i class="mdi mdi-keyboard-backspace"></i>
+        </button>
+        <div class="ms-2 d-inline-block font-20">
+            <span>Report Detail</span>
+        </div>
+    </div>
+    <div class="col-3 mb-3 d-flex justify-content-end align-items-center">
+        <button class="btn btn-outline-reddit btn-sm" onclick="exportPDF()" type="button" style="height:40px;width:40px">
+            <i class="fa-regular fa-file-pdf"></i>
+        </button>
     </div>
 </div>
-<div class="card card-body">
-    <h3 class="text-center text-decoration-underline my-4">Candidate Information</h3>
-    <div class="row align-items-center">
-        <div class="col-md-3 my-4">
-            <div class="d-flex flex-column align-items-center text-center">
-                <img class="rounded-circle mb-2" style="width:100px" src="~/Content/images/avatars/@(account.avatar == null ? "user_placeholder.png": account.avatar)">
-                <div><span class="font-weight-bold">@(account.fullname == null ? "unknown": account.fullname)</span></div>
-                <div>@(account.email == null ? "unknown": account.email)</div>
+<div class="card" id="print-report">
+    <div class="card-body">
+        <h3 class="text-center text-decoration-underline py-4">Candidate Information</h3>
+        <div class="row align-items-center font-18">
+            <div class="col-3 my-4">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <img class="rounded-circle mb-2" style="width:100px" src="~/Content/images/avatars/@(account.avatar == null ? "user_placeholder.png": account.avatar)">
+                    <div><span class="font-weight-bold">@(account.fullname == null ? "unknown": account.fullname)</span></div>
+                    <div>@(account.email == null ? "unknown": account.email)</div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="d-flex">
+                    <span style="min-width:120px">Usename:</span>
+                    <div class="flex-grow-1 mb-3 border-bottom">
+                        @(account.username == null ? "unknown": account.username)
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <span style="min-width:120px">Age:</span>
+                    <div class="flex-grow-1 mb-3 border-bottom">
+                        @(account.age == null ? "unknown": account.age.ToString())
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <span style="min-width:120px">Address:</span>
+                    <div class="flex-grow-1 mb-3 border-bottom">
+                        @(account.address == null ? "unknown": account.address)
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <span style="min-width:120px">Descriptions:</span>
+                    <div class="flex-grow-1 mb-3 border-bottom">
+                        @(account.descriptions == null ? "unknown": account.descriptions)
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-9">
-            <div class="d-flex">
-                <span style="min-width:120px">Usename:</span>
-                <div class="flex-grow-1">
-                    @(account.username == null ? "unknown": account.username)
-                    <hr class="mt-1 mb-3" />
-                </div>
-            </div>
-            <div class="d-flex">
-                <span style="min-width:120px">Age:</span>
-                <div class="flex-grow-1">
-                    @(account.age == null ? "unknown": account.age.ToString())
-                    <hr class="mt-1 mb-3" />
-                </div>
-            </div>
-            <div class="d-flex">
-                <span style="min-width:120px">Address:</span>
-                <div class="flex-grow-1">
-                    @(account.address == null ? "unknown": account.address)
-                    <hr class="mt-1 mb-3" />
-                </div>
-            </div>
-            <div class="d-flex">
-                <span style="min-width:120px">Descriptions:</span>
-                <div class="flex-grow-1">
-                    @(account.descriptions == null ? "unknown": account.descriptions)
-                    <hr class="mt-1" />
-                </div>
-            </div>
+        <h3 class="text-center text-decoration-underline py-4 border-top">Exam Result</h3>
+        <div class="d-flex flex-column align-items-end font-17">
+            <span class="my-1">Time Start: <b class="text-primary">@DateUtils.toDateString(Model.time_start)</b></span>
+            <span class="my-1">Time End&nbsp;: <b class="text-primary">@DateUtils.toDateString(Model.time_end)</b></span>
+            <span class="text-youtube my-1 font-18">Score: <b id="scores">?/30</b></span>
+        </div>
+        <div id="questions-container">
+            @{
+                var examDetails = Model.ExamDetails.OrderBy(ex => ex.Question.type).ToList();
+                int currentType = -1;
+                double totalScore = 0, examScore = 0;
+                for (int i = 0; i < examDetails.Count; i++)
+                {
+                    var examDetail = examDetails[i];
+                    var question = examDetail.Question;
 
+                    var answers = JsonConvert.DeserializeObject(question.answers) as JArray;
+                    var correctAnswers = (JsonConvert.DeserializeObject(question.correct_answers) as JArray).Select(item => (int)item).ToArray();
+                    var selectedAnswers = (JsonConvert.DeserializeObject(examDetail.selected_question) as JArray).Select(item => (int)item).ToArray();
+
+                    bool isCorrect = examDetail.selected_question == question.correct_answers;
+                    string statusQuestionClass;
+                    examScore += question.score.Value;
+                    if (isCorrect)
+                    {
+                        totalScore += question.score.Value;
+                        statusQuestionClass = "mdi-check-circle text-success";
+                    }
+                    else
+                    {
+                        statusQuestionClass = "mdi-close-circle text-youtube";
+                    }
+
+                    if (currentType != question.type)
+                    {
+                        currentType = question.type.Value;
+                        <span class="pt-3 pb-2 fw-bold font-20 d-inline-block">@(currentType + 1). @Enums.GetQuestionType(currentType).</span>
+                    }
+                    <div class="question_item card card-body shadow-sm mb-4">
+                        <div class="question_item-title pb-2 font-20">
+                            <div class="d-flex">
+                                <i class="mdi me-3 @statusQuestionClass"></i>
+                                <span>
+                                    Question&nbsp;<span>@(i+1)</span>:&nbsp;<span>@question.question</span>&nbsp;<b class="font-17">(@question.score Point)</b>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="question_item-answers">
+                            @for (int j = 0; j < answers.Count; j++)
+                            {
+                                bool isCorrectAns = correctAnswers.Contains(j);
+                                bool isSelected = selectedAnswers.Contains(j);
+                                string border =
+                                    isCorrectAns ? "border-2 border-dashed border-success text-success" :
+                                    isSelected ? "border-2 border-dashed border-danger text-danger" : "border-1 border-dashed border-secondary";
+                                string type = correctAnswers.Count() == 1 ? "radio" : "checkbox";
+
+                                <div class="d-flex">
+                                    <input class="me-3" type="@type" style="width:18px; pointer-events:none;" @(isSelected ? "checked" : "") />
+                                    <div class="p-2 my-2 flex-grow-1 font-17 @border ">
+                                        @answers[j]
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="d-none" id="tmpScores">@totalScore / @examScore</div>
+            }
         </div>
     </div>
-    <hr />
-    <h3 class="text-center text-decoration-underline my-4">Exam Result</h3>
-    <div class="d-flex flex-column align-items-end">
-        <span class="fw-bold text-behance my-1">Time Start: @DateUtils.toDateString(Model.time_start)</span>        
-        <span class="fw-bold text-behance my-1">Time End&nbsp;: @DateUtils.toDateString(Model.time_end)</span>        
-        <span class="fw-bold text-warning my-1">Score: 20/30</span>        
-
-    </div>
-
 </div>
 @if (ViewBag.isAjax != null && ViewBag.isAjax)
 {
     Layout = null;
 }
 
+<script>
+    updateScore();
 
+    function updateScore() {
+        let scoreEle = document.getElementById("scores")
+        let tmpScores = document.getElementById("tmpScores")
+        scoreEle.innerText = tmpScores.innerText;
+    }
+
+    function exportPDF() {
+        var headContents = $("head").html();
+        var divContents = $("#print-report").html();
+        var printWindow = window.open('', '', 'width=800,height=450');
+        printWindow.document.write('<html><head>' + headContents + '</head>');
+        printWindow.document.write('<body class="container-fluid p-0" onafterprint="close()">');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        setTimeout(function () { printWindow.print() }, 200)
+    }
+
+</script>

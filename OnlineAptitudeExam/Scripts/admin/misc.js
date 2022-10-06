@@ -30,7 +30,8 @@ function addActiveClasss() {
 $("#sidebar .nav li a[href], .navbar .navbar-brand").off("click").on("click", function (e) {
     e.preventDefault();
     let url = $(this).attr("href");
-    load(url, ContentBody, url, addActiveClasss, "GET")
+    $(ContentBody).html('<div class="loader" />')
+    setTimeout(function () { load(url, ContentBody, url, addActiveClasss, "GET") }, 50)
 });
 
 addActiveClasss();
@@ -67,7 +68,6 @@ sidebar.on('show.bs.collapse', '.collapse', function () {
     sidebar.find('.collapse.show').collapse('hide');
 });
 
-
 $('[data-toggle="minimize"]').on("click", function () {
     if ((body.hasClass('sidebar-toggle-display')) || (body.hasClass('sidebar-absolute'))) {
         body.toggleClass('sidebar-hidden');
@@ -75,9 +75,6 @@ $('[data-toggle="minimize"]').on("click", function () {
         body.toggleClass('sidebar-icon-only');
     }
 });
-
-//checkbox and radios
-$(".form-check label, .form-radio label").append('<i class="input-helper"></i>');
 
 // off canvas
 $('[data-toggle="offcanvas"]').on("click", function () {
@@ -97,8 +94,11 @@ $(document).on('mouseenter mouseleave', '.sidebar .nav-item', function (ev) {
                 }
             } else {
                 var $menuItem = $(this);
+                var $menuTitle = $menuItem.find('.menu-title');
                 if (ev.type === 'mouseenter') {
                     $menuItem.addClass('hover-open')
+                    var position = $menuItem[0].getBoundingClientRect();
+                    $menuTitle.css('top', position.top);
                 } else {
                     $menuItem.removeClass('hover-open')
                 }
