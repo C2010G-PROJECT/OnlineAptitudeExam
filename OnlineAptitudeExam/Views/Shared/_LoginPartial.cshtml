@@ -21,7 +21,7 @@
             }
             @Html.ActionLink(user.fullname.ToString(), "Profiles", "Home", routeValues: null, htmlAttributes: new { id = "fullname_display" })
         </li>
-    <li class="nav-link"><a href="@Url.Action("LogOut", "Auth")" style="text-decoration:none;color:white;"><i class="fa-solid fa-right-from-bracket"></i> Logout </a></li>
+    <li class="nav-link" onclick="logout()" style="color:white;cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Logout </li>
 </ul>
     
 }
@@ -32,3 +32,26 @@ else
              </i> @Html.ActionLink(" Log in", "Login", "Auth", routeValues: null, htmlAttributes: new { id = "nav_login_header"})</li>
     </ul>
 }
+<script>
+
+    function logout() {
+        swal({
+            title: "Are you sure to logout?",
+            icon: "info",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                   $.post("@Url.Action("LogOut","Auth")",function(res){
+                     
+                       window.location.reload();
+                   });
+                   
+                            
+                } else {
+                   
+                }
+            });
+    }
+</script>

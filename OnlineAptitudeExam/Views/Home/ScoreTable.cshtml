@@ -1,0 +1,64 @@
+﻿@using OnlineAptitudeExam.Models;
+@using OnlineAptitudeExam.Utils;
+
+@{
+
+    var exam = ViewBag.exam as Exam;
+    var examDetails = ViewBag.examDetails as List<ExamDetail>;
+    double score = (double)ViewBag.score;
+
+    int correctAnswer = (int)ViewBag.correct;
+    int incorrectAnswer = (int)ViewBag.incorrect;
+
+    double totalScore = (double)ViewBag.totalScore;
+    double percentScore = (double) ViewBag.percentScore;
+
+    var roudPrecentScore = System.Math.Round(percentScore, 2, MidpointRounding.ToEven);
+
+    string timeStart = DateUtils.toDateString(exam.time_start);
+    string timeEnd = DateUtils.toDateString(exam.time_end);
+    ViewBag.Title = "ScoreTable";
+}
+
+
+<div class="bd-example" style="padding-top:100px;padding-bottom:500px;">
+    <table class="table" style="height:300px;">
+        <thead>
+            <tr>
+                <h2 style="color:blue;">Your test result</h2>
+                <br/><br />
+            </tr>
+        </thead>
+        <tbody>
+
+
+            <tr class="table-primary">
+                <th scope="row">Time Start</th>
+               
+                <td style="text-align:center;">@timeStart</td>
+            </tr>
+            <tr class="table-primary">
+                <th scope="row">Time End</th>
+                
+                <td style="text-align:center;">@timeEnd</td>
+            </tr>
+            <tr class="table-primary">
+                <th scope="row">Correct answers </th>
+              
+                <td style="text-align:center;">@correctAnswer</td>
+            </tr>
+            <tr class="table-primary">
+                <th scope="row">Incorrect Answer</th>
+              
+                <td style="text-align:center;">@incorrectAnswer</td>
+            </tr>
+
+
+            <tr class="table-danger">
+                <th scope="row">Score</th>
+               
+                <td style="text-align:center;">@score / @totalScore <b style="color:blue;">(@roudPrecentScore %)</b></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

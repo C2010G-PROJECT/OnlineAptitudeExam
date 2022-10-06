@@ -1,4 +1,6 @@
-﻿namespace OnlineAptitudeExam.Models
+﻿using System.Collections.Generic;
+
+namespace OnlineAptitudeExam.Models
 {
     public class FormModelView
     {
@@ -30,6 +32,18 @@
             public string username { get; set; }
             public string password { get; set; }           
 
+        }
+
+        public class Exam
+        {
+            public int testId { get; set; }
+            public List<ExamDetail> examDetails { get; set; }
+
+            public class ExamDetail
+            {
+                public int questionId { get; set; }
+                public string selectedQuestion { get; set; }
+            }
         }
     }
 }

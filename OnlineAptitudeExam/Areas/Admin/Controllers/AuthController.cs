@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services;
 
 namespace OnlineAptitudeExam.Areas.Admin.Controllers
 {
@@ -97,7 +98,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/Auth/LogOut
+     
         [HttpPost]
         [AllowAnonymous]
         public ActionResult LogOut()

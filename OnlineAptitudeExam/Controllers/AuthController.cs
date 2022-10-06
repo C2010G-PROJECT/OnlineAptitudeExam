@@ -64,6 +64,10 @@ namespace OnlineAptitudeExam.Controllers
                     {
                         ViewBag.Error = "Username or password is incorrect!";
                         Session["UserInfo"] = null;
+                    }else if (user.status == ((int) Enums.Status.LOCK))
+                    {
+                        ViewBag.Error = "Your account was locked !"; 
+                        Session["UserInfo"] = null;
                     }
                     else
                     {

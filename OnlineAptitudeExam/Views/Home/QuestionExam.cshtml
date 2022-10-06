@@ -27,16 +27,29 @@
 
 <div class="quesmain">
 
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
 
+            @if (type == 0)
+            {
+                <h4 style="line-height:40px;padding-left:30px; color:red;">General knowledge exam </h4>
+            }
+            else if (type == 1)
+            {
+                <h4 style="line-height: 40px; padding-left: 30px; color: red;">Mathetics exam </h4>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div>Time Remaining : <span id="minRemaining"></span>:<span id="secRemaining"></span></div>
-            @DateTime.Now.AddMinutes(25).Ticks.ToString()
+            }
+            else if (type == 2)
+            {
+                <h4 style="line-height: 40px; padding-left: 30px; color: red;">Computer technology exam </h4>
+
+            }
+
+            <div style="line-height: 45px; font-size: 20px; color: red; "> <i class="fa-regular fa-clock"></i> &nbsp; Time Remaining : <span id="minRemaining"></span>:<span id="secRemaining"></span></div>
         </div>
-    </div>
-
-    <form id="question_form" data-test_id="@ViewBag.testId" method="post">
+    </nav>
+   
+    <form  id="question_form" style="padding-left: 300px;" data-test_id="@ViewBag.testId" data-url="@Url.Action("SaveExamResult")" method="post" >
 
 
         @for (int i = 0; i < questions.Count; i++)
@@ -53,7 +66,7 @@
                         userAnswers = examDetail.selected_question.Trim('[', ']').Split(new[] { ',' }).ToArray();
                     }
 
-                    <p class="fw-bold"> @(i+1) .@questions[i].question </p>
+                    <p class="fw-bold"> @(i+1) .@questions[i].question <b style="color:orange;">(@questions[i].score marks)</b> </p>
 
                     var splitAnswer = questions[i].answers.Trim('[', ']').Split(new[] { ',' }).Select(x => x.Trim('"')).ToArray();
                     for (int j = 0; j < splitAnswer.Length; j++)
@@ -72,10 +85,9 @@
 
         }
 
-        <button type="button" class="btn btn-outline-primary" id="btn_submit">
-            Submit
+        <button style="margin-left:60%;" type="button" class="btn btn-outline-primary" id="btn_submit">
+            Submit and next exam
         </button>
-
 
     </form>
 
@@ -86,34 +98,58 @@
 
         $("#btn_submit").off('click').on('click', function (e) {
             e.preventDefault();
+            $(this).addClass('disabled')
             submit();
         });
+
         function submit() {
             let mForm = $("#question_form");
+            let url = mForm.data("url");
 
             let testId = mForm.data("test_id");
+            let examDetails = [];
 
-            let questions = new Map();
             mForm.find(".question").each(function () {
 
-                let questionId = $(this).data("question_id");
-                let selectedQuestion = [];
 
+                let questionId = $(this).data("question_id");
+
+
+                let selectedQuestion = [];
                 $(this).find("input").each(function (i) {
                     if ($(this).is(":checked")) {
                         selectedQuestion.push(i);
                     }
-
                 });
 
                 if (selectedQuestion.length == 0) {
-                    alert('Please answer all question !');
+                    
+                    $(this).removeClass('disabled');
+                    return false;
                 }
-                console.log(testId + "    " + questionId + "    " + JSON.stringify(selectedQuestion));
-                questions.set(questionId, JSON.stringify(selectedQuestion));
+
+                //console.log(testId + "    " + questionId + "    " + JSON.stringify(selectedQuestion));
+
+                let examDetail = {
+                   questionId : questionId,
+                   selectedQuestion : JSON.stringify(selectedQuestion)
+                };
+                examDetails.push(examDetail);
             });
 
-            console.log(JSON.stringify(Object.fromEntries(questions)));
+            let data = {
+                testId: testId,
+                examDetails: examDetails
+            };
+            loadUrl(url, function (data) {
+
+                //console.log(data.message);
+                if (data.success) {
+                    window.location.reload();
+                }
+
+            }, null, "POST", data)
+
             return false;
         }
 
@@ -135,6 +171,8 @@
         }
 
         function startCount() {
+            
+
             document.getElementById('secRemaining').innerText = formatNumber(secondCounter);
             document.getElementById('minRemaining').innerText = formatNumber(parseInt(remSecond / 60));
 
@@ -151,13 +189,23 @@
                         secondCounter = 60;
                     }
                 } else {
-                    alert("Time out !");
+
+                    swal({
+                        title: "Time out",
+                        icon: "success",
+                        button: "Ok",
+                    });
+
                     clearInterval(tick);
+
+                    window.location.reload();
                 }
 
             },1000);
         }
-        startCount();
+       
+      startCount();
+        
 
     </script>
 
