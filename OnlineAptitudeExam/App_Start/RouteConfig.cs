@@ -16,6 +16,12 @@ namespace OnlineAptitudeExam
                 new[] { "OnlineAptitudeExam.Controllers" }
             );
 
+            routes.MapRoute(
+               name: "Question",
+               url: "{controller}/{action}/{id}",
+               defaults: new { controller = "Home", action = "QuestionExam", id = UrlParameter.Optional },
+               new[] { "OnlineAptitudeExam.Controllers" }
+           );
         }
     }
 }
