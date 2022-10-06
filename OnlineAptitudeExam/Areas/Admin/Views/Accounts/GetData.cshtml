@@ -87,12 +87,12 @@
     <div id="contentPager">
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         @Html.PagedListPager(Model, page => Url.Action("GetData", new
-   {
-       sort = ViewBag.CurrentSort,
-       order = ViewBag.CurrentOrder,
-       filter = ViewBag.CurrentFilter,
-       page = page
-   }))
+        {
+            sort = ViewBag.CurrentSort,
+            order = ViewBag.CurrentOrder,
+            filter = ViewBag.CurrentFilter,
+            page = page
+        }))
     </div>
 </div> 
 <script>
