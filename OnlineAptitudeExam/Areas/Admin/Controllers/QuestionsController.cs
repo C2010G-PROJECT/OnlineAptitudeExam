@@ -3,6 +3,7 @@ using OnlineAptitudeExam.Utils;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using static OnlineAptitudeExam.Models.Responses;
 using Question = OnlineAptitudeExam.Models.Question;
 
 namespace OnlineAptitudeExam.Areas.Admin.Controllers
@@ -61,15 +62,20 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             var test = db.Tests.Find(model.testId);
             if (test == null)
             {
-                return Json(Responses.Error("Can't find the question! Try again"));
+                return Json(Error("Can't find the question! Try again"));
+            }
+            JsonResult check = CheckTestValid(test);
+            if (check != null)
+            {
+                return check;
             }
             if (model.type < 0 || model.type > 2)
             {
-                return Json(Responses.Error("The type is invalid!"));
+                return Json(Error("The type is invalid!"));
             }
             if (test.Questions.Where(q => q.type == model.type).Count() >= 5)
             {
-                return Json(Responses.Error("This category has enough q!", Responses.MessageType.WARNING));
+                return Json(Error("This category has enough question!", MessageType.WARNING));
             }
             Question question = new Question
             {
@@ -83,7 +89,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             test.Questions.Add(question);
             db.SaveChanges();
 
-            return Json(Responses.Success(null, "Created question!!!"), JsonRequestBehavior.AllowGet);
+            return Json(Success(null, "Created question!!!"), JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost, ValidateInput(false)]
@@ -93,28 +99,31 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             var question = db.Questions.Find(id);
             if (question == null)
             {
-                return Json(Responses.Error("Not found item!"), JsonRequestBehavior.AllowGet);
+                return Json(Error("Not found item!"), JsonRequestBehavior.AllowGet);
             }
-            else
+            JsonResult check = CheckTestValid(question.Test);
+            if (check != null)
             {
-                question.type = (byte?)model.type;
-                question.question = model.question;
-                question.answers = model.answers;
-                question.correct_answers = model.correctAnswers;
-                question.score = model.score;
-                db.Entry(question).State = EntityState.Modified;
-                db.SaveChanges();
-                return Json(Responses.Success(new
-                {
-                    question.id,
-                    question.test_id,
-                    question.question,
-                    question.answers,
-                    question.correct_answers,
-                    question.type,
-                    question.score
-                }, "Update success!"), JsonRequestBehavior.AllowGet);
+                return check;
             }
+            //question.type = (byte?)model.type;
+            question.question = model.question;
+            question.answers = model.answers;
+            question.correct_answers = model.correctAnswers;
+            question.score = model.score;
+            db.Entry(question).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(Success(new
+            {
+                question.id,
+                question.test_id,
+                question.question,
+                question.answers,
+                question.correct_answers,
+                question.type,
+                question.score
+            }, "Update success!"), JsonRequestBehavior.AllowGet);
+
         }
 
         [HttpPost]
@@ -124,16 +133,27 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             var question = db.Questions.Find(id);
             if (question == null)
             {
-                return Json(Responses.Error("Not found item!"), JsonRequestBehavior.AllowGet);
+                return Json(Error("Not found item!"), JsonRequestBehavior.AllowGet);
             }
-            if (question.ExamDetails.Count() != 0)
+            JsonResult check = CheckTestValid(question.Test);
+            if (check != null)
             {
-                return Json(Responses.Error("This test is already taken by users. You cannot change it!", Responses.MessageType.WARNING), JsonRequestBehavior.AllowGet);
+                return check;
             }
             db.Questions.Remove(question);
             db.SaveChanges();
-            return Json(Responses.Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
+            return Json(Success(null, "Delete success!"), JsonRequestBehavior.AllowGet);
         }
+
+        private JsonResult CheckTestValid(Test test)
+        {
+            if (test.Exams.Count() != 0)
+            {
+                return Json(Error("This test is already taken by users. You cannot change it!", MessageType.WARNING), JsonRequestBehavior.AllowGet);
+            }
+            return null;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

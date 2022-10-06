@@ -214,18 +214,18 @@ function loadUrl(url, success = null, error = null, type = "GET", data = null) {
     adapter_ajax($param);
 }
 
-function loadScripts(src, raw = false) {
-    let contentScriptSelector = "body #contentScript"
+function loadScripts(src, raw = false, head = false) {
+    let container = head ? "head" : "body"
+    let contentScriptSelector = container + " .contentScript"
     let contentScript = $(contentScriptSelector);
     if (contentScript.length == 0) {
-        $("body").append("<div id='contentScript'></div>")
+        $(container).append("<div class='contentScript'></div>")
         contentScript = $(contentScriptSelector);
     }
     let content = raw ?
         "<script>" + src + "</script>" :
         "<script src='" + src + "'></script>";
     contentScript.html(content);
-    contentScript.remove();
 }
 
 function getTailUrl(url) {
@@ -290,12 +290,34 @@ function ucfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
-function generatePassword() {
-    var length = 20,
-        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+function generatePassword(length = 20) {
+    var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
         retVal = "";
     for (var i = 0, n = charset.length; i < length; ++i) {
         retVal += charset.charAt(Math.floor(Math.random() * n));
     }
     return retVal;
+}
+
+function savePdf(ele, fileName = generatePassword(16)) {
+    if (typeof ele == 'string') {
+        ele = $(ele)[0]
+    }
+    opt = {
+        margin: 0.5,
+        filename: fileName,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    if (!window.html2pdf) {
+        loadScripts("https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js", false, true);
+    }
+    let count = 0;
+    let timeOut = 250;
+    let run = () => {
+        if (count++ > 20) return;
+        window.html2pdf ? html2pdf(ele, opt) : setTimeout(run, timeOut);
+    };
+    run();
 }

@@ -18,15 +18,16 @@
     <link href="~/Content/css/admin/style.css" rel="stylesheet" />
     <link href="~/Content/css/admin/custom.css" rel="stylesheet" />
     <!-- end plugins:css -->
+    <link href="~/Content/css/admin/Dashboard.css" />
+
 </head>
 
 <body>
     <div class="container-scroller">
         <div id="ct_toast"></div>
-        <div id="modalContent"></div>
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
+        <nav class="sidebar sidebar-offcanvas custom-scroll" id="sidebar">
+            <ul class="nav custom-scroll">
                 <li class="nav-item nav-profile border-bottom">
                     <a class="nav-link flex-column">
                         <div class="nav-profile-image">
@@ -249,14 +250,14 @@
             </nav>
             <!-- partial -->
             <div class="main-panel">
-                <div id="contentBody" class="content-wrapper container-fluid pb-0 pt-3">
+                <div id="contentBody" class="content-wrapper container-fluid pb-0 pt-3 position-relative">
                     @RenderBody()
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021 <a href="https://www.bootstrapdash.com/" target="_blank">BootstrapDash</a>. All rights reserved.</span>
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2022. Aptech.</span>
                         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="mdi mdi-heart text-danger"></i></span>
                     </div>
                 </footer>
@@ -309,8 +310,12 @@
     <script src="~/Scripts/admin/misc.js"></script>
     <script src="~/Scripts/admin/settings.js"></script>
     <script src="~/Scripts/admin/AuthController.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="~/Scripts/admin/Dashboardd.js"></script>
     <!-- endinject -->
     @RenderSection("scripts", required: false)
+
+
 
 
 </body>

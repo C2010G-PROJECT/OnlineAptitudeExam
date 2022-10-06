@@ -2566,7 +2566,7 @@
     --bs-gray-700: #495057;
     --bs-gray-800: #343a40;
     --bs-gray-900: #212529;
-    --bs-primary: #0033c4;
+    --bs-primary: #0d6efd;
     --bs-secondary: #a0a0a0;
     --bs-success: #00d284;
     --bs-info: #00cff4;
@@ -2576,7 +2576,7 @@
     --bs-dark: #3e4b5b;
     --bs-primary-rgb: 13, 110, 253;
     --bs-secondary-rgb: 108, 117, 125;
-    --bs-success-rgb: 25, 135, 84;
+    --bs-success-rgb: 0, 210, 132;
     --bs-info-rgb: 13, 202, 240;
     --bs-warning-rgb: 255, 193, 7;
     --bs-danger-rgb: 220, 53, 69;
@@ -7784,6 +7784,21 @@ fieldset:disabled .ajax-upload-dragdrop .ajax-file-upload,
     list-style: none;
 }
 
+@media screen and (min-width: 992px){
+    .nav {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        height: 100%;
+    }
+
+    .sidebar-icon-only .nav {
+        top: 60px;
+        height: calc(100% - 60px);
+    }
+}
+
 .nav-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -11434,6 +11449,14 @@ fieldset:disabled .ajax-upload-dragdrop .ajax-file-upload,
     border: 1px solid #e4e9f0 !important;
 }
 
+.border-dashed {
+    border-style: dashed !important;
+}
+
+.border-dotted {
+    border-style: dotted !important;
+}
+
 .border-0 {
     border: 0 !important;
 }
@@ -11471,7 +11494,7 @@ fieldset:disabled .ajax-upload-dragdrop .ajax-file-upload,
 }
 
 .border-primary {
-    border-color: #0033c4 !important;
+    border-color: #0d6efd !important;
 }
 
 .border-secondary,
@@ -17072,7 +17095,7 @@ code {
 .footer {
     background: #f8f9fb;
     color: color(dark);
-    padding: 5px 25px 12px 37px;
+    padding: 12px;
     transition: all 0.25s ease;
     -moz-transition: all 0.25s ease;
     -webkit-transition: all 0.25s ease;
@@ -17228,6 +17251,18 @@ code {
 
 .font-13 {
     font-size: 13px;
+}
+
+.font-16 {
+    font-size: 16px;
+}
+
+.font-17 {
+    font-size: 17px;
+}
+
+.font-18 {
+    font-size: 18px;
 }
 
 .font-20 {
@@ -22791,7 +22826,7 @@ dl li {
 }
 
 .sidebar .nav {
-    overflow: hidden;
+    overflow: auto;
     -ms-flex-wrap: nowrap;
     flex-wrap: nowrap;
     -webkit-box-orient: vertical;
@@ -22898,9 +22933,13 @@ dl li {
 .sidebar .nav .nav-item .nav-link .small {
     display: block;
 }
-.sidebar-icon-only .sidebar .nav .nav-item .nav-link .menu-title {
-    color: #ffffff;
+
+@media screen and (min-width: 992px) {
+    .sidebar-icon-only .sidebar .nav .nav-item .nav-link .menu-title {
+        color: #ffffff;
+    }
 }
+
 .sidebar .nav .nav-item .nav-link .menu-title {
     color: #141212;
     font-size: 0.875rem;
@@ -23362,10 +23401,6 @@ dl li {
         padding-top: 60px;
     }
 
-    .sidebar-icon-only .sidebar .nav {
-        overflow: visible;
-    }
-
     .sidebar-icon-only .sidebar .nav .nav-item-head {
         display: none;
     }
@@ -23481,13 +23516,11 @@ dl li {
         background: #1a55e3;
         padding: 0.5rem 1.4rem;
         left: 70px;
-        position: absolute;
+        position: fixed;
         text-align: left;
-        top: 0;
-        bottom: 0;
+        height:46.7px;
         width: 190px;
         z-index: 1;
-        line-height: 1.8;
     }
 
     .sidebar-dark.sidebar-icon-only .sidebar .nav .nav-item.hover-open .nav-link .menu-title {
@@ -23776,5 +23809,3 @@ dl li {
     -ms-flex-positive: 1;
     flex-grow: 1;
 }
-
-/*# sourceMappingURL=style.css.map */

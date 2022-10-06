@@ -29,7 +29,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="modal-body">
-                <div class="form-group" id="fullname-area"> 
+                <div class="form-group" id="fullname-area">
                     <label for="Fullname">Fullname</label>
                     <input id="Fullname" name="Fullname" class="form-control mb-2" type="text" />
                 </div>
@@ -43,11 +43,16 @@
                 </div>
                 <div class="form-group">
                     <label for="Password">Password</label>
-                    <input id="Password" name="Password" class="form-control mb-2" type="password" />
-                    <div>
-                        <input id="showPass" class="mouse-pointer" type="checkbox" onclick="showPassword()">
-                        <label for="showPass" class="user-select-none mouse-pointer">Show Password</label>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary" type="button" onclick="renderNewPassword()">
+                            <span class="mdi mdi-cached"></span>
+                        </button>
+                        <input id="Password" name="Password" class="form-control form-control-sm" placeholder="Password" type="password" />
+                        <button class="btn btn-outline-secondary" type="button" onclick="showPassword()">
+                            <span class="fas fa-eye"></span>
+                        </button>
                     </div>
+                    <label id="Password-error" class="error mt-2" for="Password"></label>
                 </div>
             </form>
             <div class="modal-footer">
