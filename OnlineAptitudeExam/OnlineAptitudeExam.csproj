@@ -277,7 +277,7 @@
     <Content Include="Content\images\login_img.jpg" />
     <Content Include="Content\images\question.png" />
     <Content Include="Scripts\admin\AccountController.js" />
-    <Content Include="Scripts\admin\Dashboardd.js" />
+    <Content Include="Scripts\admin\Dashboard.js" />
     <Content Include="Scripts\admin\dragdroplist.js" />
     <Content Include="Content\css\admin\style.css" />
     <Content Include="Content\css\editProfile.css" />
@@ -333,13 +333,6 @@
     <Content Include="Scripts\admin\AdminConst.js" />
     <Content Include="Scripts\admin\AuthController.js" />
     <Content Include="Scripts\admin\Chart.min.js" />
-    <Content Include="Scripts\admin\dashboard.js" />
-    <Content Include="Scripts\admin\flot\jquery.flot.categories.js" />
-    <Content Include="Scripts\admin\flot\jquery.flot.fillbetween.js" />
-    <Content Include="Scripts\admin\flot\jquery.flot.js" />
-    <Content Include="Scripts\admin\flot\jquery.flot.pie.js" />
-    <Content Include="Scripts\admin\flot\jquery.flot.resize.js" />
-    <Content Include="Scripts\admin\flot\jquery.flot.stack.js" />
     <Content Include="Scripts\admin\QuestionsController.js" />
     <Content Include="Scripts\admin\ReportController.js" />
     <Content Include="Scripts\ajax.helper.js" />
@@ -359,7 +352,6 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\admin\settings.js" />
     <Content Include="Scripts\toast.custom.js" />
-    <Content Include="Scripts\admin\vendor.bundle.base.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

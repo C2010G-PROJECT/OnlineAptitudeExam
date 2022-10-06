@@ -18,9 +18,9 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
 {
     public class DashboardController : Controller
     {
-        private OnlineAptitudeExamEntities db = new OnlineAptitudeExamEntities();
+        private readonly OnlineAptitudeExamEntities db = new OnlineAptitudeExamEntities();
         // GET: Admin/Dashboard
-        [AuthenticationAttribute(true)]
+        [Authentication(true)]
         public ActionResult Index(bool isAjax = false)
         {
             ViewBag.isAjax = isAjax;
@@ -55,8 +55,6 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             return View(homeViewModel);
         }
 
-
-        
         public ActionResult Indexxxx()
         {
             

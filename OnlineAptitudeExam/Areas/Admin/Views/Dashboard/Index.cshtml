@@ -137,6 +137,19 @@
 @if (ViewBag.isAjax != null && ViewBag.isAjax)
 {
     Layout = null;
+    <script>
+        if (!window.DashboardIndex()) {
+            loadScripts('/Scripts/admin/Chart.min.js')
+            loadScripts('/Scripts/admin/Dashboard.js')
+        }
+        loadScripts('DashboardIndex()', true)
+    </script>
+}
+
+@section scripts {
+    <script src="~/Scripts/admin/Chart.min.js"></script>
+    <script src="~/Scripts/admin/Dashboard.js"></script>
+    <script>DashboardIndex()</script>
 }
 
 <style>
