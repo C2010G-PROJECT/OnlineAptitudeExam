@@ -155,22 +155,22 @@ function toggleReportTable(element) {
                 mParent.removeClass('btn-outline-youtube')
                 mParent.addClass('btn-outline-behance')
                 $(this).removeClass('mdi-minus active').addClass('mdi-plus')
-                $(this).closest('tr').next().hide();
+                $(this).closest('tr').next().hide(100);
             }
         })
     }
-
-    element.removeClass('btn-outline-youtube btn-outline-behance')
-    mIcon.removeClass();
-    if (!mTr.is(':visible')) {
-        element.addClass('btn-outline-youtube')
-        mIcon.addClass('mdi mdi-minus active')
-    } else {
-        element.addClass('btn-outline-behance')
-        mIcon.addClass('mdi mdi-plus')
-    }
-    element.css('pointer-events', 'none')
-    mTr.toggle(300, function () { element.css('pointer-events', 'all') });
+     
+    mTr.toggle(200, function () {
+        element.removeClass('btn-outline-youtube btn-outline-behance')
+        mIcon.removeClass();
+        if (mTr.is(':visible')) {
+            element.addClass('btn-outline-youtube')
+            mIcon.addClass('mdi mdi-minus active')
+        } else {
+            element.addClass('btn-outline-behance')
+            mIcon.addClass('mdi mdi-plus')
+        }
+    });
 }
 
 function showDetailReport(element) {

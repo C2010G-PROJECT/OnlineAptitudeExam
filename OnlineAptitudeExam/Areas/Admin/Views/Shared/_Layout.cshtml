@@ -25,10 +25,9 @@
 <body>
     <div class="container-scroller">
         <div id="ct_toast"></div>
-        <div id="modalContent"></div>
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
+        <nav class="sidebar sidebar-offcanvas custom-scroll" id="sidebar">
+            <ul class="nav custom-scroll">
                 <li class="nav-item nav-profile border-bottom">
                     <a class="nav-link flex-column">
                         <div class="nav-profile-image">
@@ -251,7 +250,7 @@
             </nav>
             <!-- partial -->
             <div class="main-panel">
-                <div id="contentBody" class="content-wrapper container-fluid pb-0 pt-3">
+                <div id="contentBody" class="content-wrapper container-fluid pb-0 pt-3 position-relative">
                     @RenderBody()
                 </div>
                 <!-- content-wrapper ends -->
