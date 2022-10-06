@@ -19,19 +19,19 @@ namespace OnlineAptitudeExam.Utils
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            //HttpSessionStateBase session = filterContext.HttpContext.Session;
-            //if (session != null && session["UserInfo"] is Account)
-            //{
-            //    if (!requireAdmin || (session["UserInfo"] as Account).type == ((int)Enums.Type.ADMIN))
-            //    {
-            //        return;
-            //    }
-            //}
-            //filterContext.Result = new RedirectToRouteResult(
-            //       new RouteValueDictionary {
-            //                    { "Controller", "Auth" },
-            //                    { "Action", "Login" }
-            //       });
+            HttpSessionStateBase session = filterContext.HttpContext.Session;
+            if (session != null && session["UserInfo"] is Account)
+            {
+                if (!requireAdmin || (session["UserInfo"] as Account).type == ((int)Enums.Type.ADMIN))
+                {
+                    return;
+                }
+            }
+            filterContext.Result = new RedirectToRouteResult(
+                   new RouteValueDictionary {
+                                { "Controller", "Auth" },
+                                { "Action", "Login" }
+                   });
         }
     }
 }
