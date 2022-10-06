@@ -159,7 +159,7 @@ function toggleReportTable(element) {
             }
         })
     }
-     
+
     mTr.toggle(200, function () {
         element.removeClass('btn-outline-youtube btn-outline-behance')
         mIcon.removeClass();
@@ -177,4 +177,40 @@ function showDetailReport(element) {
     let id = element.closest('tr').data('id');
     let url = _ACTION_Report_Detail + '/' + id;
     load(url, ContentBody, url, "addActiveClasss")
+}
+
+function showSelectExportMethod() {
+    let mModal = $('#selectExportMethod');
+    mModal.find('.method').off('click').on('click', function () {
+        if ($(this).hasClass('preview')) {
+            previewPdf('#export_report');
+        } else {
+            window.scroll(0, 0)
+            savePdf('#export_report')
+        }
+    });
+    mModal.modal('show');
+}
+
+function previewPdf(ele) {
+    if (typeof ele == 'string') {
+        ele = $(ele)
+    }
+    var width = 800, height = 450;
+    var left = (screen.width - width) / 2;
+    var top = screen.height / 6;
+    var params = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
+    var printWindow = window.open('', '', params);
+    printWindow.document.write('<html><head>' + $("head").html() + '</head>');
+    printWindow.document.write('<body class="container-fluid p-0" onafterprint="close()">');
+    printWindow.document.write(ele.parent().html());
+    printWindow.document.write('<script>window.print();</script>');
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+}
+
+function updateScore() {
+    let scoreEle = document.getElementById("scores")
+    let tmpScores = document.getElementById("tmpScores")
+    scoreEle.innerText = tmpScores.innerText;
 }

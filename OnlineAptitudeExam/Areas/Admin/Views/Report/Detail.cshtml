@@ -17,25 +17,26 @@
             <span>Report Detail</span>
         </div>
     </div>
-    <div class="col-3 mb-3 d-flex justify-content-end align-items-center">
-        <button class="btn btn-outline-reddit btn-sm" onclick="exportPDF()" type="button" style="height:40px;width:40px">
+    <div class="col-3 mb-3 d-flex justify-content-end align-items-center position-fixed" style=" right: 0; z-index:1">
+        <button class="btn btn-outline-reddit btn-sm shadow bg-inverse-light"
+                style="height: 40px; width: 40px; border-radius: 50%; border-color: #ff4500 !important"
+                onclick="showSelectExportMethod()" type="button">
             <i class="fa-regular fa-file-pdf"></i>
         </button>
     </div>
 </div>
-<div class="card" id="print-report">
-    <div class="card-body">
+
+<div class="card export_report ">
+    <div class="card-body export_report-body " id="export_report">
         <h3 class="text-center text-decoration-underline py-4">Candidate Information</h3>
-        <div class="row align-items-center font-18">
-            <div class="col-3 my-4">
-                <div class="d-flex flex-column align-items-center text-center">
-                    <img class="rounded-circle mb-2" style="width:100px" src="~/Content/images/avatars/@(account.avatar == null ? "user_placeholder.png": account.avatar)">
-                    <div><span class="font-weight-bold">@(account.fullname == null ? "unknown": account.fullname)</span></div>
-                    <div>@(account.email == null ? "unknown": account.email)</div>
-                </div>
+        <div class="d-flex flex-wrap align-items-center font-18">
+            <div class="col-sm-3 col-12 my-4 d-flex flex-column align-items-center text-center">
+                <img class="rounded-circle mb-2" style="width:100px" src="~/Content/images/avatars/@(account.avatar == null ? "user_placeholder.png": account.avatar)">
+                <div><span class="font-weight-bold">@(account.fullname == null ? "unknown": account.fullname)</span></div>
+                <div>@(account.email == null ? "unknown": account.email)</div>
             </div>
-            <div class="col-9">
-                <div class="d-flex">
+            <div class="col-sm-9 col-12 mb-sm-0 mb-4">
+                <div class=" d-flex">
                     <span style="min-width:120px">Usename:</span>
                     <div class="flex-grow-1 mb-3 border-bottom">
                         @(account.username == null ? "unknown": account.username)
@@ -55,7 +56,7 @@
                 </div>
                 <div class="d-flex">
                     <span style="min-width:120px">Descriptions:</span>
-                    <div class="flex-grow-1 mb-3 border-bottom">
+                    <div class="flex-grow-1 border-bottom">
                         @(account.descriptions == null ? "unknown": account.descriptions)
                     </div>
                 </div>
@@ -133,30 +134,39 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="selectExportMethod" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-reddit">
+                <span class="p-0 me-1"><i class="fa-regular fa-file-pdf" style="font-size:1.5em"></i></span>
+                <h5 class="modal-title" id="staticBackdropLabel">Choose method</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Choose a method for this action!
+            </div>
+            <div class="modal-footer justify-content-evenly">
+                <button type="button" class="btn btn-outline-behance method preview" data-bs-dismiss="modal">Preview</button>
+                <button type="button" class="btn btn-outline-reddit method save" data-bs-dismiss="modal">Save now</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @if (ViewBag.isAjax != null && ViewBag.isAjax)
 {
     Layout = null;
+    <script>
+        if (!window.updateScore) {
+            loadScripts("/Scripts/admin/ReportController.js");
+        }
+        loadScripts("updateScore()", true)
+    </script>
 }
 
-<script>
-    updateScore();
-
-    function updateScore() {
-        let scoreEle = document.getElementById("scores")
-        let tmpScores = document.getElementById("tmpScores")
-        scoreEle.innerText = tmpScores.innerText;
-    }
-
-    function exportPDF() {
-        var headContents = $("head").html();
-        var divContents = $("#print-report").html();
-        var printWindow = window.open('', '', 'width=800,height=450');
-        printWindow.document.write('<html><head>' + headContents + '</head>');
-        printWindow.document.write('<body class="container-fluid p-0" onafterprint="close()">');
-        printWindow.document.write(divContents);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        setTimeout(function () { printWindow.print() }, 200)
-    }
-
-</script>
+@section scripts {
+    <script src="~/Scripts/admin/ReportController.js"></script>
+    <script>updateScore()</script>
+}

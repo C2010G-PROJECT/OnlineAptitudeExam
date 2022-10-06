@@ -72,3 +72,15 @@
     -webkit-animation: spin 0.5s linear infinite;
     animation: spin 0.5s linear infinite;
 }
+
+/*   ============================================   */
+
+@media (min-width: 992px) {
+    .export_report {
+        padding-left:15px;
+    }
+
+    .export_report-body {
+        margin-right: 15px;
+    }
+} 

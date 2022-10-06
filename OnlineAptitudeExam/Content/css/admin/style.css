@@ -2604,12 +2604,6 @@
     box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    :root {
-        scroll-behavior: smooth;
-    }
-}
-
 body {
     margin: 0;
     font-family: var(--bs-body-font-family);
@@ -19826,7 +19820,14 @@ code {
     box-shadow: none;
 }
 
+@media (max-width: 576px) {
+    .card .card-body {
+        padding: 1rem;
+    }
+}
+
 @media (min-width: 576px) {
+  
     .card-columns {
         -webkit-column-count: 3;
         -moz-column-count: 3;
