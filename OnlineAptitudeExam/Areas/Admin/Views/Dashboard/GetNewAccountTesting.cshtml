@@ -1,0 +1,34 @@
+﻿@model OnlineAptitudeExam.Models.HomeViewModel
+@using OnlineAptitudeExam.Utils;
+@{
+    Layout = null;
+    var selectAccountsTested_ExamsTested = (from p in Model.AccountsTested
+                        join c in Model.ExamsTested on p.id equals c.user_id
+                        select new
+                        {
+                            p.avatar,
+                            p.username,
+                            c.time_end
+                        }).ToList();
+}
+
+@foreach (var item in selectAccountsTested_ExamsTested)
+{
+    <tr>
+        <td>
+            <img class="rounded-circle float-left" src="~/Content/images/avatars/@(item.avatar == null ? "user_placeholder.png": item.avatar)">
+        </td>
+        <td>
+            @item.username
+        </td>
+        <td>
+            @DateUtils.toDateString(item.time_end)
+        </td>
+        <td>
+            unknow
+        </td>
+        <td>
+            unknow
+        </td>
+    </tr>
+}

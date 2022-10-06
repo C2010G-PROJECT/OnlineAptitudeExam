@@ -234,3 +234,10 @@ function showPassword() {
         x.type = "password";
     }
 }
+function renderNewPassword() {
+    let mModal = $('#accountsModal'),
+        mEdtPassword = mModal.find('#Password');
+    mEdtPassword.attr('type', 'password');
+    mEdtPassword.val(generatePassword());
+    showPassword();
+}
