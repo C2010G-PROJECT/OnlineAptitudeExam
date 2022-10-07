@@ -24,32 +24,15 @@
 
 }
 
-
 <div class="quesmain">
 
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
+    <div class=" d-flex flex-column position-fixed" 
+         style="width: 300px; top: 62px; left: 50%; transform: translate(-50%, 0); background: #fff6c3; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px ">
+        <h4 class="text-center" style="color:red;">@Enums.GetQuestionType(type) Exam</h4>
+        <div class="text-center pb-2" style="font-size: 20px; color: red; "> <i class="fa-regular fa-clock"></i> &nbsp; Time Remaining : <span id="minRemaining"></span>:<span id="secRemaining"></span></div>
+    </div>
 
-            @if (type == 0)
-            {
-                <h4 style="line-height:40px;padding-left:30px; color:red;">General knowledge exam </h4>
-            }
-            else if (type == 1)
-            {
-                <h4 style="line-height: 40px; padding-left: 30px; color: red;">Mathetics exam </h4>
-
-            }
-            else if (type == 2)
-            {
-                <h4 style="line-height: 40px; padding-left: 30px; color: red;">Computer technology exam </h4>
-
-            }
-
-            <div style="line-height: 45px; font-size: 20px; color: red; "> <i class="fa-regular fa-clock"></i> &nbsp; Time Remaining : <span id="minRemaining"></span>:<span id="secRemaining"></span></div>
-        </div>
-    </nav>
-   
-    <form  id="question_form" style="padding-left: 300px;" data-test_id="@ViewBag.testId" data-url="@Url.Action("SaveExamResult")" method="post" >
+    <form id="question_form" style="padding-left: 300px; margin-top: 64px" data-test_id="@ViewBag.testId" data-url="@Url.Action("SaveExamResult")" method="post">
 
 
         @for (int i = 0; i < questions.Count; i++)
@@ -59,30 +42,28 @@
                 @{
                     var examDetail = examDetails.Find(ed => ed.question_id == questions[i].id);
 
-                    string[] userAnswers = null;
+                    int[] selectedAnswers = null;
 
                     if (examDetail != null)
                     {
-                        userAnswers = examDetail.selected_question.Trim('[', ']').Split(new[] { ',' }).ToArray();
+                        selectedAnswers = (JsonConvert.DeserializeObject(examDetail.selected_question) as JArray).Select(item => (int)item).ToArray();
                     }
 
-                    <p class="fw-bold"> @(i+1) .@questions[i].question <b style="color:orange;">(@questions[i].score marks)</b> </p>
-
-                    var splitAnswer = questions[i].answers.Trim('[', ']').Split(new[] { ',' }).Select(x => x.Trim('"')).ToArray();
-                    for (int j = 0; j < splitAnswer.Length; j++)
+                    <p id="question@(i+1)" class="fw-bold"> @(i+1). @questions[i].question <b style="color:orange;">(@questions[i].score marks)</b> </p>
+                    var answers = JsonConvert.DeserializeObject(questions[i].answers) as JArray;
+                    for (int j = 0; j < answers.Count; j++)
                     {
 
-                        bool isChecked = userAnswers != null && userAnswers.Contains(j.ToString());
+                        bool isChecked = selectedAnswers != null && selectedAnswers.Contains(j);
                         <p>
-                            <input type='@(totalCorrectAnswers[i] == 1 ? "radio":"checkbox")' @(isChecked ? "checked" : "") id="@splitAnswer[j]" name="Answer'+@i+'" value="@j" />
+                            <input type='@(totalCorrectAnswers[i] == 1 ? "radio":"checkbox")' @(isChecked ? "checked" : "") id="@("question-"+i+"-"+j)" name="Answer'+@i+'" value="@j" />
 
-                            <label for="@splitAnswer[j]"> &nbsp;&nbsp;@splitAnswer[j]</label>
+                            <label for="@("question-"+i+"-"+j)"> &nbsp;&nbsp;@answers[j]</label>
                         </p>
                     }
                 }
 
             </div>
-
         }
 
         <button style="margin-left:60%;" type="button" class="btn btn-outline-primary" id="btn_submit">
@@ -108,12 +89,11 @@
 
             let testId = mForm.data("test_id");
             let examDetails = [];
+            let validAnswer = true;
 
-            mForm.find(".question").each(function () {
-
+            mForm.find(".question").each(function (i) {
 
                 let questionId = $(this).data("question_id");
-
 
                 let selectedQuestion = [];
                 $(this).find("input").each(function (i) {
@@ -123,8 +103,10 @@
                 });
 
                 if (selectedQuestion.length == 0) {
-                    
-                    $(this).removeClass('disabled');
+                    alert("Please enter select answer at question " + (i + 1))
+                    let scrY = $('#question' + (i + 1))[0].getBoundingClientRect().top - 150;
+                    window.scrollTo(0, window.scrollY + scrY)
+                    validAnswer = false;
                     return false;
                 }
 
@@ -136,13 +118,15 @@
                 };
                 examDetails.push(examDetail);
             });
-
+            if (!validAnswer) {
+                $("#btn_submit").removeClass('disabled');
+                return false;
+            }
             let data = {
                 testId: testId,
                 examDetails: examDetails
             };
             loadUrl(url, function (data) {
-
                 //console.log(data.message);
                 if (data.success) {
                     window.location.reload();
@@ -171,7 +155,7 @@
         }
 
         function startCount() {
-            
+
 
             document.getElementById('secRemaining').innerText = formatNumber(secondCounter);
             document.getElementById('minRemaining').innerText = formatNumber(parseInt(remSecond / 60));
@@ -203,9 +187,9 @@
 
             },1000);
         }
-       
+
       startCount();
-        
+
 
     </script>
 

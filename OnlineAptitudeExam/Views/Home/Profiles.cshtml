@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
-                    <img src="~/Content/images/avatars/@accountLogin.avatar" alt="" />
+                    <img src="~/Content/images/avatars/@accountLogin.avatar" alt="avatar" style="border-radius:50%" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -22,7 +22,7 @@
                     <h5>
                         @accountLogin.fullname
                     </h5>
-                    @*<p class="proile-rating">Score : <span>8/10</span></p>*@
+                    @*<p class="proile-rating">Score : <span>8/10</span>*@
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -49,25 +49,25 @@
                             <div class="col-md-6">
                                 <label>Full Name</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>@accountLogin.fullname</p>
+                            <div class="col-md-6 mb-2 fw-bold text-primary">
+                                @accountLogin.fullname
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-2">
                                 <label>User Name</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>@accountLogin.username</p>
+                            <div class="col-md-6 mb-2 fw-bold text-primary">
+                                @accountLogin.username
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-2">
                                 <label>Age</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>@accountLogin.age</p>
+                            <div class="col-md-6 fw-bold text-primary">
+                                @accountLogin.age
                             </div>
                         </div>
 
@@ -75,8 +75,8 @@
                             <div class="col-md-6">
                                 <label>Address</label>
                             </div>
-                            <div class="col-md-6">
-                                <p>@accountLogin.address</p>
+                            <div class="col-md-6 fw-bold text-primary">
+                                @accountLogin.address
                             </div>
                         </div>
                     </div>

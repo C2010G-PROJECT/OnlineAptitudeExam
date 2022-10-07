@@ -1,5 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using System.Text;
+using System.Web.Mvc;
 
 namespace OnlineAptitudeExam.Utils
 {
@@ -18,5 +20,20 @@ namespace OnlineAptitudeExam.Utils
             }
             return byte2String;
         }
+        public static string GenerateAlphaNumericPwd(int length = 24)
+        {
+            string numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+            Random objrandom = new Random();
+            string strrandom = string.Empty;
+            for (int i = 0; i < length; i++)
+            {
+                int temp = objrandom.Next(0, numbers.Length);
+                string passwordString = numbers.ToCharArray()[temp].ToString();
+                strrandom += passwordString;
+            }
+            return strrandom;
+        }
     }
+
+  
 }

@@ -267,7 +267,6 @@
     <Content Include="Content\css\admin\custom.css" />
     <Content Include="Content\css\admin\Dashboard.css" />
     <Content Include="Content\css\admin\draganddrop.css" />
-    <Content Include="Content\images\avatars\logoTheWebster.png" />
     <Content Include="Content\images\body_intro.jpg" />
     <Content Include="Content\images\body_intro.png" />
     <Content Include="Content\images\body_intro_timestamp.png" />

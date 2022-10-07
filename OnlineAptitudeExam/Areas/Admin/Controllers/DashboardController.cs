@@ -32,11 +32,10 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         public ActionResult GetNewAccountTesting()
         {
             //string sort = "";
-            
             var exams = from s in db.Exams select s;
             if (exams.Count() == 0)
             {
-                return Json(exams);
+                return View(new HomeViewModel());
             }
             exams = exams.OrderByDescending(t => t.time_end).Take(4);
             //sort = SortHelper.DATE;

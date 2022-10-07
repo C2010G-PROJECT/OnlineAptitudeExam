@@ -3,91 +3,46 @@
 
 @{
     @Styles.Render("~/Content/css/editProfile.css")
-
-    Account account = ViewBag.accountEdit;
 }
 
 @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <div class="container rounded bg-white mt-5 mb-5 " style="
-    margin-bottom: 163px !important;
-">
-        <div class="row">
-            <div class="col-md-3 border-right">
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5" style="
-    margin-top: 74px;
-">
-                    <input type="file" value="@account.avatar" name="avatar" />
+    <div class="container rounded bg-white mt-5 mb-5 " style="margin-bottom: 163px !important;">
+        <div class="row justify-content-center">
 
-                    @*@Html.TextBoxFor(m => m.avatar, new { @class = "form-control", type = "file" })*@
-
-                </div>
-            </div>
-
-
-            <div class="col-md-5 border-right">
-                <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Profile Edit</h4>
-                    </div>
-
-
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label class="labels">Full Name</label>
-                            @*@Html.LabelFor(m => m.FullName, new { @class = "labels" })*@
-                            @Html.TextBoxFor(m => m.fullname, new { @class = "form-control" })
-
-                            @*<input type="text" class="form-control" placeholder="Full name" value="@accountEdit.fullname" name="full_name">*@
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="labels">User name</label>
-                            @*@Html.LabelFor(m => m.UserName, new { @class = "labels" })*@
-                            @Html.TextBoxFor(m => m.username, new { @class = "form-control" })
-
-                            @*<input type="text" class="form-control" value="@accountEdit.username" placeholder="User name" name="user_name">*@
-                        </div>
-                    </div><br />
-
-
-                    <div class="row mt-3">
-                        <div class="col-md-12">
-                            <label class="labels">Age</label>
-                            @*@Html.LabelFor(m => m.Age, new { @class = "labels" })*@
-                            @Html.TextBoxFor(m => m.age, new { @class = "form-control" })
-
-                            @*<input type="number" class="form-control" placeholder="enter your age" min="0" max="100" value="@accountEdit.age" name="age">*@<br />
-                        </div>
-                        <br />
-                        <div class="col-md-12">
-                            <label class="labels">Address</label>
-                            @*@Html.LabelFor(m => m.Address, new { @class = "labels" })*@
-                            @Html.TextAreaFor(m => m.address, new { @class = "form-control" })
-
-                            @*<textarea class="form-control" placeholder="enter address" style="max-height:80px ; max-width:350px" name="address">@accountEdit.address</textarea>*@<br />
-                        </div>
-                        <br />
-                        <div class="col-md-12">
-                            <label class="labels">Description</label>
-                            @*@Html.LabelFor(m => m.Description, new { @class = "labels" })*@
-                            @Html.TextAreaFor(m => m.descriptions, new { @class = "form-control" })
-
-                            @*<textarea type="text" class="form-control" placeholder="enter description" style="max-height:150px ; max-width:350px" name="description">@accountEdit.descriptions</textarea>*@
-                            <br />
-                        </div>
-
-
-                        <div class="mt-5 text-center">
-                            <input class="btn btn-primary profile-button" type="submit" value="Save Profile" />
-                        </div>
-                    </div>
+            <div class="col-md-6 my-5">
+                <div class="mb-3">
+                    <h4 class="text-right">Profile Edit</h4>
                 </div>
 
+                <div class="form-group">
+                    <label class="labels">Full Name</label>
+                    <input class="form-control" id="fullname" name="fullname" type="text" required maxlength="100" value="@Model.fullname" />
+                </div>
+                <div class="form-group mt-1">
+                    <label class="labels">Age</label>
+                    <input class="form-control" id="age" name="age" type="number" min="0" max="150" value="@Model.age" />
+                </div>
+                <div class="form-group mt-1">
+                    <label class="labels">Address</label>
+                    <input class="form-control" id="address" name="address" type="text" maxlength="100" value="@Model.address" />
+                </div>
+                <div class="form-group mt-1">
+                    <label class="labels">Description</label>
+                    <input class="form-control" id="descriptions" name="descriptions" type="text" maxlength="255" value="@Model.descriptions" />
+                </div>
+                <div class="form-group mt-1">
+                    <label class="labels">Avatar</label>
+                    <input class="form-control" type="file" value="@Model.avatar" name="avatar" />
+                    <span class="text-danger field-validation-error" data-valmsg-for="UserName" data-valmsg-replace="true">@ViewBag.avatar_err</span>   
+                </div>
+
+                <div class="mt-4 text-center">
+                    <input class="btn btn-primary profile-button" type="submit" value="Save Profile" />
+                </div>
             </div>
         </div>
     </div>
-    
 }
 
 @section Scripts {

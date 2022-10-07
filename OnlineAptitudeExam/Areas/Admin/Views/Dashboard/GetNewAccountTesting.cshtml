@@ -2,33 +2,49 @@
 @using OnlineAptitudeExam.Utils;
 @{
     Layout = null;
-    var selectAccountsTested_ExamsTested = (from p in Model.AccountsTested
-                        join c in Model.ExamsTested on p.id equals c.user_id
-                        select new
-                        {
-                            p.avatar,
-                            p.username,
-                            c.time_end
-                        }).ToList();
-}
-
-@foreach (var item in selectAccountsTested_ExamsTested)
-{
-    <tr>
-        <td>
-            <img class="rounded-circle float-left" src="~/Content/images/avatars/@(item.avatar == null ? "user_placeholder.png": item.avatar)">
-        </td>
-        <td>
-            @item.username
-        </td>
-        <td>
-            @DateUtils.toDateString(item.time_end)
-        </td>
-        <td>
-            unknow
-        </td>
-        <td>
-            unknow
-        </td>
-    </tr>
+    var data = (from p in Model.AccountsTested
+                join c in Model.ExamsTested on p.id equals c.user_id
+                select new
+                {
+                    p.avatar,
+                    p.username,
+                    c.time_end
+                }).ToList();
+    if (data.Count > 0)
+    {
+        <div class="card-body table-responsive p-0">
+            <table class="table table-striped table-valign-middle">
+                <thead style="font-weight:bold">
+                    <tr>
+                        <th colspan="2">UserName</th>
+                        <th>Test day</th>
+                        <th>Score</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody id="accoutsTestedTable">
+                    @foreach (var item in data)
+                    {
+                        <tr>
+                            <td>
+                                <img class="rounded-circle float-left" src="~/Content/images/avatars/@(item.avatar == null ? "user_placeholder.png": item.avatar)">
+                            </td>
+                            <td>
+                                @item.username
+                            </td>
+                            <td>
+                                @DateUtils.toDateString(item.time_end)
+                            </td>
+                            <td>
+                                unknow
+                            </td>
+                            <td>
+                                unknow
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 }

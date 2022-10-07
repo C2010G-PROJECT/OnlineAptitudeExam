@@ -31,7 +31,6 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
         mIcon = mModal.find('.modal-header i'),
         mTitle = mModal.find('.modal-title'),
         mSubmit = mModal.find('.modal-submit'),
-        mSortAnwer = mModal.find('.sort-answer'),
         mAddAnwer = mModal.find('.add-answer'),
         mContainerAnswer = mModal.find('.container-answer'),
         mForm = mModal.find('form'),
@@ -47,6 +46,8 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
     // setup data
     pendingFocus(mModal, mEdtQuestion);
     clearFormElements(mForm);
+
+    setupGenerateQuestion(mModal, type)
 
     // validate rule
     jQuery.validator.addMethod("anwer_unique", function (value, element) {
@@ -122,7 +123,7 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
     }).resetForm()
 
     // clear answer
-    cancelSortAnswer(mSortAnwer);
+    cancelSortAnswer(mModal);
     mContainerAnswer.html('')
 
     // bind data if edit
@@ -135,13 +136,13 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
             let answers = JSON.parse(data.answers);
             let correct_answers = JSON.parse(data.correct_answers);
             answers.forEach(function (currentValue, index, arr) {
-                mContainerAnswer.append(createAnwer(correct_answers.indexOf(index) != -1, currentValue))
+                mContainerAnswer.append(createAnwerElement(correct_answers.indexOf(index) != -1, currentValue))
             })
         }, null, 'POST', { id: id })
     }
 
     // init event
-    mAddAnwer.off('click').on('click', () => mContainerAnswer.prepend(createAnwer()))
+    mAddAnwer.off('click').on('click', () => mContainerAnswer.prepend(createAnwerElement()))
     mEdtQuestion.off('focusout').on('focusout', function () {
         $(this).val($(this).val().trim())
     })
@@ -164,7 +165,7 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
             if (answers.length < 2) {
                 showToast('A question has at least two answer.', 'warning');
                 for (let i = 2; i > answers.length; i--) {
-                    mContainerAnswer.prepend(createAnwer());
+                    mContainerAnswer.prepend(createAnwerElement());
                 }
                 return;
             }
@@ -199,7 +200,62 @@ function showQuestionsModal(element, testId, type, isCreate = true) {
     mModal.modal('show');
 }
 
-function createAnwer(checked = false, value = '') {
+function setupGenerateQuestion(mModal, type) {
+    if (type < 0 || type > 2) {
+        return false;
+    }
+    var mForm = mModal.find('form'),
+        mEdtQuestion = mModal.find('#Question'),
+        mSlbScore = mForm.find('#Score'),
+        mContainerAnswer = mModal.find('.container-answer'),
+        mFooter = mModal.find('.modal-footer'),
+        mRandGenerate = mFooter.find('.generate');
+ 
+    mRandGenerate.off('click').on('click', function () {
+        // clear data
+        clearFormElements(mForm);
+        cancelSortAnswer(mModal);
+        mContainerAnswer.html('');
+
+        var categoryName = type == 0 ? 'General Knowledge' : type == 1 ? 'Mathematics' : 'Computer Technology';
+        var category = type == 0 ? 9 : type == 1 ? 19 : 18;
+        var api = 'https://opentdb.com/api.php?encode=base64&amount=1&category=' + category;
+
+        mRandGenerate.addClass('invisible')
+        mForm.addClass('invisible')
+        mForm.parent().append('<div class="loader" />')
+
+        loadUrl(api, function (data) {
+            mRandGenerate.removeClass('invisible')
+            mForm.removeClass('invisible')
+            mForm.next().remove();
+            if (data.results.length > 0) {
+                var qData = data.results[0]
+                var difficulty = atob(qData.difficulty)
+                mSlbScore.val(difficulty === 'easy' ? '1' : difficulty === 'medium' ? '2' : '3')
+                mEdtQuestion.val(atob(qData.question));
+                var answer = qData.incorrect_answers;
+                answer.push(qData.correct_answer);
+                answer = shuffleArray(answer);
+                var cr_ans_index = answer.indexOf(qData.correct_answer)
+                for (var i = 0; i < answer.length; i++) {
+                    mContainerAnswer.append(createAnwerElement(i == cr_ans_index, atob(answer[i])))
+                }
+                showToast('Generated a ' + categoryName + ' question!', 'info', categoryName)
+            } else {
+                showToast('Generate failse!', 'warning', 'Failse')
+            }
+        }, function () {
+            mRandGenerate.removeClass('invisible')
+            mForm.removeClass('invisible')
+            mForm.next().remove();
+            showToast('Generate failse!', 'warning', 'Failse')
+        })
+    })
+    return true;
+}
+
+function createAnwerElement(checked = false, value = '') {
     const random = (length = 8) => {
         return Math.random().toString(16).substr(2, length);
     };
@@ -213,7 +269,7 @@ function createAnwer(checked = false, value = '') {
         '<input id="' + name + '" name="' + name + '" class="form-control" placeholder="Answer" type="text" />' +
         '</div>' +
         '<div class="ms-2">' +
-        '<button type="button" class="btn btn-danger btn-sm delete-answer">' +
+        '<button type="button" class="btn btn-danger btn-sm" onclick="removeAnwerElement($(this))">' +
         '<i class="mdi mdi-delete-outline"></i>' +
         '</button>' +
         '</div>' +
@@ -225,9 +281,6 @@ function createAnwer(checked = false, value = '') {
     answerInput.on('focusout', function () {
         let val = $(this).val().trim();
         $(this).attr('value', val).val(val)
-    })
-    ele.find('.delete-answer').click(function () {
-        $(this).closest('.draggable').remove();
     })
     ele.find('.correct-answer').attr('checked', checked)
 
@@ -248,6 +301,10 @@ function createAnwer(checked = false, value = '') {
     return ele;
 }
 
+function removeAnwerElement(ele) {
+    ele.closest('.draggable').remove();
+}
+
 function toggleSortAnswer(ele) {
     let mModal = $('#questionsModal')
     let container = $('.drag-container');
@@ -257,7 +314,7 @@ function toggleSortAnswer(ele) {
     container.toggleClass('active')
     ele.toggleClass('btn-info btn-warning')
     mIcon.toggleClass('mdi-close mdi-arrow-all');
-    mModal.find('.modal-submit, .add-answer').prop('disabled', (i, v) => !v);
+    mModal.find('.modal-submit, .add-answer, .generate').prop('disabled', (i, v) => !v);
 
     if (container.hasClass('active')) {
         mSpan.text('Cancel')
@@ -277,10 +334,10 @@ function toggleSortAnswer(ele) {
             })
         })
     }
-
 }
 
-function cancelSortAnswer(ele) {
+function cancelSortAnswer(mModal) {
+    let ele = mModal.find('.sort-answer');
     let container = $('.drag-container');
     let mIcon = ele.find('i');
     let mSpan = ele.find('span');
@@ -288,7 +345,7 @@ function cancelSortAnswer(ele) {
     container.removeClass('active')
     ele.removeClass('btn-warning').addClass('btn-info')
     mIcon.removeClass('mdi-close').addClass('mdi-arrow-all');
-    $('#questionsModal').find('.modal-submit, .add-answer').prop('disabled', false);
+    $('#questionsModal').find('.modal-submit, .add-answer, .generate').prop('disabled', false);
     mSpan.text('Sort answer')
     container.find('.draggable').each(function () {
         removeEventsDragAndDrop(this);

@@ -95,58 +95,64 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="modal-body custom-scroll" style="overflow-x: hidden;">
-                <div class="form-group">
-                    <label for="Question">Question</label>
-                    <textarea id="Question" name="Question" class="form-control mb-2" rows="5" placeholder="Question" type="text"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="Score">Score</label>
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-5">
-                            <select class="form-control form-control-sm mb-2" id="Score" name="Score" style="color:black">
-                                <option value="" selected disabled>Choose score</option>
-                                <option value="1">1.0</option>
-                                <option value="1.5">1.5</option>
-                                <option value="2">2.0</option>
-                                <option value="2.5">2.5</option>
-                                <option value="3">3.0</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-7 d-flex justify-content-end mt-1 mt-sm-1 mt-md-0" style="height: 2.575rem">
-                            <button type="button" onclick="toggleSortAnswer($(this))" class="btn btn-info btn-sm d-flex align-items-center sort-answer">
-                                <i class="mdi mdi-arrow-all"></i>
-                                <span class="text-small fw-normal ms-1 me-1">Sort answer</span>
-                            </button>
-                            <button type="button" class="btn btn-success btn-sm d-flex align-items-center ms-2 add-answer">
-                                <i class="mdi mdi-tray-plus"></i>
-                                <span class="text-small fw-normal ms-1 me-1">Add answer</span>
-                            </button>
-                        </div>
+            <div class="modal-body custom-scroll" style="overflow-x: hidden;">
+                <form>
+                    <div class="form-group">
+                        <label for="Question">Question</label>
+                        <textarea id="Question" name="Question" class="form-control mb-2" rows="5" placeholder="Question" type="text"></textarea>
                     </div>
-                </div>
 
-                <div class="container-answer drag-container">
-                    @* // Add more in js code
-                        <div class="d-flex align-items-center draggable">
-                            <div class="me-3">
-                                <input class="right-answer" style="width: 18px; height: 18px " type="checkbox" />
+                    <div class="form-group">
+                        <label for="Score">Score</label>
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5">
+                                <select class="form-control form-control-sm mb-2" id="Score" name="Score" style="color:black">
+                                    <option value="" selected disabled>Choose score</option>
+                                    <option value="1">1.0</option>
+                                    <option value="1.5">1.5</option>
+                                    <option value="2">2.0</option>
+                                    <option value="2.5">2.5</option>
+                                    <option value="3">3.0</option>
+                                </select>
                             </div>
-                            <div class="flex-grow-1 form-group question-answer">
-                                <input class="form-control" placeholder="Answer 3" type="text" />
-                                <label id="Name-error" class="error" for="Name">Please enter at least 6 characters.</label>
-                            </div>
-                            <div class="ms-2">
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    <i class="mdi mdi-delete-outline"></i>
+                            <div class="col-12 col-sm-12 col-md-7 d-flex justify-content-end mt-1 mt-sm-1 mt-md-0" style="height: 2.575rem">
+                                <button type="button" onclick="toggleSortAnswer($(this))" class="btn btn-info btn-sm d-flex align-items-center sort-answer">
+                                    <i class="mdi mdi-arrow-all"></i>
+                                    <span class="text-small fw-normal mx-1">Sort answer</span>
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm d-flex align-items-center ms-2 add-answer">
+                                    <i class="mdi mdi-tray-plus"></i>
+                                    <span class="text-small fw-normal mx-1">Add answer</span>
                                 </button>
                             </div>
                         </div>
-                    *@
-                </div>
-            </form>
+                    </div>
+
+                    <div class="container-answer drag-container">
+                        @* // Add more in js code
+                            <div class="d-flex align-items-center draggable">
+                                <div class="me-3">
+                                    <input class="right-answer" style="width: 18px; height: 18px " type="checkbox" />
+                                </div>
+                                <div class="flex-grow-1 form-group question-answer">
+                                    <input class="form-control" placeholder="Answer 3" type="text" />
+                                    <label id="Name-error" class="error" for="Name">Please enter at least 6 characters.</label>
+                                </div>
+                                <div class="ms-2">
+                                    <button type="button" class="btn btn-danger btn-sm">
+                                        <i class="mdi mdi-delete-outline"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        *@
+                    </div>
+                </form>
+            </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-warning btn-sm generate d-flex align-items-center">
+                    <i class="mdi mdi-creation"></i>
+                    <span class="text-small mx-1">Generate</span>
+                </button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary modal-submit">Submit</button>
             </div>
@@ -165,15 +171,15 @@
             <div class="modal-body custom-scroll">
                 <div><span class="fw-bold" style="color:#ff6a00">Question (<span class="score">2</span> mark).</span></div>
                 <div class="question mt-2">
-                    
+
                 </div>
                 <div class="container-answer mt-2">
                     @*<div class="d-flex">
-                        <input class="me-3" type="checkbox" style="width:18px;" disabled />
-                        <div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">
-                            answer
-                        </div>
-                    </div>*@
+                            <input class="me-3" type="checkbox" style="width:18px;" disabled />
+                            <div class="p-3 my-2 flex-grow-1" style="border: #808080 dashed 1px">
+                                answer
+                            </div>
+                        </div>*@
                 </div>
             </div>
             <div class="modal-footer">

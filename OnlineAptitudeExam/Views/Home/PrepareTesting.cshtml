@@ -2,12 +2,10 @@
 @{
     ViewBag.Title = "PrepareTesting";
 }
-
-
-
-<div class="rule_layout">
  
-    <div class="row-cols-lg-2">
+<div class="rule_layout row">
+ 
+    <div class="col-5 row-cols-lg-2">
         <h2 style="color:blue;">PrepareTesting</h2>
 
         <div class="container-fluid">
@@ -37,7 +35,9 @@
 
         <a href="@Url.Action("QuestionExam","Home")" class="btn btn-primary" style="margin-left:100px;margin-top:30px;">Start Test <i class="fa-solid fa-hourglass-start"></i> </a>
     </div>
+    <div class="col-7">
 
     <img src="~/Content/images/rule_img.jpg" />
+    </div>
 </div>
 

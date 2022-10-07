@@ -5,10 +5,10 @@ using System;
 using System.Web.Mvc;
 using System.Web;
 using System.Linq;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Diagnostics;
+using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json; 
 
 namespace OnlineAptitudeExam.Controllers
 {
@@ -17,7 +17,7 @@ namespace OnlineAptitudeExam.Controllers
         private OnlineAptitudeExamEntities dbEntities = new OnlineAptitudeExamEntities();
 
         public ActionResult Index()
-        {
+        {  
             return View();
         }
 
@@ -73,45 +73,54 @@ namespace OnlineAptitudeExam.Controllers
             return View(user);
         }
 
-        string avatarCurrentFile;
 
         [Authentication]
         [HttpPost]
         public ActionResult EditProfile(FormCollection key, HttpPostedFileBase avatar)
         {
-            Account currentAccountSession = Session["UserInfo"] as Account;
-
-            if (avatar.ContentLength > 0)
+            Account acc = Session["UserInfo"] as Account;
+            string avatarName = acc.avatar;
+            if (avatar != null && avatar.ContentLength > 0)
             {
-
-                // Save file
-                string rootPathFolder = Server.MapPath("/Content/images/avatars/");
-                string pathImage = rootPathFolder + avatar.FileName;
-                avatar.SaveAs(pathImage);
-                avatarCurrentFile = rootPathFolder + currentAccountSession.avatar;
-                if (System.IO.File.Exists(avatarCurrentFile) && avatar.FileName != currentAccountSession.avatar && currentAccountSession.avatar != "user_placeholder.png")
+                string ext = avatar.FileName.Substring(avatar.FileName.LastIndexOf(".")).ToLower();
+                if(ext != ".png" && ext != ".jpg")
                 {
-                    System.IO.File.Delete(avatarCurrentFile);
+                    ViewBag.avatar_err = "File not allow!";
+                    return View(acc);
                 }
+                
+
+                string rootPathFolder = Server.MapPath("/Content/images/avatars/");
+                string currAvatarPath = rootPathFolder + acc.avatar;
+                if (System.IO.File.Exists(currAvatarPath) && acc.avatar != "user_placeholder.png")
+                {
+                    System.IO.File.Delete(currAvatarPath);
+                }
+                // Save file
+                avatarName = Helper.GenerateAlphaNumericPwd() + ext;
+                string pathImage = rootPathFolder + avatarName;
+                avatar.SaveAs(pathImage);
             }
 
-            if (currentAccountSession != null)
+            if (acc != null)
             {
-                string sAvatar = avatar.FileName;
+                string sAvatar = avatarName;
                 string sFullName = key["fullname"];
-                string sUseName = key["username"];
                 string sAge = key["age"];
                 string sAddress = key["address"];
                 string sDescriptions = key["descriptions"];
 
-                var account = dbEntities.Accounts.Find(currentAccountSession.id);
+                var account = dbEntities.Accounts.Find(acc.id);
 
                 account.avatar = sAvatar;
                 account.fullname = sFullName;
-                account.username = sUseName;
-                if (sAge != null)
+                if (!sAge.IsNullOrWhiteSpace())
                 {
-                    account.age = Int32.Parse(sAge);
+                    account.age = int.Parse(sAge);
+                }
+                else
+                {
+                    account.age = null;
                 }
                 account.address = sAddress;
                 account.descriptions = sDescriptions;
@@ -127,13 +136,6 @@ namespace OnlineAptitudeExam.Controllers
         [Authentication]
         public ActionResult PrepareTesting()
         {
-
-            Account currentAccount = Session["UserInfo"] as Account;
-
-            if (currentAccount == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
             return View();
         }
 
@@ -145,7 +147,7 @@ namespace OnlineAptitudeExam.Controllers
 
             int userId = currentAccount.id;
 
-            int testId ;
+            int testId;
 
             DateTime endTime;
 
@@ -159,7 +161,7 @@ namespace OnlineAptitudeExam.Controllers
             {
 
                 long timeStart = exam.time_start.Value;
-                if (TimeSpan.FromTicks(DateTime.Now.Ticks - timeStart).TotalMinutes > 30 )
+                if (TimeSpan.FromTicks(DateTime.Now.Ticks - timeStart).TotalMinutes > 30)
                 {
                     return RedirectToAction("ScoreTable", "Home");// return ra xem keets qua
                 }
@@ -225,15 +227,14 @@ namespace OnlineAptitudeExam.Controllers
                 return HttpNotFound("404 Page Not Found");
             }
 
-
             List<Question> questions = test.Questions.Where(q => q.type == type).ToList();
 
             List<int> totalCorrectAnswers = new List<int>();
 
             foreach (Question q in questions)
             {
-                int total = q.correct_answers.Trim('[', ']').Split(new[] { ',' }).Select(x => x.Trim('"')).ToArray().Count();
-                totalCorrectAnswers.Add(total);
+                var correctAnswers = JsonConvert.DeserializeObject(q.correct_answers) as JArray;
+                totalCorrectAnswers.Add(correctAnswers.Count);
             }
 
             ViewBag.testId = testId;
@@ -250,11 +251,11 @@ namespace OnlineAptitudeExam.Controllers
         private int radomTestId()
         {
             Random random = new Random();
-            var arrTestId = dbEntities.Tests.Where(t =>t.status == 1).Select(t => t.id).ToArray();
+            var arrTestId = dbEntities.Tests.Where(t => t.status == 1).Select(t => t.id).ToArray();
 
             if (arrTestId.Length > 0)
             {
-              return arrTestId[random.Next(arrTestId.Length)];
+                return arrTestId[random.Next(arrTestId.Length)];
             }
 
             return -1;
@@ -306,7 +307,7 @@ namespace OnlineAptitudeExam.Controllers
             dbEntities.SaveChanges();
 
 
-            return Json(Responses.Success(null,"Save Success !"));
+            return Json(Responses.Success(null, "Save Success !"));
         }
 
 
@@ -324,18 +325,18 @@ namespace OnlineAptitudeExam.Controllers
             int userId = currentAccount.id;
 
             var exams = from e in dbEntities.Exams
-                       where e.user_id == userId
-                       select e;
+                        where e.user_id == userId
+                        select e;
 
-            var exam = exams.FirstOrDefault(); 
-             
+            var exam = exams.FirstOrDefault();
+
             var examDetails = from e in dbEntities.ExamDetails
                               where e.exam_id == exam.id
                               select e;
 
             if (examDetails == null)
             {
-                return RedirectToAction("PrepareTesting","Home");
+                return RedirectToAction("PrepareTesting", "Home");
             }
 
             var questions = from e in dbEntities.Questions
@@ -347,7 +348,7 @@ namespace OnlineAptitudeExam.Controllers
             int incorrect = 0;
             double totalScore = 0;
 
-           
+
             foreach (ExamDetail examDetail in examDetails)
             {
                 foreach (Question question in questions)
@@ -363,13 +364,13 @@ namespace OnlineAptitudeExam.Controllers
                         score += question.score.Value;
                         ViewBag.score = score;
                     }
-                    else if(!examDetail.selected_question.Equals(question.correct_answers) && examDetail.question_id == question.id)
+                    else if (!examDetail.selected_question.Equals(question.correct_answers) && examDetail.question_id == question.id)
                     {
                         incorrect++;
-                       
-                    } 
+
+                    }
                 }
-             
+
             }
 
             double percentScore = (correct / totalScore) * 100;
