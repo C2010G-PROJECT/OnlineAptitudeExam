@@ -88,7 +88,7 @@ namespace OnlineAptitudeExam.Controllers
                     ViewBag.avatar_err = "File not allow!";
                     return View(acc);
                 }
-                
+                string idUserCur = acc.id.ToString();
 
                 string rootPathFolder = Server.MapPath("/Content/images/avatars/");
                 string currAvatarPath = rootPathFolder + acc.avatar;
@@ -97,7 +97,7 @@ namespace OnlineAptitudeExam.Controllers
                     System.IO.File.Delete(currAvatarPath);
                 }
                 // Save file
-                avatarName = Helper.GenerateAlphaNumericPwd() + ext;
+                avatarName = "user_" + idUserCur + "_" + Helper.GenerateAlphaNumericPwd() + ext;
                 string pathImage = rootPathFolder + avatarName;
                 avatar.SaveAs(pathImage);
             }
