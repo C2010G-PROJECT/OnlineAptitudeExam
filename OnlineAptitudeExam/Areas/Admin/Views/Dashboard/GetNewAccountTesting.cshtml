@@ -6,6 +6,7 @@
                 join c in Model.ExamsTested on p.id equals c.user_id
                 select new
                 {
+                    p.id,
                     p.avatar,
                     p.username,
                     c.time_end
