@@ -1,18 +1,10 @@
 ﻿using OnlineAptitudeExam.Models;
 using OnlineAptitudeExam.Utils;
 using System.Web.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Web;
-using static OnlineAptitudeExam.Models.Responses;
-using static OnlineAptitudeExam.Models.FormModelView;
-using Account = OnlineAptitudeExam.Models.FormModelView.Account;
-using Microsoft.Ajax.Utilities;
-using System.Security.Cryptography;
+using static OnlineAptitudeExam.Models.CustomModel;
 
 namespace OnlineAptitudeExam.Areas.Admin.Controllers
 {
@@ -51,7 +43,8 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
             var homeViewModel = new HomeViewModel();
             homeViewModel.AccountsTested = selectAccounts;
             homeViewModel.ExamsTested = selectExams;
-            return View(homeViewModel);
+            ViewBag.homeViewModel = homeViewModel;
+            return View();
         }
        
     }

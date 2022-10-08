@@ -236,7 +236,6 @@
     <Compile Include="Models\FormModelView.cs" />
     <Compile Include="Models\CustomModel.cs" />
     <Compile Include="Models\Responses.cs" />
-    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Utils\Authentication.cs" />
     <Compile Include="Utils\DateUtils.cs" />
     <Compile Include="Utils\Enums.cs" />

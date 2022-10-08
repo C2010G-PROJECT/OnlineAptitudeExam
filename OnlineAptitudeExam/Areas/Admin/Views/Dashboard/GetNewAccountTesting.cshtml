@@ -1,9 +1,13 @@
-﻿@model OnlineAptitudeExam.Models.HomeViewModel
+﻿@using OnlineAptitudeExam.Models;
 @using OnlineAptitudeExam.Utils;
 @{
     Layout = null;
-    var data = (from p in Model.AccountsTested
-                join c in Model.ExamsTested on p.id equals c.user_id
+
+    var homeViewModel = ViewBag.homeViewModel as CustomModel.HomeViewModel;
+
+
+    var data = (from p in homeViewModel.AccountsTested
+                join c in homeViewModel.ExamsTested on p.id equals c.user_id
                 select new
                 {
                     p.id,
@@ -17,7 +21,8 @@
             <table class="table table-striped table-valign-middle">
                 <thead style="font-weight:bold">
                     <tr>
-                        <th colspan="2">UserName</th>
+                        <th>Avatar</th>
+                        <th>UserName</th>
                         <th>Test day</th>
                         <th>Score</th>
                         <th>Result</th>
@@ -28,7 +33,7 @@
                     {
                         <tr>
                             <td>
-                                <img class="rounded-circle float-left" src="~/Content/images/avatars/@(item.avatar == null ? "user_placeholder.png": item.avatar)">
+                                <img style="width: 36px; height: 36px" class="rounded-circle" src="~/Content/images/avatars/@(item.avatar == null ? "user_placeholder.png": item.avatar)">
                             </td>
                             <td>
                                 @item.username

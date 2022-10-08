@@ -71,12 +71,19 @@
         <div id="questions-container">
             @{
                 var examDetails = Model.ExamDetails.OrderBy(ex => ex.Question.type).ToList();
+                var questions = Model.Test.Questions.OrderBy(ex => ex.type).ToList();
+
                 int currentType = -1;
                 double totalScore = 0, examScore = 0;
-                for (int i = 0; i < examDetails.Count; i++)
+                for (int i = 0; i < questions.Count; i++)
                 {
-                    var examDetail = examDetails[i];
-                    var question = examDetail.Question;
+                    var question = questions[i];
+                    var examDetail = examDetails.Count > i ? examDetails[i] : null;
+                    if(examDetail == null)
+                    {
+                        examDetail = new ExamDetail();
+                        examDetail.selected_question = "[]";
+                    }
 
                     var answers = JsonConvert.DeserializeObject(question.answers) as JArray;
                     var correctAnswers = (JsonConvert.DeserializeObject(question.correct_answers) as JArray).Select(item => (int)item).ToArray();
