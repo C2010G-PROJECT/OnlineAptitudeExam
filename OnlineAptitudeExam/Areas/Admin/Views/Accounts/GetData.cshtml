@@ -45,19 +45,19 @@
                             @((Model.PageNumber - 1) * Model.PageSize + i + 1)
                         </td>
                         <td class="field-username">
-                            @Html.DisplayFor(modelItem => item.username)
+                            @item.username
                         </td>
                         <td class="field-password">
-                            @Html.DisplayFor(modelItem => item.password)
+                            @item.password.Substring(16) ...
                         </td>
                         <td class="field-fullname">
-                            @Html.DisplayFor(modelItem => item.fullname)
+                            @item.fullname
                         </td>
                         <td>
                             @OnlineAptitudeExam.Utils.DateUtils.toDateString(item.created_at)
                         </td>
                         <td class="field-email">
-                            @Html.DisplayFor(modelItem => item.email)
+                            @item.email
                         </td>
                         <td class="field-status">
                             @(item.status == 0 ? "Unlock":"Locked")

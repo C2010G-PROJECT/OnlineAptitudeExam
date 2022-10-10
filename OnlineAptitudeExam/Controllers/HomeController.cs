@@ -373,7 +373,7 @@ namespace OnlineAptitudeExam.Controllers
 
             }
 
-            double percentScore = (correct / totalScore) * 100;
+            double percentScore = (score / totalScore) * 100;
 
             ViewBag.exam = exam;
             ViewBag.examDetails = examDetails;

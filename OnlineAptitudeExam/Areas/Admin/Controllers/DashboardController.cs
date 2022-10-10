@@ -23,27 +23,7 @@ namespace OnlineAptitudeExam.Areas.Admin.Controllers
         [ValidateInput(false)]
         public ActionResult GetNewAccountTesting()
         {
-            //string sort = "";
-            var exams = from s in db.Exams select s;
-            if (exams.Count() == 0)
-            {
-                return View(new HomeViewModel());
-            }
-            exams = exams.OrderByDescending(t => t.time_end).Take(4);
-            //sort = SortHelper.DATE;
-            //exams = exams.OrderByDescending(s => s.time_end);
-
-            var selectExams = (from p in exams
-                               join c in db.Accounts on p.user_id equals c.id
-                               select p).ToList();
-
-            var selectAccounts = (from p in selectExams
-                                  join c in db.Accounts on p.user_id equals c.id
-                                  select c).ToList();
-            var homeViewModel = new HomeViewModel();
-            homeViewModel.AccountsTested = selectAccounts;
-            homeViewModel.ExamsTested = selectExams;
-            ViewBag.homeViewModel = homeViewModel;
+            ViewBag.exams = (from s in db.Exams select s).Take(5).ToList();
             return View();
         }
        

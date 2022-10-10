@@ -1,7 +1,9 @@
-﻿using System;
+﻿using OnlineAptitudeExam.Models;
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.Mvc;
+using System.Web.UI;
 
 namespace OnlineAptitudeExam.Utils
 {
@@ -33,7 +35,31 @@ namespace OnlineAptitudeExam.Utils
             }
             return strrandom;
         }
+
+        public static Pair GetScoreFromExam(Exam exam)
+        {
+            Pair pair = new Pair();
+        
+            var examDetails = exam.ExamDetails.OrderBy(ex => ex.Question.type).ToList();
+            var questions = exam.Test.Questions.OrderBy(ex => ex.type).ToList();
+
+            double totalScore = 0, examScore = 0;
+            for (int i = 0; i < questions.Count; i++)
+            {
+                var question = questions[i];
+                var examDetail = examDetails.Count > i ? examDetails[i] : null;
+                examScore += question.score.Value;
+                if (examDetail != null && examDetail.selected_question == question.correct_answers)
+                {
+                    totalScore += question.score.Value;
+                }
+            }
+            pair.First = totalScore;
+            pair.Second = examScore;
+            
+            return pair;
+        }
     }
 
-  
+
 }
